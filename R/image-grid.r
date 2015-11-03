@@ -23,14 +23,15 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
   if (missing(ncol))    ncol <- floor(sqrt(length(samples)))
   if (cex.legend < 0 | cex.legend > 1) stop("cex.legend must be >0 and <1")
 
-  resids <- residuals(x)[["PM.resid"]][, samples]
+  data.array <- array_layout(x)
+
   if (sign)
-    resids <- sign(resids)
+    data.array <- data.array(resids)
   else if (use.log)
-    resids <- sign(resids) * log2(abs(resids) + 1)
+    data.array <- sign(data.array) * log2(abs(data.array) + 1)
 
   if (!missing(range) & !sign) {
-    resids <- squish(resids, range)
+    data.array <- squish(data.array, range)
   }
 
   # heatmap parameters
@@ -43,7 +44,7 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
     legend.lab <- "Signed\nresiduals"
     r.breaks.lab <- c("-", "+")
   } else {
-    r.breaks <- pretty_breaks()(resids)
+    r.breaks <- pretty_breaks()(data.array)
     r.breaks.ext <- seq(min(r.breaks), max(r.breaks), 0.2)
     heat.cols <- colorRampPalette(colors)(length(r.breaks.ext) - 1)
     legend.lab <- "Residuals"
@@ -57,18 +58,6 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
       r.breaks.lab <- as.character(r.breaks)
     }
   }
-
-  # image matrix
-  nr <-  x@nrow
-  nc <-  x@ncol
-  rmat <- matrix(nrow = nr, ncol = nc)
-
-  # probe coordinates
-  pm.index <- indexProbes(x, which = "pm", row.names(coefs(x)))
-
-  xycoor <- lapply(pm.index, indices2xy, nc = nc)
-  xycoor <- do.call("rbind", xycoor)
-  xycoor <- rbind(xycoor, cbind(x = xycoor[, "x"], y = xycoor[, "y"] + 1))
 
   # plot layout
   cells <- ceiling(length(samples) / ncol) * ncol
@@ -100,12 +89,12 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
   par(mar = c(0.25, 0.25, 1, 0.25))
 
   for (s in samples) {
-    rmat[xycoor] <- resids[, s]
 
     # flip the matrix
-    rmat <- as.matrix(rev(as.data.frame(rmat)))
+    plot.mat <- as.matrix(rev(as.data.frame(data.array[,,s])))
 
-    image(rmat, useRaster = TRUE, col = heat.cols, breaks = r.breaks.ext, axes = FALSE)
+    image(plot.mat, useRaster = TRUE,
+          col = heat.cols, breaks = r.breaks.ext, axes = FALSE)
     mtext(labels[match(s, samples)], 3, line = 0, cex = 0.6)
   }
 }
