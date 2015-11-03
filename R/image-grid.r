@@ -12,11 +12,8 @@
 
 image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
                        ncol, colors, cex.legend = 0.5, range) {
-  stopifnot(class(x) == "PLMset")
 
-  require(affy)
-  require(affyPLM)
-  require(scales)
+  stopifnot(class(x) %in% c("AffyBatch", "PLMset"))
 
   if (missing(samples)) samples <- sampleNames(x)
   if (missing(labels))  labels <- samples
@@ -31,11 +28,11 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
     data.array <- sign(data.array) * log2(abs(data.array) + 1)
 
   if (!missing(range) & !sign) {
-    data.array <- squish(data.array, range)
+    data.array <- scales::squish(data.array, range)
   }
 
   # heatmap parameters
-  if (missing(colors)) colors <- brewer_pal(palette = "RdBu")(9)
+  if (missing(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
 
   if (sign) {
     r.breaks <- c(-1, 1)
@@ -44,7 +41,7 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
     legend.lab <- "Signed\nresiduals"
     r.breaks.lab <- c("-", "+")
   } else {
-    r.breaks <- pretty_breaks()(data.array)
+    r.breaks <- scales::pretty_breaks()(data.array)
     r.breaks.ext <- seq(min(r.breaks), max(r.breaks), 0.2)
     heat.cols <- colorRampPalette(colors)(length(r.breaks.ext) - 1)
     legend.lab <- "Residuals"
