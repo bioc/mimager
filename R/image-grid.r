@@ -23,7 +23,7 @@ image_grid <- function(x, samples, labels, sign = FALSE, use.log = TRUE,
   data.array <- array_layout(x)
 
   if (sign)
-    data.array <- data.array(resids)
+    data.array <- sign(data.array)
   else if (use.log)
     data.array <- sign(data.array) * log2(abs(data.array) + 1)
 
