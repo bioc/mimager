@@ -19,6 +19,6 @@ Suggests:
 Collate:
     'all-generics.r'
     'image-grid.r'
-    'physical-array-affy.r'
+    'ma-layout-affy.r'
     'grid-layout.r'
 RoxygenNote: 5.0.0
