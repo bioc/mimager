@@ -1,38 +1,42 @@
 # Convert AffyBatch or PLMSet to an array of matrixes that correspond to the
 # physical layout of their microarray features
 
-array_layout <- function(x) {
+setMethod("ma_layout", c(object = "AffyBatch"),
+  function(object) .affy_layout(object))
 
-  labels <- sampleNames(x)
+setMethod("ma_layout", c(object = "PLMset"),
+  function(object) .affy_layout(object))
 
-  # image matrix
-  nr <-  x@nrow
-  nc <-  x@ncol
-  n  <- length(labels)
+.affy_layout <- function(object) {
 
+  labels <- Biobase::sampleNames(object)
 
-  # probe coordinates
-  probe.index <- indexProbes(x, which = "pm")
-
-  xycoor <- lapply(probe.index, indices2xy, nc = nc)
-  xycoor <- do.call("rbind", xycoor)
-  xycoor <- rbind(xycoor, cbind(x = xycoor[, "x"], y = xycoor[, "y"] + 1))
-
-  # extract array values
-  exp.mat <- switch(class(x),
-         PLMset = residuals(x)$PM.resid,
-      AffyBatch = pm(x)
+  n <- list(
+       rows = object@nrow,
+       cols = object@ncol,
+    samples = length(labels)
   )
 
-  exp.array <- lapply(labels, function(l) {
-    xyzcoor <- cbind(xycoor, z = match(l, labels))
-    mat <- matrix(nrow = nr, ncol = nc)
-    mat[xycoor] <- exp.mat[, l]
-    mat
+  index  <- stack(affy::indexProbes(object, which = "pm"))
+  coords <- affy::indices2xy(index$values, abatch = object)
+
+  # fill in empty rows if returning values for only pm or mm probes
+  coords <- rbind(coords, cbind(coords[, "x"], coords[, "y"] + 1))
+
+  # extract array values
+  values2d <- switch(class(object),
+         PLMset = residuals(object)$PM.resid,
+      AffyBatch = affy::pm(object)
+  )
+
+  values3d <- lapply(labels, function(l) {
+    mat <- matrix(nrow = n$rows, ncol = n$cols)
+    mat[coords] <- values2d[, l]
+    mat[, n$cols:1]
   })
 
-  exp.array <- abind::abind(exp.array, along = 3)
-  dimnames(exp.array) <- list(seq_len(nr), seq_len(nc), labels)
+  values3d <- abind::abind(values3d, along = 3)
+  dimnames(values3d) <- list(seq_len(n$rows), seq_len(n$cols), labels)
 
-  exp.array
+  values3d
 }

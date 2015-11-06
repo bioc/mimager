@@ -8,14 +8,17 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
 Imports:
-  methods,
-  abind,
-  grid,
-  Biobase,
-  affy,
-  affyPLM,
-  scales
+    methods,
+    abind,
+    grid,
+    scales,
+    Biobase,
+    affy
+Suggests:
+    affyPLM
 Collate:
+    'all-generics.r'
     'image-grid.r'
     'physical-array-affy.r'
     'grid-layout.r'
+RoxygenNote: 5.0.0
