@@ -18,7 +18,7 @@ setMethod("ma_layout", c(object = "PLMset"),
   )
 
   index  <- stack(affy::indexProbes(object, which = "pm"))
-  coords <- affy::indices2xy(index$values, abatch = object)
+  coords <- affy::indices2xy(index$values, nc = n$cols)
 
   # fill in empty rows if returning values for only pm or mm probes
   coords <- rbind(coords, cbind(coords[, "x"], coords[, "y"] + 1))
