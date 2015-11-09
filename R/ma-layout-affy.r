@@ -32,7 +32,7 @@ setMethod("ma_layout", c(object = "PLMset"),
   values3d <- lapply(labels, function(l) {
     mat <- matrix(nrow = n$rows, ncol = n$cols)
     mat[coords] <- values2d[, l]
-    mat[, n$cols:1]
+    t(mat)
   })
 
   values3d <- abind::abind(values3d, along = 3)
