@@ -25,7 +25,7 @@ setMethod("ma_layout", c(object = "PLMset"),
 
   # extract array values
   values2d <- switch(class(object),
-         PLMset = residuals(object)$PM.resid,
+         PLMset = affyPLM::resid(object)$PM.resid,
       AffyBatch = affy::pm(object)
   )
 
