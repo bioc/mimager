@@ -11,26 +11,26 @@
 #' @param range optional, if defined, values will be limited to the defined range
 
 setMethod("ma_image", c(object = "AffyBatch"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, range = NULL, transform = log2, ...) {
+  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = log2, ...) {
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
     if (is.null(legend.label)) legend.label <- "Expression"
 
     object <- ma_layout(object)
     object <- transform(object)
-    .image_grid(object, colors, legend.label, nrow, ncol, range, ...)
+    .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, ...)
 })
 
 setMethod("ma_image", c(object = "PLMset"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, range = NULL, transform = identity, ...) {
+  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, ...) {
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
     if (missing(legend.label)) legend.label <- "Residuals"
 
     object <- ma_layout(object)
     object <- transform(object)
-    .image_grid(object, colors, legend.label, nrow, ncol, range, ...)
+    .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, ...)
 })
 
-.image_grid <- function(object, colors, legend.label, nrow, ncol, range, ...) {
+.image_grid <- function(object, colors, legend.label, nrow, ncol, fixed, range, ...) {
   stopifnot(class(object) == "array")
 
   n <- dim(object)[3]
@@ -48,8 +48,21 @@ setMethod("ma_image", c(object = "PLMset"),
   obj.colors <- scales::cscale(object, scales::div_gradient_pal(), na.value = "white")
 
   obj.raster <- lapply(labels, function(l) {
-   grid::rasterGrob(obj.colors[,,l], interpolate = F, name = paste0("image.", l))
+    grid::rasterGrob(obj.colors[,,l],
+                     interpolate = FALSE,
+                     name = paste0("image.", l))
   })
+
+  if (!fixed) {
+    x.rng <- range(seq_len(nrow(object)) / nrow(object))
+    y.rng <- range(seq_len(ncol(object)) / ncol(object))
+
+    obj.raster <- lapply(obj.raster, grid::editGrob,
+           x = grid::unit(mean(x.rng), "native"),
+           y = grid::unit(mean(y.rng), "native"),
+           width = grid::unit(diff(x.rng), "native"),
+           height = grid::unit(diff(y.rng), "native"))
+  }
 
   obj.raster <- matrix(obj.raster, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
