@@ -84,6 +84,9 @@ setMethod("ma_image", c(object = "PLMset"),
                         grobs = rbind(obj.labels, obj.raster)[row.order, ],
                         heights = heights, widths = widths)
 
+  final.table <- gtable::gtable_add_col_space(final.table, grid::unit(0.5, "lines"))
+  final.table <- gtable::gtable_add_padding(final.table, grid::unit(0.5, "lines"))
+
   grid.newpage()
   grid.draw(final.table)
 }
