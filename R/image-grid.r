@@ -53,10 +53,24 @@ setMethod("ma_image", c(object = "PLMset"),
 
   obj.raster <- matrix(obj.raster, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
-  obj.table <- gtable::gtable_matrix("image.table", grobs = obj.raster,
-                widths = rep(1, dims[2]),
-                heights = rep(1, dims[1]))
+  obj.labels <- lapply(labels, function(l) {
+   grid::textGrob(l, name = paste0("label.", l), just = c(0.5, 0.8))
+  })
 
-  grid::grid.newpage()
-  grid::grid.draw(obj.table)
+  obj.labels <- matrix(obj.labels, nrow = dims[1], ncol = dims[2], byrow = TRUE)
+
+  row.order <- order(rep(seq_len(dims[1]), 2))
+
+  img.unit <- grid::unit(1, "null")
+  lbl.unit <- grid::unit(2, "strheight", labels[1])
+
+  heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
+  widths <- rep(grid::unit(1, "null"), dims[2])
+
+  final.table <- gtable::gtable_matrix("image.table",
+                        grobs = rbind(obj.labels, obj.raster)[row.order, ],
+                        heights = heights, widths = widths)
+
+  grid.newpage()
+  grid.draw(final.table)
 }
