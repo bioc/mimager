@@ -7,18 +7,22 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
-Imports:
+Imports: 
     methods,
     abind,
     grid,
     scales,
     Biobase,
-    affy
-Suggests:
+    affy,
     affyPLM
-Collate:
+Collate: 
     'all-generics.r'
     'image-grid.r'
     'ma-layout-affy.r'
+    'maimg-package.r'
     'grid-layout.r'
 RoxygenNote: 5.0.0
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
