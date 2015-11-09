@@ -20,15 +20,15 @@ test_that("Affymetrix GeneChip orientation", {
 DilutionPLM <- affyPLM::fitPLM(Dilution)
 affy.plm <- ma_layout(DilutionPLM)
 
-# test_that("Affymetrix GeneChip PLM dimensions", {
-#   expect_identical(dimnames(affy.plm)[[3]], affy::sampleNames(DilutionPLM))
-#   expect_identical(nrow(affy.plm), DilutionPLM@nrow)
-#   expect_identical(ncol(affy.plm), DilutionPLM@ncol)
-# })
-#
-# test_that("Affymetrix GeneChip orientation", {
-#   # NAs represent missing control probes
-#   expect_true(all(is.na(affy.plm[11, , ])))
-#   expect_true(all(is.na(affy.plm[16, 1:182, ])))
-#   expect_true(all(is.na(affy.plm[1:8, 61:110, ])))
-# })
+test_that("Affymetrix GeneChip PLM dimensions", {
+  expect_identical(dimnames(affy.plm)[[3]], affy::sampleNames(DilutionPLM))
+  expect_identical(nrow(affy.plm), DilutionPLM@nrow)
+  expect_identical(ncol(affy.plm), DilutionPLM@ncol)
+})
+
+test_that("Affymetrix GeneChip orientation", {
+  # NAs represent missing control probes
+  expect_true(all(is.na(affy.plm[11, , ])))
+  expect_true(all(is.na(affy.plm[16, 1:182, ])))
+  expect_true(all(is.na(affy.plm[1:8, 61:110, ])))
+})
