@@ -12,6 +12,7 @@ Imports:
     methods,
     abind,
     grid,
+    gtable,
     scales,
     Biobase,
     affy,

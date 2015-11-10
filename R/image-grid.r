@@ -99,6 +99,6 @@ setMethod("ma_image", c(object = "PLMset"),
   final.table <- gtable_add_col_space(final.table, unit(0.5, "lines"))
   final.table <- gtable_add_padding(final.table, unit(0.5, "lines"))
 
-  grid.newpage()
-  grid.draw(final.table)
+  grid::grid.newpage()
+  grid::grid.draw(final.table)
 }
