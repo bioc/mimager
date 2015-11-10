@@ -32,3 +32,8 @@ test_that("Affymetrix GeneChip orientation", {
   expect_true(all(is.na(affy.plm[16, 1:182, ])))
   expect_true(all(is.na(affy.plm[1:8, 61:110, ])))
 })
+
+test_that("Empty cells are filled with nullGrobs", {
+  expect_silent(out <- ma_image(Dilution[, 1:3], ncol = 2))
+  expect_equal(class(out[4,4]$grobs[[1]]), c("null", "grob", "gDesc"))
+})

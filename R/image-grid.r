@@ -65,12 +65,15 @@ setMethod("ma_image", c(object = "PLMset"),
            height = grid::unit(diff(y.rng), "native"))
   }
 
+
+  obj.raster <- lapply(obj.raster[1:prod(dims)], "%||%", grid::nullGrob())
   obj.raster <- matrix(obj.raster, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
   obj.labels <- lapply(labels, function(l) {
    grid::textGrob(l, name = paste0("label.", l), just = c(0.5, 0.8))
   })
 
+  obj.labels <- lapply(obj.labels[1:prod(dims)], "%||%", grid::nullGrob())
   obj.labels <- matrix(obj.labels, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
   row.order <- order(rep(seq_len(dims[1]), 2))
