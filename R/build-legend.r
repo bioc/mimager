@@ -1,44 +1,33 @@
 
-legend
+build_legend <- function(breaks, colors, labels, title) {
 
+  key.height <- unit(1.2, "lines")
+  key.width  <- unit(1.2, "lines")
 
-legend$text.width <- unit(1, "strwidth", legend$labels[which.max(nchar(legend$labels))])
+  nbreaks <- length(breaks)
 
+  legend.grob <- grid::rasterGrob(colors,
+             x = unit(0, "npc"),
+        interp = FALSE,
+          just = "left",
+          name = "legend.key",
+         width = grid::convertWidth(key.width, "mm"),
+        height = grid::convertHeight(key.height * nbreaks, "mm"))
 
+  legend.text.grob <- grid::textGrob(labels,
+            x = unit(0, "npc"),
+            y = unit(seq_len(nbreaks) / nbreaks, "npc") - (key.height * 0.5),
+         just = "left",
+         name = "legend.text")
 
-nbreaks <- length(legend$breaks)
+  legend.table <- gtable::gtable(
+    widths = grid::unit.c(key.width, grobWidth(legend.text.grob)),
+    height = grid::grobHeight(legend.grob))
+  legend.table <- gtable::gtable_add_grob(legend.table, legend.text.grob,
+                                          t = 1, l = 2, r = 2)
+  legend.table <- gtable::gtable_add_grob(legend.table, legend.grob,
+                                          t = 1, l = 1, r = 1)
 
-stringWidth(legend$labels)
+  return(legend.table)
+}
 
-key.ht <- unit(1.2, "lines")
-key.wd <- unit(1.2, "lines")
-
-legend.ht <- key.ht * nbreaks
-
-pushViewport(viewport(width = key.wd, height = legend.ht))
-grid.raster(legend$fill, interp = FALSE)
-
-grid.text(legend$labels,
-          x = rep(key.wd * 0.5, nbreaks),
-          y = unit(seq_len(nbreaks) / nbreaks, "npc") - (key.ht * 0.5))
-
-
-
-grid.points(key.wd * 0.5, (key.ht * 0.5) * 6)
-
-grid.text(legend$labels,
-          x = key.wd * 0.5,
-          y = cumsum(rep(key.ht, nbreaks)) - 0.5)
-
-  grid.rect(x = 0.5, y = seq_len(nbreaks) / nbreaks,
-            width = key.wd,
-            height = key.ht,
-            just = c(0.5, 1.0),
-            gp = gpar(fill = legend$fill))
-
-
-
-  grid.text(legend$labels,
-            x = 0.5,
-            y = unit(seq_len(nbreaks) / breaks, "npc") - (key.ht * 0.5),
-            just = c(.5, 1))

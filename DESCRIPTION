@@ -18,6 +18,7 @@ Imports:
     affyPLM
 Collate:
     'all-generics.r'
+    'build-legend.r'
     'image-grid.r'
     'ma-layout-affy.r'
     'maimg-package.r'
