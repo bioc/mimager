@@ -81,15 +81,14 @@ setMethod("ma_image", c(object = "PLMset"),
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
   widths <- rep(grid::unit(1, "null"), dims[2])
 
-  final.table <- gtable::gtable_matrix("image.table",
-                        grobs = rbind(obj.labels, obj.raster)[row.order, ],
-                        heights = heights, widths = widths)
+  final.table <- gtable_matrix("image.table",
+                               grobs = rbind(obj.labels, obj.raster)[row.order, ],
+                               heights = heights, widths = widths)
 
   # legend
   legend.table <- build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
 
-  final.table <- gtable::gtable_add_cols(final.table,
-                                         gtable::gtable_width(legend.table))
+  final.table <- gtable_add_cols(final.table, gtable_width(legend.table))
 
   final.table <- gtable_add_grob(final.table, legend.table,
                   t = 2,
@@ -97,8 +96,9 @@ setMethod("ma_image", c(object = "PLMset"),
                   l = ncol(final.table),
                   r = ncol(final.table))
 
-  final.table <- gtable::gtable_add_col_space(final.table, unit(0.5, "lines"))
-  final.table <- gtable::gtable_add_padding(final.table, unit(0.5, "lines"))
+  final.table <- gtable_add_col_space(final.table, unit(0.5, "lines"))
+  final.table <- gtable_add_padding(final.table, unit(0.5, "lines"))
+
   grid.newpage()
   grid.draw(final.table)
 }
