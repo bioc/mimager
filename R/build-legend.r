@@ -39,6 +39,8 @@ build_legend <- function(breaks, colors, labels, title) {
   legend.table <- gtable_add_grob(legend.table, legend.grob,
                                   t = 2, l = 1, r = 1)
 
+  legend.table <- gtable_add_col_space(legend.table, unit(0.2, "lines"))
+
   return(legend.table)
 }
 
