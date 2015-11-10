@@ -20,13 +20,24 @@ build_legend <- function(breaks, colors, labels, title) {
          just = "left",
          name = "legend.text")
 
-  legend.table <- gtable(
-    widths = grid::unit.c(key.width, grid::grobWidth(legend.text.grob)),
-    height = grid::grobHeight(legend.grob))
+  legend.title.grob <- grid::textGrob(title,
+            x = unit(0, "npc"),
+            y = unit(1, "npc"),
+         just = c("left", "top"),
+         name = "legend.title")
+
+  legend.table <- gtable(name = "legend",
+    widths = grid::unit.c(key.width,
+                          grid::grobWidth(legend.text.grob)),
+   heights = grid::unit.c(grid::grobHeight(legend.title.grob) * 1.5,
+                          grid::grobHeight(legend.grob)))
+
+  legend.table <- gtable_add_grob(legend.table, legend.title.grob,
+                                  t = 1, l = 1, r = 2)
   legend.table <- gtable_add_grob(legend.table, legend.text.grob,
-                                  t = 1, l = 2, r = 2)
+                                  t = 2, l = 2, r = 2)
   legend.table <- gtable_add_grob(legend.table, legend.grob,
-                                  t = 1, l = 1, r = 1)
+                                  t = 2, l = 1, r = 1)
 
   return(legend.table)
 }
