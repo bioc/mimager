@@ -101,4 +101,6 @@ setMethod("ma_image", c(object = "PLMset"),
 
   grid::grid.newpage()
   grid::grid.draw(final.table)
+
+  invisible(final.table)
 }
