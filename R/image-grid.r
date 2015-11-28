@@ -44,7 +44,8 @@ setMethod("ma_image", c(object = "PLMset"),
 
   if (!is.null(range)) object <- scales::squish(object, range)
 
-  legend <- scales::cbreaks(range(object, na.rm = TRUE))
+  legend <- scales::cbreaks(range(object, na.rm = TRUE),
+                            labels = scales::format_format())
   legend$fill <- scales::cscale(legend$breaks, scales::div_gradient_pal())
 
   obj.colors <- scales::cscale(object, scales::div_gradient_pal(), na.value = "white")
