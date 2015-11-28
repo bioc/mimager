@@ -35,6 +35,7 @@ setMethod("ma_image", c(object = "PLMset"),
 
   n <- dim(object)[3]
   dims <- layout_dims(n, nrow, ncol)
+  dims <- trim_dims(n, dims[1], dims[2])
 
   if (is.null(dimnames(object)[[3]]))
     dimnames(object)[[3]] <- paste0("sample", seq_len(n))
@@ -82,11 +83,11 @@ setMethod("ma_image", c(object = "PLMset"),
   lbl.unit <- grid::unit(2, "strheight", labels[1])
 
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
-  widths <- rep(grid::unit(1, "null"), dims[2])
+  widths  <- rep(grid::unit(1, "null"), dims[2])
 
   final.table <- gtable_matrix("image.table",
-                               grobs = rbind(obj.labels, obj.raster)[row.order, ],
-                               heights = heights, widths = widths)
+              grobs = rbind(obj.labels, obj.raster)[row.order, , drop = FALSE],
+            heights = heights, widths = widths)
 
   # legend
   legend.table <- build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
