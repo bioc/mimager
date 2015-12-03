@@ -25,8 +25,9 @@ Collate:
     'maimg-package.r'
     'grid-layout.r'
     'utils.r'
-RoxygenNote: 5.0.0
-Suggests: knitr,
+RoxygenNote: 5.0.1
+Suggests:
+    knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr

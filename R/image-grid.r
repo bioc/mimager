@@ -9,6 +9,8 @@
 #' @param colors vector of colors to use
 #' @param cex.legend Size of legend relative to grid (0 - 1)
 #' @param range optional, if defined, values will be limited to the defined range
+#' @name ma_image
+#' @export
 
 setMethod("ma_image", c(object = "AffyBatch"),
   function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = log2, ...) {
@@ -19,6 +21,9 @@ setMethod("ma_image", c(object = "AffyBatch"),
     object <- transform(object)
     .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, ...)
 })
+
+#' @rdname ma_image
+#' @export
 
 setMethod("ma_image", c(object = "PLMset"),
   function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, ...) {
