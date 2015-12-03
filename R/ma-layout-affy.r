@@ -29,14 +29,5 @@ setMethod("ma_layout", c(object = "PLMset"),
       AffyBatch = affy::pm(object)
   )
 
-  values3d <- lapply(labels, function(l) {
-    mat <- matrix(nrow = n$rows, ncol = n$cols)
-    mat[coords] <- values2d[, l]
-    t(mat)
-  })
-
-  values3d <- abind::abind(values3d, along = 3)
-  dimnames(values3d) <- list(seq_len(n$rows), seq_len(n$cols), labels)
-
-  values3d
+  to_array(values2d, n$rows, n$cols, coords = coords)
 }

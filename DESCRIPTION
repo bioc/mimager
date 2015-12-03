@@ -25,6 +25,7 @@ Collate:
     'maimg-package.r'
     'grid-layout.r'
     'utils.r'
+    'utils-arrays.r'
 RoxygenNote: 5.0.1
 Suggests:
     knitr,
