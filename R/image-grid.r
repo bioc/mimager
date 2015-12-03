@@ -51,9 +51,10 @@ setMethod("ma_image", c(object = "PLMset"),
 
   legend <- scales::cbreaks(range(object, na.rm = TRUE),
                             labels = scales::format_format())
-  legend$fill <- scales::cscale(legend$breaks, scales::div_gradient_pal())
+  legend$palette <- scales::gradient_n_pal(colours = colors)
 
-  obj.colors <- scales::cscale(object, scales::div_gradient_pal(), na.value = "white")
+  legend$fill <- scales::cscale(legend$breaks, legend$palette)
+  obj.colors  <- scales::cscale(object, legend$palette, na.value = "white")
 
   obj.raster <- lapply(labels, function(l) {
     grid::rasterGrob(obj.colors[,,l],
