@@ -16,5 +16,22 @@ test_that("Matrix to array conversion", {
   expect_equivalent(to_array(m, 3, 3), a)
 })
 
+test_that("Array is recreated from matrix and coordinates", {
+  n        <- 4
+  x.idx    <- 1:24
+  x.dim    <- c(2, 3)
+  x.array  <- array(x.idx, c(x.dim, n))
 
+  x.coords <- arrayInd(x.idx, dim(x.array))
+  x.coords <- x.coords[x.coords[,3] == 1, 1:2] # keep coords for 1st array element
 
+  x.mat <- matrix(x.idx, ncol = n)
+
+  # recreate original array from matrix
+  x.array2 <- to_array(x.mat, x.dim[1], x.dim[2], x.coords, transpose = FALSE)
+  expect_equivalent(x.array, x.array2)
+
+  # return transpose of original array from matrix
+  x.array3 <- to_array(x.mat, x.dim[1], x.dim[2], x.coords, transpose = TRUE)
+  expect_equivalent(x.array3, aperm(x.array, c(2, 1, 3)))
+})
