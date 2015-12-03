@@ -28,7 +28,8 @@ build_legend <- function(breaks, colors, labels, title) {
 
   legend.table <- gtable(name = "legend",
     widths = grid::unit.c(key.width,
-                          grid::grobWidth(legend.text.grob)),
+                          max(grid::grobWidth(legend.text.grob),
+                              grid::grobWidth(legend.title.grob))),
    heights = grid::unit.c(grid::grobHeight(legend.title.grob) * 1.5,
                           grid::grobHeight(legend.grob)))
 
