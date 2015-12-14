@@ -1,5 +1,9 @@
 # Convert AffyBatch or PLMSet to an array of matrixes that correspond to the
 # physical layout of their microarray features
+#
+# The reconstructed arrays are tranposed by default to orient the Affymetrix
+# chips vertically, as is typically expected. Set to FALSE to return an array in
+# the orientation specified by the coordinates.
 
 setMethod("ma_layout", c(object = "AffyBatch"),
   function(object, probes = NULL, transpose = FALSE) {
