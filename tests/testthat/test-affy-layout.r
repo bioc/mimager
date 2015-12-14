@@ -20,10 +20,53 @@ test_that("Affymetrix GeneChip orientation", {
 })
 
 
-test_that("xy locations contain expected values", {
-  affy.mat <- aperm(affy.mat, perm = c(2, 1, 3))
+test_that("PM xy locations contain expected values", {
+  affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "pm")
 
-  index   <- as.numeric(rownames(pm.mat))
+  index   <- unlist(affy::pmindex(Dilution), use.names = FALSE)
+  index   <- cbind(i = index, affy::indices2xy(index, nc = ncol(affy.mat)))
+
+  probes  <- sample(seq_len(nrow(index)), 5)
+  ref     <- ref.mat[index[probes, "i"], ]
+
+  expect_equal(ref[1,],
+               affy.mat[index[probes[1], "x"], index[probes[1], "y"],])
+  expect_equal(ref[2,],
+               affy.mat[index[probes[2], "x"], index[probes[2], "y"],])
+  expect_equal(ref[3,],
+               affy.mat[index[probes[3], "x"], index[probes[3], "y"],])
+  expect_equal(ref[4,],
+               affy.mat[index[probes[4], "x"], index[probes[4], "y"],])
+  expect_equal(ref[5,],
+               affy.mat[index[probes[5], "x"], index[probes[5], "y"],])
+})
+
+test_that("MM xy locations contain expected values", {
+  affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "mm")
+
+  index   <- unlist(affy::mmindex(Dilution), use.names = FALSE)
+  index   <- cbind(i = index, affy::indices2xy(index, nc = ncol(affy.mat)))
+
+  probes  <- sample(seq_len(nrow(index)), 5)
+  ref     <- ref.mat[index[probes, "i"], ]
+
+  expect_equal(ref[1,],
+               affy.mat[index[probes[1], "x"], index[probes[1], "y"],])
+  expect_equal(ref[2,],
+               affy.mat[index[probes[2], "x"], index[probes[2], "y"],])
+  expect_equal(ref[3,],
+               affy.mat[index[probes[3], "x"], index[probes[3], "y"],])
+  expect_equal(ref[4,],
+               affy.mat[index[probes[4], "x"], index[probes[4], "y"],])
+  expect_equal(ref[5,],
+               affy.mat[index[probes[5], "x"], index[probes[5], "y"],])
+})
+
+test_that("Combined PM/MM xy locations contain expected values", {
+  affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "both")
+
+  index   <- c(unlist(affy::mmindex(Dilution), use.names = FALSE),
+               unlist(affy::pmindex(Dilution), use.names = FALSE))
   index   <- cbind(i = index, affy::indices2xy(index, nc = ncol(affy.mat)))
 
   probes  <- sample(seq_len(nrow(index)), 5)
