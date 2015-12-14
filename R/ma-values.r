@@ -1,23 +1,16 @@
 # Retrieve values from eSets
 #
-# Always returns a matrix where rownames = probe indices
+# Always returns a matrix where rownames contain the locations of probes in the intensity matrix
 
 setMethod("ma_values", c(object = "AffyBatch"),
   function(object, probes = NULL) {
     probes <- check_probes(probes)
 
-    values <- switch(probes,
-      both = affy::exprs(object),
+   switch(probes,
+      both = rbind(affy::pm(object), affy::mm(object)),
         pm = affy::pm(object),
         mm = affy::mm(object)
     )
-
-    if (probes == "both") {
-      index <- unlist(affy::indexProbes(object, probes), use.names = FALSE)
-      values <- values[index,]
-    }
-
-    values
 })
 
 
