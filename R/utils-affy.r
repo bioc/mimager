@@ -21,13 +21,20 @@ probe_index <- function(object, probes) {
     row.names = NULL, stringsAsFactors = FALSE
   )
 
-  coords <- lapply(index[, c("pm", "mm")], affy::indices2xy, nc = object@ncol)
+  if (probes == "both") {
+    out <- unlist(index[c("pm", "mm")], use.names = FALSE)
+    out <- cbind(index = out, affy::indices2xy(out, nc = object@ncol))
+  } else {
+    coords <- lapply(index[c("pm", "mm")], affy::indices2xy, nc = object@ncol)
 
-  probes <- switch(probes,
-         both = c("pm", "mm"),
-         pm = rep("pm", 2),
-         mm = rep("mm", 2))
+    probes <- switch(probes,
+       both = c("pm", "mm"),
+       pm = rep("pm", 2),
+       mm = rep("mm", 2))
 
-  out <- unlist(index[probes], use.names = FALSE)
-  cbind(index = out, do.call("rbind", coords))
+    out <- unlist(index[probes], use.names = FALSE)
+    out <- cbind(index = out, do.call("rbind", coords))
+  }
+
+  return(out)
 }
