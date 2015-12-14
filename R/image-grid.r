@@ -19,8 +19,10 @@ setMethod("ma_image", c(object = "AffyBatch"),
 
     object <- ma_layout(object, probes, transpose = TRUE)
     object <- transform(object)
-    .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
+    ma_image(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
 })
+
+
 
 #' @rdname ma_image
 #' @export
@@ -32,17 +34,22 @@ setMethod("ma_image", c(object = "PLMset"),
 
     object <- ma_layout(object, probes, transpose = TRUE)
     object <- transform(object)
-    .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
+    ma_image(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
 })
 
-.image_grid <- function(object, colors, legend.label, nrow, ncol, fixed, range, samples = NULL, ...) {
-  stopifnot(class(object) == "array")
+
+
+setMethod("ma_image", c(object = "array"),
+  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, samples = NULL, ...) {
+  # browser()
   if (!is.null(samples)) object <- object[ , , samples, drop = FALSE]
+  if (is.null(colors))   colors <- scales::seq_gradient_pal()(seq(0, 1, 0.1))
 
   n <- dim(object)[3]
   dims <- layout_dims(n, nrow, ncol)
   dims <- trim_dims(n, dims[1], dims[2])
 
+  # TODO: No reason to label 'sample'
   if (is.null(dimnames(object)[[3]]))
     dimnames(object)[[3]] <- paste0("sample", seq_len(n))
 
@@ -115,4 +122,4 @@ setMethod("ma_image", c(object = "PLMset"),
   grid::grid.draw(final.table)
 
   invisible(final.table)
-}
+})
