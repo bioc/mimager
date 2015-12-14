@@ -32,8 +32,14 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
     expect_equivalent(test.mat, ref.mat)
   })
 
+  test_that("Warning is thrown if model didn't include MM probes", {
+    expect_warning(ma_values(plm, probes = "mm"))
+  })
+
+
+  plm <- affyPLM::fitPLM(Dilution, MM ~ -1 + probes + samples)
+
   test_that("MM xy locations contain expected values", {
-    plm <- affyPLM::fitPLM(Dilution, MM ~ -1 + probes + samples)
     affy.plm <- ma_layout(plm, transpose = FALSE, probes = "mm")
     index    <- unlist(affy::mmindex(Dilution), use.names = FALSE)
     probes   <- sample(index, 5)
@@ -45,6 +51,13 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
     expect_equivalent(test.mat, ref.mat)
   })
+
+  test_that("Warning is thrown if model didn't include PM probes", {
+    expect_warning(ma_values(plm, probes = "pm"))
+  })
+
+
+  plm <- affyPLM::fitPLM(Dilution, MM ~ -1 + probes + samples)
 
   test_that("Combined PM/MM xy locations contain expected values", {
     plm      <- affyPLM::fitPLM(Dilution, PMMM ~ -1 + probes + samples)
