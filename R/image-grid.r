@@ -13,11 +13,11 @@
 #' @export
 
 setMethod("ma_image", c(object = "AffyBatch"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = log2, samples = NULL, ...) {
+  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = log2, samples = NULL, probes = NULL, ...) {
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
     if (is.null(legend.label)) legend.label <- "Expression"
 
-    object <- ma_layout(object)
+    object <- ma_layout(object, probes, transpose = TRUE)
     object <- transform(object)
     .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
 })
@@ -26,11 +26,11 @@ setMethod("ma_image", c(object = "AffyBatch"),
 #' @export
 
 setMethod("ma_image", c(object = "PLMset"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, samples = NULL, ...) {
+  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, samples = NULL, probes = NULL, ...) {
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
     if (missing(legend.label)) legend.label <- "Residuals"
 
-    object <- ma_layout(object)
+    object <- ma_layout(object, probes, transpose = TRUE)
     object <- transform(object)
     .image_grid(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
 })

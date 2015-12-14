@@ -16,15 +16,18 @@ Imports:
     scales,
     Biobase,
     affy,
-    affyPLM
+    affyPLM,
+    Matrix
 Collate:
     'all-generics.r'
     'build-legend.r'
+    'checks.r'
     'image-grid.r'
     'ma-layout-affy.r'
+    'ma-values.r'
     'maimg-package.r'
-    'grid-layout.r'
     'utils.r'
+    'utils-affy.r'
     'utils-arrays.r'
 RoxygenNote: 5.0.1
 Suggests:

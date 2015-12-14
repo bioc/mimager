@@ -1,7 +1,10 @@
 context("Affymetrix array layout")
 
 data(Dilution, package = "affydata")
-affy.mat <- ma_layout(Dilution)
+ref.mat  <- affy::exprs(Dilution)
+pm.mat   <- affy::pm(Dilution)
+affy.mat <- ma_layout(Dilution, transpose = TRUE)
+
 
 test_that("Affymetrix GeneChip dimensions", {
   expect_identical(dimnames(affy.mat)[[3]], affy::sampleNames(Dilution))
@@ -17,8 +20,29 @@ test_that("Affymetrix GeneChip orientation", {
 })
 
 
+test_that("xy locations contain expected values", {
+  affy.mat <- aperm(affy.mat, perm = c(2, 1, 3))
+
+  index   <- as.numeric(rownames(pm.mat))
+  index   <- cbind(i = index, affy::indices2xy(index, nc = ncol(affy.mat)))
+
+  probes  <- sample(seq_len(nrow(index)), 5)
+  ref     <- ref.mat[index[probes, "i"], ]
+
+  expect_equal(ref[1,],
+               affy.mat[index[probes[1], "x"], index[probes[1], "y"],])
+  expect_equal(ref[2,],
+               affy.mat[index[probes[2], "x"], index[probes[2], "y"],])
+  expect_equal(ref[3,],
+               affy.mat[index[probes[3], "x"], index[probes[3], "y"],])
+  expect_equal(ref[4,],
+               affy.mat[index[probes[4], "x"], index[probes[4], "y"],])
+  expect_equal(ref[5,],
+               affy.mat[index[probes[5], "x"], index[probes[5], "y"],])
+})
+
 DilutionPLM <- affyPLM::fitPLM(Dilution)
-affy.plm <- ma_layout(DilutionPLM)
+affy.plm <- ma_layout(DilutionPLM, transpose = TRUE)
 
 test_that("Affymetrix GeneChip PLM dimensions", {
   expect_identical(dimnames(affy.plm)[[3]], affy::sampleNames(DilutionPLM))

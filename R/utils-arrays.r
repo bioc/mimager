@@ -3,30 +3,34 @@
 # array. coords is a 2-dimensional matrix that provides the row and column
 # locations of values from x in the returned array.
 
-to_array <- function(x, nrow, ncol, coords = NULL, transpose = TRUE) {
+to_array <- function(x, nrow, ncol, coords = NULL, transpose = TRUE, index) {
   if (is.null(coords)) coords <- arrayInd(1:nrow(x), c(nrow, ncol))
 
   dim.names <- list(seq_len(nrow), seq_len(ncol), colnames(x))
   out <- array(dim = c(nrow, ncol, ncol(x)), dimnames = dim.names)
 
+  # location of value in the array
+  coords.index <- xy2index(coords[, 1], coords[, 2], nrow, ncol)
+
+  # scale matrix coordinates to multi-dimensional array
   ncells <- prod(nrow, ncol)
-
-  mat.index    <- matrix(seq_len(ncells), nrow = nrow)
-  coords.index <- mat.index[coords]
-  coords.index <- matrix(coords.index, nrow = length(coords.index), ncol = ncol(x))
-
-  z.adjust <- (ncells * (seq_len(ncol(x)) - 1))
-
-  z.adjust <- matrix(z.adjust,
-                     nrow = nrow(coords.index),
-                     ncol = ncol(coords.index),
-                     byrow = TRUE)
-
-  coords.index <- coords.index + z.adjust
-  coords.index <- as.numeric(coords.index)
+  offset <- ncells * seq_len(ncol(x)) - ncells
+  offset <- rep(offset, each = length(coords.index))
+  coords.index <- rep(coords.index, ncol(x)) + offset
 
   out[coords.index] <- as.numeric(x)
   if (transpose) out <- aperm(out, perm = c(2, 1, 3))
   out
+}
+
+
+# convert x,y coordinates to linear index
+# byrow: Default is FALSE (column-major order)
+xy2index <- function(x, y, nrow, ncol, byrow = FALSE) {
+  x <- x - 1
+  y <- y - 1
+  switch(byrow + 1,
+    (nrow * y + x) + 1,
+    (ncol * x + y) + 1)
 }
 

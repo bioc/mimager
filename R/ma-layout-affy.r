@@ -2,32 +2,36 @@
 # physical layout of their microarray features
 
 setMethod("ma_layout", c(object = "AffyBatch"),
-  function(object) .affy_layout(object))
+  function(object, probes = NULL, transpose = FALSE) {
+    probes <- check_probes(probes)
 
+    coords <- probe_index(object, probes)
+    values <- ma_values(object, probes)
+
+    to_array2(values, nrow(object), ncol(object), coords[, c("x", "y")], transpose)
+})
+
+
+# THIS ISN'T WORKING
 setMethod("ma_layout", c(object = "PLMset"),
-  function(object) .affy_layout(object))
+  function(object, probes = NULL, transpose = FALSE) {
+    probes <- check_probes(probes)
 
-.affy_layout <- function(object) {
+    coords <- probe_index(object, probes)
+    values <- ma_values(object, probes)
 
-  labels <- Biobase::sampleNames(object)
+    to_array2(values, object@nrow, object@ncol, coords[, c("x", "y")], transpose)
+  })
 
-  n <- list(
-       rows = object@nrow,
-       cols = object@ncol,
-    samples = length(labels)
-  )
 
-  index  <- stack(affy::indexProbes(object, which = "pm"))
-  coords <- affy::indices2xy(index$values, nc = n$cols)
+# temporary fix until I can get indexing in to_array() working properly
+to_array2 <- function(object, nrow, ncol, coords, transpose = FALSE) {
+  x <- apply(object, 2, function(x) Matrix::sparseMatrix(
+        x = x, i = coords[,1], j = coords[,2], dims = c(nrow, ncol)))
 
-  # fill in empty rows if returning values for only pm or mm probes
-  coords <- rbind(coords, cbind(coords[, "x"], coords[, "y"] + 1))
-
-  # extract array values
-  values2d <- switch(class(object),
-         PLMset = affyPLM::resid(object)$PM.resid,
-      AffyBatch = affy::pm(object)
-  )
-
-  to_array(values2d, n$rows, n$cols, coords = coords)
+  x <- lapply(x, as.matrix)
+  x <- abind::abind(x, along = 3)
+  x <- replace(x, x == 0, NA)
+  if (transpose) x <- aperm(x, perm = c(2, 1, 3))
+  x
 }
