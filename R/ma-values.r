@@ -1,10 +1,16 @@
 # Retrieve values from eSets
 #
 # Always returns a matrix where rownames contain the locations of probes in the intensity matrix
+#
+# @param select variables to keep
 
 setMethod("ma_values", c(object = "AffyBatch"),
-  function(object, probes = NULL) {
+  function(object,
+           probes = NULL,
+           select = NULL) {
+
     probes <- check_probes(probes)
+    if (!is.null(select)) object <- object[, select]
 
    switch(probes,
       both = rbind(affy::pm(object), affy::mm(object)),
@@ -16,9 +22,14 @@ setMethod("ma_values", c(object = "AffyBatch"),
 
 # Access PLMset values
 setMethod("ma_values", c(object = "PLMset"),
-  function(object, probes = NULL, type = "resid") {
+  function(object,
+           probes = NULL,
+           select = NULL,
+           type = "resid") {
+
     probes <- check_probes(probes)
     type <- match.arg(type, "resid")
+
     values <- index <- NULL
 
     if (type == "resid") {
@@ -46,6 +57,7 @@ setMethod("ma_values", c(object = "PLMset"),
     }
 
     rownames(values) <- index
+    if (!is.null(select)) values <- values[, select]
     values
 })
 
