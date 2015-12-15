@@ -57,7 +57,7 @@ setMethod("ma_values", c(object = "PLMset"),
     }
 
     rownames(values) <- index
-    if (!is.null(select)) values <- values[, select]
+    if (!is.null(select)) values <- values[, select, drop = FALSE]
     values
 })
 
