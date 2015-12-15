@@ -45,7 +45,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     expect_equivalent(test.mat, ref.mat)
   })
 
-    test_that("Combiend PM/MM xy locations contain expected values", {
+  test_that("Combiend PM/MM xy locations contain expected values", {
     affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "both")
     index    <- unlist(affy::indexProbes(Dilution, which = "both"), use.names = FALSE)
     probes   <- sample(index, 5)

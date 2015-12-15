@@ -1,25 +1,41 @@
-#' Construct a grid of affyPLM residual heatmaps
+#' Display a grid of color images representing microarray chips
 #'
-#' @param x PLMset object generated with affyPLM
-#' @param samples character vector of samples to include
-#' @param labels character vector of labels for each heatmap
-#' @param sign Used signed residuals
-#' @param use.log logical indicating whether residuals should be log2 transformed
-#' @param ncol number of columns in grid layout
-#' @param colors vector of colors to use
-#' @param cex.legend Size of legend relative to grid (0 - 1)
+#' Visualize microarray probe intensities arranged by their physical location on
+#' the array. A false color image is produced for each sample in the
+#' microarray object and arranged in a grid.
+#'
+#' @param object \code{AffyBatch} or \code{PLMset} object
+#' @param colors a vector of colors used to represent probe values
+#' @param select a numeric, character or logical vector indicating samples to include
+#' @param legend.label Legend label
+#' @param ncol optional, number of columns in grid layout
+#' @param nrow optional, number of rows in grid layout
+#' @param fixed Force images to assume a fixed aspect ratio corresponding to their physical dimensions
 #' @param range optional, if defined, values will be limited to the defined range
+#' @param transform a function to be applied to the values prior to visualization
 #' @name ma_image
 #' @export
 
 setMethod("ma_image", c(object = "AffyBatch"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = log2, samples = NULL, probes = NULL, ...) {
-    if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
-    if (is.null(legend.label)) legend.label <- "Expression"
+  function(object,
+           colors,
+           select = NULL,
+           legend.label,
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform,
+           probes) {
 
-    object <- ma_layout(object, probes, transpose = TRUE)
-    object <- transform(object)
-    ma_image(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
+    if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
+    if (missing(legend.label)) legend.label <- "Expression"
+    if (missing(transform))    transform <- log2
+    if (missing(probes))       probes <- "pm"
+
+    object <- ma_layout(object, probes, transpose = TRUE, select)
+
+    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
@@ -28,24 +44,65 @@ setMethod("ma_image", c(object = "AffyBatch"),
 #' @export
 
 setMethod("ma_image", c(object = "PLMset"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, samples = NULL, probes = NULL, ...) {
-    if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
-    if (missing(legend.label)) legend.label <- "Residuals"
+  function(object,
+           colors,
+           select = NULL,
+           legend.label,
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform = identity,
+           probes,
+           type) {
 
-    object <- ma_layout(object, probes, transpose = TRUE)
-    object <- transform(object)
-    ma_image(object, colors, legend.label, nrow, ncol, fixed, range, samples, ...)
+    if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
+    if (missing(legend.label)) legend.label <- "Residuals"
+    if (missing(transform))    transform <- identity
+    if (missing(probes))       probes <- "pm"
+    if (missing(type))         type <- "resid"
+
+    object <- ma_layout(object, probes, transpose = TRUE, select, type)
+    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
 
-setMethod("ma_image", c(object = "array"),
-  function(object, colors = NULL, legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL, transform = identity, samples = NULL, ...) {
-  # browser()
-  if (!is.null(samples)) object <- object[ , , samples, drop = FALSE]
-  if (is.null(colors))   colors <- scales::seq_gradient_pal()(seq(0, 1, 0.1))
+#' @rdname ma_image
+#' @export
 
+setMethod("ma_image", c(object = "array"),
+  function(object,
+           colors,
+           select = NULL,
+           legend.label = "Values",
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform) {
+
+  if (missing(colors))       colors <- scales::seq_gradient_pal()(seq(0, 1, 0.1))
+  if (missing(legend.label)) legend.label <- "Values"
+  if (missing(transform))    transform <- identity
+
+  .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+})
+
+
+
+.ma_image <- function(object,
+           colors,
+           legend.label,
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform) {
+
+  object <- transform(object)
   n <- dim(object)[3]
+
   dims <- layout_dims(n, nrow, ncol)
   dims <- trim_dims(n, dims[1], dims[2])
 
@@ -122,4 +179,4 @@ setMethod("ma_image", c(object = "array"),
   grid::grid.draw(final.table)
 
   invisible(final.table)
-})
+}

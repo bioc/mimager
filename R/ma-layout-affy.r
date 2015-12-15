@@ -6,23 +6,31 @@
 # the orientation specified by the coordinates.
 
 setMethod("ma_layout", c(object = "AffyBatch"),
-  function(object, probes = NULL, transpose = FALSE) {
+  function(object,
+           probes = NULL,
+           select = NULL,
+           transpose = FALSE) {
+
     probes <- check_probes(probes)
 
     coords <- probe_index(object, probes)
-    values <- ma_values(object, probes)
+    values <- ma_values(object, probes, select)
 
     to_array2(values, nrow(object), ncol(object), coords[, c("x", "y")], transpose)
 })
 
 
-# THIS ISN'T WORKING
 setMethod("ma_layout", c(object = "PLMset"),
-  function(object, probes = NULL, transpose = FALSE) {
+  function(object,
+           probes = NULL,
+           select = NULL,
+           transpose = FALSE,
+           type = "resid") {
+
     probes <- check_probes(probes)
 
     coords <- probe_index(object, probes)
-    values <- ma_values(object, probes)
+    values <- ma_values(object, probes, select, type)
 
     to_array2(values, object@nrow, object@ncol, coords[, c("x", "y")], transpose)
   })
