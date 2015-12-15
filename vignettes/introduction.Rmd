@@ -1,0 +1,61 @@
+---
+title: "maimg overview"
+author: "Aaron Wolen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.dev = "png", fig.width = 5, fig.height = 4)
+
+library(devtools)
+devtools::load_all()
+```
+
+The purpose `maimag` is to make inspecting microarray chips for spatial artifacts easy. 
+
+## Object types
+
+### AffyBatch objects
+
+Simply passing an `AffyBatch` object to `ma_image()` will produce a grid of images that each represent one chip in the sample.
+
+```{r affy-data, warning=FALSE}
+data("Dilution", package = "affydata")
+
+ma_image(Dilution)
+```
+
+By default, only perfect-match (PM) probes are included; rows of mismatch (MM) probes are filled with their PM counterparts. However, the `probes` argument can be used to visualize only MM probes (`probes="mm"`) or both (`probes="both"`).
+
+### AffyPLM objects
+
+The `affyPLM` package fits probe-level linear models (PLMs), the residuals from which can be used to spot spatial artifacts that might otherwise go undetected. The `PLMset` objects produced by `fitPLM()` can be visualized with `ma_image()`. Just like visualizing `AffyBatch` objects, PM, MM or both types of probes can be specified. 
+
+However, visualizing `PLMset` objects entails one extra argument: `type`, which specifies whether you want to visualize the PLM residuals (`type = "resid"`, the default) or weights (`type = "weights"`).
+
+Here, I've used the `range` argument to restrict the range of residuals, which often helps to make spatial artifacts more apparent.
+
+```{r affyplm-data, message=FALSE}
+library(affyPLM)
+DilutionPLM <- fitPLM(Dilution)
+
+ma_image(DilutionPLM, type = "resid", range = c(-2, 2))
+```
+
+## Transformations
+
+Prior to visualization, the supplied microarray objects is converted to a $m \times n \times k$ array, where $m$ and $n$ correspond to the physical dimensions of the microarray chip and $k$ is the number of chips (or samples) in the dataset. The array is then transformed by whatever function is passed to the `transform` argument. For example, the default for `AffyBatch` batch objects is `transform=log2` in order to log-transform the probe intensities. Similarly, the `sign()` function could be used to visualize the signed residuals from a PLM model: 
+
+```{r affyplm-signed-residuals}
+ma_image(DilutionPLM, type = "resid", transform = sign, 
+         legend.label = "Signed\nresiduals")
+```
+
+
+
