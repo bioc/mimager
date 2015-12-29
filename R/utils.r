@@ -28,3 +28,18 @@ trim_dims <- function(n, nrow, ncol) {
 "%||%" <- function(a, b) {
   if (!is.null(a)) a else b
 }
+
+# convert numeric array to an array of colors based on the palette function
+# equivalent to scales::cscale(array, palette)
+scale_colors <- function(x, palette, na.value = "#FFFFFF") {
+  stopifnot(is.array(x))
+  dims <- dim(x)
+  names <- dimnames(x)
+  x <- as.numeric(x)
+  x <- scales::rescale(x)
+  uniq <- unique(x)
+  pal <- palette(uniq)
+  scaled <- pal[match(x, uniq)]
+  scaled <- replace(scaled, is.na(scaled), na.value)
+  array(scaled, dim = dims, dimnames = names)
+}

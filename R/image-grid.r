@@ -119,7 +119,8 @@ setMethod("ma_image", c(object = "array"),
   legend$palette <- scales::gradient_n_pal(colours = colors)
 
   legend$fill <- scales::cscale(legend$breaks, legend$palette)
-  obj.colors  <- scales::cscale(object, legend$palette, na.value = "white")
+
+  obj.colors <- scale_colors(object, legend$palette)
 
   obj.raster <- lapply(labels, function(l) {
     grid::rasterGrob(obj.colors[,,l],
