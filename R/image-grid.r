@@ -114,12 +114,7 @@ setMethod("ma_image", c(object = "array"),
 
   if (!is.null(range)) object <- scales::squish(object, range)
 
-  legend <- scales::cbreaks(range(object, na.rm = TRUE),
-                            labels = scales::format_format())
-  legend$palette <- scales::gradient_n_pal(colours = colors)
-
-  legend$fill <- scales::cscale(legend$breaks, legend$palette)
-
+  legend <- train_legend(object, colors)
   obj.colors <- scale_colors(object, legend$palette)
 
   obj.raster <- lapply(labels, function(l) {

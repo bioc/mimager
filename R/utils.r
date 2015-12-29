@@ -43,3 +43,12 @@ scale_colors <- function(x, palette, na.value = "#FFFFFF") {
   scaled <- replace(scaled, is.na(scaled), na.value)
   array(scaled, dim = dims, dimnames = names)
 }
+
+# list of parameters required to build legend grob
+train_legend <- function(x, colors) {
+    rng <- range(x, na.rm = TRUE)
+    legend <- scales::cbreaks(rng, labels = scales::format_format())
+    legend$palette <- scales::gradient_n_pal(colours = colors)
+    legend$fill <- scales::cscale(legend$breaks, legend$palette)
+    return(legend)
+  }
