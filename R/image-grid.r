@@ -106,6 +106,7 @@ setMethod("ma_image", c(object = "array"),
   dims <- layout_dims(n, nrow, ncol)
   dims <- trim_dims(n, dims[1], dims[2])
 
+  if (is.null(dimnames(object))) dimnames(object) <- list(NULL, NULL, NULL)
   # TODO: No reason to label 'sample'
   if (is.null(dimnames(object)[[3]]))
     dimnames(object)[[3]] <- paste0("sample", seq_len(n))
