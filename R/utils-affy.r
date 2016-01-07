@@ -9,7 +9,7 @@ setMethod("featureNames", signature(object = "PLMset"),
 #
 # If probes=pm or probes=mm then the index is repeated for the specified
 # probetype and associated with the other probetype's xy coordinates. This is to
-# avoid empty rows that results from plotting only one probetype.
+# avoid empty rows that result from plotting a single probetype
 probe_index <- function(object, probes) {
 
   cdf <- affy::getCdfInfo(object)
