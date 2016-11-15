@@ -67,6 +67,29 @@ setMethod("ma_image", c(object = "PLMset"),
 })
 
 
+setMethod("ma_image", c(object = "FeatureSet"),
+  function(object,
+           colors,
+           select = NULL,
+           legend.label,
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform,
+           probes) {
+
+    if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
+    if (missing(legend.label)) legend.label <- "Expression"
+    if (missing(transform))    transform <- log2
+    if (missing(probes))       probes <- "pm"
+
+    object <- ma_layout(object, probes, transpose = TRUE, select)
+
+    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+})
+
+
 
 #' @rdname ma_image
 #' @export

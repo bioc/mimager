@@ -38,3 +38,21 @@ probe_index <- function(object, probes) {
 
   return(out)
 }
+
+# Affymetrix FeatureSet objects handled by oligo package
+probe_index_oligo <- function(object, probes) {
+
+  warning('Currently both PM and MM probes are always retrieved for ',
+          class(object), ' objects.', call. = FALSE)
+
+  dbcon <- oligo::db(object)
+  DBI::dbListTables(dbcon)
+  dbtbls <- dbGetQuery(dbcon, "SELECT tbl FROM table_info WHERE tbl LIKE '%feature' AND row_count > 0")[[1]]
+
+  index <- lapply(dbtbls, function(tbl) dbGetQuery(dbcon, paste("SELECT x, y, fid FROM", tbl)))
+  index <- do.call("rbind", index)
+  index <- index[order(index$fid), c('fid', 'x', 'y')]
+  names(index) <- c('index', 'x', 'y')
+
+  return(index)
+}

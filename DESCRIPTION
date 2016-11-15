@@ -16,7 +16,8 @@ Imports:
     scales,
     Biobase,
     affy,
-    affyPLM
+    affyPLM,
+    oligo
 Collate:
     'all-generics.r'
     'build-legend.r'

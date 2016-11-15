@@ -40,3 +40,26 @@ setMethod("ma_layout", c(object = "PLMset"),
 
     to_array(values, object@nrow, object@ncol, coords[, c("x", "y")], transpose)
 })
+
+
+setMethod("ma_layout", c(object = "FeatureSet"),
+  function(object,
+           probes = NULL,
+           select = NULL,
+           transpose = FALSE) {
+
+    probes <- check_probes(probes)
+
+    coords <- probe_index_oligo(object, probes)
+
+    # much more efficient to return all values simultaneously with exprs() than
+    # use pm/mm accessors
+    if (is.null(select)) select <- Biobase::sampleNames(object)
+    values <- Biobase::exprs(object)[coords$index, select, drop = FALSE]
+
+    # adjust for 0-based indexing
+    coords[, c('x', 'y')] <- coords[, c('x', 'y')] + 1
+    dims <- oligo::geometry(object) + 1
+
+    to_array(values, dims[1], dims[2], coords[, c("x", "y")], transpose)
+})
