@@ -1,3 +1,7 @@
+setGeneric("mindex",
+  function(object,
+           probes = NULL) standardGeneric("mindex"))
+
 setGeneric("ma_values",
   function(object,
            probes = NULL,

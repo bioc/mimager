@@ -11,15 +11,11 @@ setMethod("ma_layout", c(object = "AffyBatch"),
            select = NULL,
            transpose = FALSE) {
 
-    probes <- check_probes(probes)
-
-    coords <- probe_index(object, probes)
+    probes <- check_probe(object, probes)
+    index  <- mindex(object, probes)
     values <- ma_values(object, probes, select)
 
-    # fill in missing rows if pm or mm rows were selected
-    values <- values[match(coords[, "index"], rownames(values)),]
-
-    to_array(values, nrow(object), ncol(object), coords[, c("x", "y")], transpose)
+    to_array(values, nrow(object), ncol(object), index[c("x", "y")], transpose)
 })
 
 
@@ -48,18 +44,14 @@ setMethod("ma_layout", c(object = "FeatureSet"),
            select = NULL,
            transpose = FALSE) {
 
-    probes <- check_probes(probes)
-
-    coords <- probe_index_oligo(object, probes)
+    probes <- check_probe(object, probes)
+    index  <- mindex(object, probes)
+    dims   <- oligo::geometry(object)
 
     # much more efficient to return all values simultaneously with exprs() than
     # use pm/mm accessors
     if (is.null(select)) select <- Biobase::sampleNames(object)
-    values <- Biobase::exprs(object)[coords$index, select, drop = FALSE]
+    values <- Biobase::exprs(object)[index$index, select, drop = FALSE]
 
-    # adjust for 0-based indexing
-    coords[, c('x', 'y')] <- coords[, c('x', 'y')] + 1
-    dims <- oligo::geometry(object) + 1
-
-    to_array(values, dims[1], dims[2], coords[, c("x", "y")], transpose)
+    to_array(values, dims[1], dims[2], index[c("x", "y")], transpose)
 })

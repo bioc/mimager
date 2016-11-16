@@ -9,11 +9,11 @@ setMethod("ma_values", c(object = "AffyBatch"),
            probes = NULL,
            select = NULL) {
 
-    probes <- check_probes(probes)
+    probes <- check_probe(object, probes)
     if (!is.null(select)) object <- object[, select]
 
    switch(probes,
-      both = rbind(affy::pm(object), affy::mm(object)),
+       all = rbind(affy::pm(object), affy::mm(object)),
         pm = affy::pm(object),
         mm = affy::mm(object)
     )

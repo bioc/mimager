@@ -26,6 +26,7 @@ Collate:
     'ma-layout-affy.r'
     'ma-values.r'
     'maimg-package.r'
+    'mindex.r'
     'utils.r'
     'utils-affy.r'
     'utils-arrays.r'
