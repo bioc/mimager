@@ -12,6 +12,11 @@
 #' @param nrow optional, number of rows in grid layout
 #' @param fixed Force images to assume a fixed aspect ratio corresponding to their physical dimensions
 #' @param range optional, if defined, values will be limited to the defined range
+#' @param empty.rows Should empty rows be filled with values from neighboring
+#'   rows (the default, \code{"fill"}), or should they be dropped
+#'   (\code{"drop"}), or should they be left alone (\code{"nothing"})
+#' @param empty.thresh what proportion of features must be missing from a row to
+#'   consider that row empty
 #' @param transform a function to be applied to the values prior to visualization
 #' @name ma_image
 #' @export
@@ -25,6 +30,8 @@ setMethod("ma_image", c(object = "AffyBatch"),
            ncol = NULL,
            fixed = FALSE,
            range = NULL,
+           empty.rows = "fill",
+           empty.thresh = 0.6,
            transform,
            probes) {
 
@@ -34,7 +41,7 @@ setMethod("ma_image", c(object = "AffyBatch"),
     if (missing(probes))       probes <- "pm"
 
     object <- ma_layout(object, probes, transpose = TRUE, select)
-    if (probes != "all") object <- fill_affy_ivt(object, probes)
+    if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
@@ -53,6 +60,8 @@ setMethod("ma_image", c(object = "PLMset"),
            ncol = NULL,
            fixed = FALSE,
            range = NULL,
+           empty.rows = "fill",
+           empty.thresh = 0.6,
            transform = identity,
            probes,
            type) {
@@ -64,7 +73,7 @@ setMethod("ma_image", c(object = "PLMset"),
     if (missing(type))         type <- "resid"
 
     object <- ma_layout(object, probes, transpose = TRUE, select, type)
-    if (probes != "all") object <- fill_affy_ivt(object, probes)
+    if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
@@ -79,6 +88,8 @@ setMethod("ma_image", c(object = "FeatureSet"),
            ncol = NULL,
            fixed = FALSE,
            range = NULL,
+           empty.rows = "fill",
+           empty.thresh = 0.6,
            transform,
            probes) {
 
@@ -88,7 +99,7 @@ setMethod("ma_image", c(object = "FeatureSet"),
     if (missing(probes))       probes <- "pm"
 
     object <- ma_layout(object, probes, transpose = TRUE, select)
-    if (probes != "all") object <- fill_affy_ivt(object, probes)
+    if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
@@ -103,6 +114,8 @@ setMethod("ma_image", c(object = "oligoPLM"),
            ncol = NULL,
            fixed = FALSE,
            range = NULL,
+           empty.rows = "fill",
+           empty.thresh = 0.6,
            transform,
            probes,
            type) {
@@ -113,6 +126,7 @@ setMethod("ma_image", c(object = "oligoPLM"),
     if (missing(probes))       probes <- "pm"
 
     object <- ma_layout(object, probes, select, transpose = TRUE, type)
+    if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })

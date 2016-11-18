@@ -1,6 +1,6 @@
 context("Utilities")
 
-test_that("Empty rows/columns are dropped", {
+test_that("Empty rows/columns are dropped from grid of images", {
   expect_equal(trim_dims(1, nrow = 2, ncol = 1), c(1, 1))
   expect_equal(trim_dims(1, nrow = 1, ncol = 2), c(1, 1))
   expect_equal(trim_dims(2, nrow = 3, ncol = 1), c(2, 1))
@@ -35,4 +35,31 @@ test_that("Array is recreated from matrix and coordinates", {
   # return transpose of original array from matrix
   x.array3 <- to_array(x.mat, x.dim[1], x.dim[2], x.coords, transpose = TRUE)
   expect_equivalent(x.array3, aperm(x.array, c(2, 1, 3)))
+})
+
+
+test_that("Empty rows are filled with values from adjacent rows", {
+  x <- matrix(c(1:5,
+                c(1, rep(NA, 4)),
+                6:10), ncol = 5, byrow = TRUE)
+  x2 <- abind::abind(x, x, along = 3)
+  x2[,,2] <- x2[,,2] + 1
+
+  # missings must exceed threshold
+  out <- fill_rows(x, empty.thresh = 1)
+  expect_identical(c(1, rep(NA, 4)), out[2,])
+
+  # missing row is filled
+  out <- fill_rows(x, 0.8)
+  expect_identical(out[1,], out[2,])
+
+  # extends to arrays
+  out <- fill_rows(x2, 0.8)
+  expect_identical(out[1,,1], out[2,,1])
+  expect_identical(out[1,,2], out[2,,2])
+
+  # fill-up if first row is empty
+  x <- rbind(NA, x)
+  out <- fill_rows(x, 0.8)
+  expect_identical(out[c(1, 3),], x[c(2, 4),])
 })

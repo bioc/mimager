@@ -40,12 +40,19 @@ probe_index <- function(object, probes) {
 }
 
 
-# fill in empty rows if not plotting both probe types
-fill_affy_ivt <- function(x, probes) {
-  last.row <- max(which(!is.na(x[, 1, 1])))
-  na.rows <- which(apply(is.na(x[, , 1]), 1, all))
-  if (probes == "mm") na.rows <- na.rows[na.rows < last.row]
-  offset  <- switch(probes, pm = -1, mm = 1)
-  x[na.rows, , ] <- x[na.rows + offset, , ]
+# fill empty rows with values from adjacent rows
+fill_rows <- function(x, empty.thresh) {
+  ndims   <- length(dim(x))
+  na.rows <- which(rowMeans(is.na(x)) >= empty.thresh, useNames = FALSE)
+
+  # if 1st row is empty fill-up instead of down
+  offset <- ifelse(any(na.rows == 1), 1, -1)
+  if (ndims == 2) {
+    x[na.rows,] <- x[na.rows + offset,]
+  } else if (ndims == 3) {
+    x[na.rows,,] <- x[na.rows + offset,,]
+  } else {
+    stop("x must be a 2d matrix or 3d array.", call. = FALSE)
+  }
   return(x)
 }
