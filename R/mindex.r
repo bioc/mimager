@@ -57,10 +57,12 @@ setMethod("mindex", c(object = "FeatureSet"),
                    "AND type > 1")
       bg.index <- DBI::dbGetQuery(dbcon, sql)
       bg.index$type <- "bg"
-    } else if (probes %in% c("mm", "all") & "mmfeature" %in% tbls) {
+    }
+    if (probes %in% c("mm", "all") & "mmfeature" %in% tbls) {
       mm.index <- DBI::dbReadTable(dbcon, "mmfeature")[, c("fid", "x", "y", "fsetid")]
       mm.index$type <- "mm"
-    } else if (probes %in% c("pm", "all")) {
+    }
+    if (probes %in% c("pm", "all")) {
       pm.index <- DBI::dbReadTable(dbcon, "pmfeature")[, c("fid", "x", "y", "fsetid")]
       pm.index$type <- "pm"
     }
