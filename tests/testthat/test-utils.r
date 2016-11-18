@@ -24,6 +24,7 @@ test_that("Array is recreated from matrix and coordinates", {
 
   x.coords <- arrayInd(x.idx, dim(x.array))
   x.coords <- x.coords[x.coords[,3] == 1, 1:2] # keep coords for 1st array element
+  x.coords <- setNames(data.frame(x.coords), c("x", "y"))
 
   x.mat <- matrix(x.idx, ncol = n)
 

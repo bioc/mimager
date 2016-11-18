@@ -4,7 +4,8 @@
 # locations of values from x in the returned array.
 
 to_array <- function(x, nrow, ncol, coords = NULL, transpose = TRUE) {
-  if (is.null(coords)) coords <- arrayInd(1:nrow(x), c(nrow, ncol))
+  if (is.null(coords))
+    coords <- setNames(data.frame(arrayInd(1:nrow(x), c(nrow, ncol))), c("x", "y"))
   stopifnot(nrow(coords) == nrow(x))
 
   dim.names <- list(seq_len(nrow), seq_len(ncol), colnames(x))
