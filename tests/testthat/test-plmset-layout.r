@@ -61,14 +61,14 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
   test_that("Combined PM/MM xy locations contain expected values", {
     plm      <- affyPLM::fitPLM(Dilution, PMMM ~ -1 + probes + samples)
-    affy.plm <- ma_layout(plm, transpose = FALSE, probes = "both")
+    affy.plm <- ma_layout(plm, transpose = FALSE, probes = "all")
     index    <- unlist(affy::indexProbes(plm, "both"), use.names = FALSE)
     probes   <- sample(index, 5)
 
     coords   <- affy::indices2xy(probes, nc = plm@ncol)
 
     test.mat <- apply(affy.plm, 3, "[", coords)
-    ref.mat  <- ma_values(plm, probes = "both")[as.character(probes),]
+    ref.mat  <- ma_values(plm, probes = "all")[as.character(probes),]
 
     expect_equivalent(test.mat, ref.mat)
   })
