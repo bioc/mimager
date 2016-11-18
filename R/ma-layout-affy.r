@@ -26,9 +26,8 @@ setMethod("ma_layout", c(object = "PLMset"),
            transpose = FALSE,
            type = "resid") {
 
-    probes <- check_probes(probes)
-
-    coords <- probe_index(object, probes)
+    probes <- check_probe(object,probes)
+    index  <- mindex(object, probes)
     values <- ma_values(object, probes, select, type)
 
     # fill in missing rows if pm or mm rows were selected

@@ -27,7 +27,7 @@ setMethod("ma_values", c(object = "PLMset"),
            select = NULL,
            type = "resid") {
 
-    probes <- check_probes(probes)
+    probes <- check_probe(object, probes)
     type <- match.arg(type, "resid")
 
     values <- index <- NULL
@@ -37,7 +37,7 @@ setMethod("ma_values", c(object = "PLMset"),
       n <- S4Vectors::elementLengths(resids)
 
       # TODO: dry this out
-      if (probes %in% c("pm", "both")) {
+      if (probes %in% c("pm", "all")) {
         if (n["PM.resid"] == 0) {
           warning("PLM model did not include PM probes.", call. = FALSE)
         } else {
@@ -46,7 +46,7 @@ setMethod("ma_values", c(object = "PLMset"),
         }
       }
 
-      if (probes %in% c("mm", "both")) {
+      if (probes %in% c("mm", "all")) {
         if (n["MM.resid"] == 0) {
           warning("PLM model did not include MM probes.", call. = FALSE)
         } else {
