@@ -11,10 +11,12 @@ setMethod("ma_layout", c(object = "AffyBatch"),
            select = NULL,
            transpose = FALSE) {
 
+    if (is.null(select)) select <- Biobase::sampleNames(object)
+
     probes <- check_probe(object, probes)
     index  <- mindex(object, probes)
-    values <- ma_values(object, probes, select)
-
+    values <- Biobase::exprs(object)[index$index, select]
+    # values <- ma_values(object, probes, select)
     to_array(values, nrow(object), ncol(object), index[c("x", "y")], transpose)
 })
 
@@ -30,10 +32,7 @@ setMethod("ma_layout", c(object = "PLMset"),
     index  <- mindex(object, probes)
     values <- ma_values(object, probes, select, type)
 
-    # fill in missing rows if pm or mm rows were selected
-    values <- values[match(coords[, "index"], rownames(values)),]
-
-    to_array(values, object@nrow, object@ncol, coords[, c("x", "y")], transpose)
+    to_array(values, object@nrow, object@ncol, index[c("x", "y")], transpose)
 })
 
 

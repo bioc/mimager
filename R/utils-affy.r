@@ -38,3 +38,14 @@ probe_index <- function(object, probes) {
 
   return(out)
 }
+
+
+# fill in empty rows if not plotting both probe types
+fill_affy_ivt <- function(x, probes) {
+  last.row <- max(which(!is.na(x[, 1, 1])))
+  na.rows <- which(apply(is.na(x[, , 1]), 1, all))
+  if (probes == "mm") na.rows <- na.rows[na.rows < last.row]
+  offset  <- switch(probes, pm = -1, mm = 1)
+  x[na.rows, , ] <- x[na.rows + offset, , ]
+  return(x)
+}

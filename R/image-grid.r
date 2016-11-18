@@ -34,15 +34,7 @@ setMethod("ma_image", c(object = "AffyBatch"),
     if (missing(probes))       probes <- "pm"
 
     object <- ma_layout(object, probes, transpose = TRUE, select)
-
-    # fill in empty rows if not plotting both probe types
-    if (probes != "all") {
-      last.row <- max(which(!is.na(object[,1,1])))
-      na.rows <- which(apply(is.na(object[,,1]), 1, all))
-      if(probes == "mm") na.rows <- na.rows[na.rows < last.row]
-      offset  <- switch(probes, pm = -1, mm = 1)
-      object[na.rows,,] <- object[na.rows + offset,,]
-    }
+    if (probes != "all") object <- fill_affy_ivt(object, probes)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
@@ -72,6 +64,8 @@ setMethod("ma_image", c(object = "PLMset"),
     if (missing(type))         type <- "resid"
 
     object <- ma_layout(object, probes, transpose = TRUE, select, type)
+    if (probes != "all") object <- fill_affy_ivt(object, probes)
+
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
@@ -94,6 +88,7 @@ setMethod("ma_image", c(object = "FeatureSet"),
     if (missing(probes))       probes <- "pm"
 
     object <- ma_layout(object, probes, transpose = TRUE, select)
+    if (probes != "all") object <- fill_affy_ivt(object, probes)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
