@@ -16,7 +16,7 @@ setMethod("ma_layout", c(object = "AffyBatch"),
     probes <- check_probe(object, probes)
     index  <- mindex(object, probes)
     values <- Biobase::exprs(object)[index$index, select]
-    # values <- ma_values(object, probes, select)
+
     to_array(values, nrow(object), ncol(object), index[c("x", "y")], transpose)
 })
 
@@ -50,6 +50,31 @@ setMethod("ma_layout", c(object = "FeatureSet"),
     # use pm/mm accessors
     if (is.null(select)) select <- Biobase::sampleNames(object)
     values <- Biobase::exprs(object)[index$index, select, drop = FALSE]
+
+    to_array(values, dims[1], dims[2], index[c("x", "y")], transpose)
+})
+
+
+setMethod("ma_layout", c(object = "oligoPLM"),
+  function(object,
+           probes = NULL,
+           select = NULL,
+           transpose = FALSE,
+           type = "residuals") {
+
+    type  <- match.arg(type, c("residuals", "weights"))
+    index <- mindex(object, probes = "all")
+    dims  <- oligo::geometry(object)
+
+    values <- switch(type,
+      residuals = oligo::residuals(object),
+      weights   = oligo::weights(object)
+    )
+
+    # only include annotated probes
+    values <- values[index$index,]
+    dimnames(values) <- list(index$index, colnames(object@chip.coefs))
+    if (!is.null(select)) values <- values[, select, drop = FALSE]
 
     to_array(values, dims[1], dims[2], index[c("x", "y")], transpose)
 })

@@ -43,36 +43,48 @@ setMethod("mindex", c(object = "PLMset"),
 setMethod("mindex", c(object = "FeatureSet"),
   function(object, probes = NULL) {
     probes <- check_probe(object, probes)
-
-    dbcon <- oligo::db(object)
-    tbls  <- DBI::dbListTables(dbcon)
-
-    bg.index <- mm.index <- pm.index <- NULL
-
-    if (probes == "bg") {
-      # consistent with oligo::bgindex assume all probe types != 1 are background
-      sql <- paste("SELECT fid,x,y,featureSet.fsetid FROM",
-                   "pmfeature, featureSet",
-                   "WHERE pmfeature.fsetid=featureSet.fsetid",
-                   "AND type > 1")
-      bg.index <- DBI::dbGetQuery(dbcon, sql)
-      bg.index$type <- "bg"
-    }
-    if (probes %in% c("mm", "all") & "mmfeature" %in% tbls) {
-      mm.index <- DBI::dbReadTable(dbcon, "mmfeature")[, c("fid", "x", "y", "fsetid")]
-      mm.index$type <- "mm"
-    }
-    if (probes %in% c("pm", "all")) {
-      pm.index <- DBI::dbReadTable(dbcon, "pmfeature")[, c("fid", "x", "y", "fsetid")]
-      pm.index$type <- "pm"
-    }
-
-    out <- switch(probes,
-      all = rbind(pm.index, mm.index),
-      pm  = pm.index,
-      mm  = mm.index,
-      bg  = bg.index
-    )
-    out$fsetid <- as.character(out$fsetid)
-    setNames(out, c("index", "x", "y", "fset", "type"))
+    .featureset_mindex(object, probes)
 })
+
+setMethod("mindex", c(object = "oligoPLM"),
+  function(object, probes = NULL) .featureset_mindex(object, probes))
+
+.featureset_mindex <- function(object, probes) {
+  annot <- oligo::annotation(object)
+  dbcon <- oligo::db(get(annot))
+  tbls  <- DBI::dbListTables(dbcon)
+
+  bg.index <- mm.index <- pm.index <- NULL
+
+  if (probes == "bg") {
+    # consistent with oligo::bgindex assume all probe types != 1 are background
+    sql <- paste("SELECT fid,x,y,featureSet.fsetid FROM",
+                 "pmfeature, featureSet",
+                 "WHERE pmfeature.fsetid=featureSet.fsetid",
+                 "AND type > 1")
+    bg.index <- DBI::dbGetQuery(dbcon, sql)
+    bg.index$type <- "bg"
+  }
+  if (probes %in% c("mm", "all") & "mmfeature" %in% tbls) {
+    mm.index <- DBI::dbReadTable(dbcon, "mmfeature")[, c("fid", "x", "y", "fsetid")]
+    mm.index$type <- "mm"
+  }
+  if (probes %in% c("pm", "all")) {
+    pm.index <- DBI::dbReadTable(dbcon, "pmfeature")[, c("fid", "x", "y", "fsetid")]
+    pm.index$type <- "pm"
+  }
+
+  out <- switch(probes,
+    all = rbind(pm.index, mm.index),
+    pm  = pm.index,
+    mm  = mm.index,
+    bg  = bg.index
+  )
+  out$fsetid <- as.character(out$fsetid)
+
+  # account for 0-based indexing
+  if (class(object) %in% "ExonFeatureSet")
+    out[c("x", "y")] <- out[c("x", "y")] + 1
+
+  setNames(out, c("index", "x", "y", "fset", "type"))
+}

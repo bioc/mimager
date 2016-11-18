@@ -94,6 +94,31 @@ setMethod("ma_image", c(object = "FeatureSet"),
 })
 
 
+setMethod("ma_image", c(object = "oligoPLM"),
+  function(object,
+           colors,
+           select = NULL,
+           legend.label,
+           nrow = NULL,
+           ncol = NULL,
+           fixed = FALSE,
+           range = NULL,
+           transform,
+           probes,
+           type) {
+
+    if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
+    if (missing(legend.label)) legend.label <- "Expression"
+    if (missing(transform))    transform <- identity
+    if (missing(probes))       probes <- "pm"
+
+    object <- ma_layout(object, probes, select, transpose = TRUE, type)
+
+    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+})
+
+
+
 
 #' @rdname ma_image
 #' @export
