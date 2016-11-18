@@ -15,6 +15,7 @@ Imports:
     gtable,
     scales,
     Biobase,
+    DBI,
     affy,
     affyPLM,
     oligo

@@ -14,3 +14,17 @@ check_probe <- function(object, probe) {
     call. = FALSE
   )
 }
+
+# check for annotation packages
+check_annotation <- function(x) {
+  stopifnot(is.character(x))
+  status <-
+    suppressPackageStartupMessages(require(x, character.only = TRUE, quietly = TRUE))
+	if (status) return(x)
+  stop(
+    x, "Please install ", x, " from Biocounductor.\n",
+    "source(\"https://bioconductor.org/biocLite.R\")\n",
+    "biocLite(", x, ")\n",
+    call. = FALSE
+  )
+}
