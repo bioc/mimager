@@ -3,7 +3,7 @@
 # array. coords is a 2-dimensional matrix that provides the row and column
 # locations of values from x in the returned array.
 
-to_array <- function(x, nrow, ncol, coords = NULL, transpose = TRUE, index) {
+to_array <- function(x, nrow, ncol, coords = NULL, transpose = TRUE) {
   if (is.null(coords)) coords <- arrayInd(1:nrow(x), c(nrow, ncol))
   stopifnot(nrow(coords) == nrow(x))
 
