@@ -3,7 +3,7 @@ context("PLMset array layout")
 if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
   plm <- affyPLM::fitPLM(Dilution)
-  affy.plm <- ma_layout(plm, transpose = TRUE)
+  affy.plm <- marray(plm, transpose = TRUE)
 
   test_that("Affymetrix GeneChip PLM dimensions", {
     expect_identical(dimnames(affy.plm)[[3]], affy::sampleNames(plm))
@@ -20,7 +20,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
 
   test_that("PM xy locations contain expected values", {
-    affy.plm <- ma_layout(plm, transpose = FALSE, probes = "pm")
+    affy.plm <- marray(plm, transpose = FALSE, probes = "pm")
     index    <- unlist(affy::pmindex(Dilution), use.names = FALSE)
     probes   <- sample(index, 5)
 
@@ -40,7 +40,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
   plm <- affyPLM::fitPLM(Dilution, MM ~ -1 + probes + samples)
 
   test_that("MM xy locations contain expected values", {
-    affy.plm <- ma_layout(plm, transpose = FALSE, probes = "mm")
+    affy.plm <- marray(plm, transpose = FALSE, probes = "mm")
     index    <- unlist(affy::mmindex(Dilution), use.names = FALSE)
     probes   <- sample(index, 5)
 
@@ -61,7 +61,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
   test_that("Combined PM/MM xy locations contain expected values", {
     plm      <- affyPLM::fitPLM(Dilution, PMMM ~ -1 + probes + samples)
-    affy.plm <- ma_layout(plm, transpose = FALSE, probes = "all")
+    affy.plm <- marray(plm, transpose = FALSE, probes = "all")
     index    <- unlist(affy::indexProbes(plm, "both"), use.names = FALSE)
     probes   <- sample(index, 5)
 

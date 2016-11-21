@@ -1,11 +1,22 @@
-# Convert AffyBatch or PLMSet to an array of matrixes that correspond to the
-# physical layout of their microarray features
-#
-# The reconstructed arrays are tranposed by default to orient the Affymetrix
-# chips vertically, as is typically expected. Set to FALSE to return an array in
-# the orientation specified by the coordinates.
+#' Microarray array
+#'
+#' Convert S4 microarray data structures into a three-dimensional array of
+#' matrices, where each matrix corresponds to an individual sample's microarray
+#' with values arranged to reflect the physical position of the corresponding
+#' feature (i.e., probe) on the microarray surface.
+#'
+#' @param object \code{AffyBatch} or \code{PLMset} object
+#' @param probes probe type see section for more information
+#' @param select a numeric, character or logical vector indicating samples to
+#'   include
+#' @param transpose \code{TRUE} (the default), ensures the reconstructed
+#'   microarrays are vertically oriented, as is typically expected. Set to
+#'   \code{FALSE} to return an array in the orientation strictly specified by
+#'   the coordinates
 
-setMethod("ma_layout", c(object = "AffyBatch"),
+#' @name marray
+#' @export
+setMethod("marray", c(object = "AffyBatch"),
   function(object,
            probes = NULL,
            select = NULL,
@@ -21,7 +32,9 @@ setMethod("ma_layout", c(object = "AffyBatch"),
 })
 
 
-setMethod("ma_layout", c(object = "PLMset"),
+#' @name marray
+#' @export
+setMethod("marray", c(object = "PLMset"),
   function(object,
            probes = NULL,
            select = NULL,
@@ -36,7 +49,9 @@ setMethod("ma_layout", c(object = "PLMset"),
 })
 
 
-setMethod("ma_layout", c(object = "FeatureSet"),
+#' @name marray
+#' @export
+setMethod("marray", c(object = "FeatureSet"),
   function(object,
            probes = NULL,
            select = NULL,
@@ -55,7 +70,9 @@ setMethod("ma_layout", c(object = "FeatureSet"),
 })
 
 
-setMethod("ma_layout", c(object = "oligoPLM"),
+#' @name marray
+#' @export
+setMethod("marray", c(object = "oligoPLM"),
   function(object,
            probes = NULL,
            select = NULL,

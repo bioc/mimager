@@ -2,16 +2,16 @@ setGeneric("mindex",
   function(object,
            probes = NULL) standardGeneric("mindex"))
 
+setGeneric("marray",
+  function(object,
+           probes = NULL,
+           select = NULL,
+           transpose = FALSE, ...) standardGeneric("marray"))
+
 setGeneric("ma_values",
   function(object,
            probes = NULL,
            select = NULL, ...) standardGeneric("ma_values"))
-
-setGeneric("ma_layout",
-  function(object,
-           probes = NULL,
-           select = NULL,
-           transpose = FALSE, ...) standardGeneric("ma_layout"))
 
 setGeneric("ma_image",
   function(object,

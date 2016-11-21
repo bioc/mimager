@@ -4,9 +4,8 @@
 #' the array. A false color image is produced for each sample in the
 #' microarray object and arranged in a grid.
 #'
-#' @param object \code{AffyBatch} or \code{PLMset} object
+#' @inheritParams marray
 #' @param colors a vector of colors used to represent probe values
-#' @param select a numeric, character or logical vector indicating samples to include
 #' @param legend.label Legend label
 #' @param ncol optional, number of columns in grid layout
 #' @param nrow optional, number of rows in grid layout
@@ -40,7 +39,7 @@ setMethod("ma_image", c(object = "AffyBatch"),
     if (missing(transform))    transform <- log2
     if (missing(probes))       probes <- "pm"
 
-    object <- ma_layout(object, probes, transpose = TRUE, select)
+    object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
@@ -72,7 +71,7 @@ setMethod("ma_image", c(object = "PLMset"),
     if (missing(probes))       probes <- "pm"
     if (missing(type))         type <- "resid"
 
-    object <- ma_layout(object, probes, transpose = TRUE, select, type)
+    object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
@@ -98,7 +97,7 @@ setMethod("ma_image", c(object = "FeatureSet"),
     if (missing(transform))    transform <- log2
     if (missing(probes))       probes <- "pm"
 
-    object <- ma_layout(object, probes, transpose = TRUE, select)
+    object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
@@ -125,7 +124,7 @@ setMethod("ma_image", c(object = "oligoPLM"),
     if (missing(transform))    transform <- identity
     if (missing(probes))       probes <- "pm"
 
-    object <- ma_layout(object, probes, select, transpose = TRUE, type)
+    object <- marray(object, probes, select, transpose = TRUE, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)

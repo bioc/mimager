@@ -4,7 +4,7 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
   if (suppressPackageStartupMessages(require("pd.hugene.1.0.st.v1", quietly = TRUE))) {
     data(affyGeneFS, package = "oligoData")
     obj <- affyGeneFS[, 1:4]
-    ary <- ma_layout(obj, transpose = FALSE)
+    ary <- marray(obj, transpose = FALSE)
 
     test_that("Affymetrix Gene ST dimensions", {
       expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))

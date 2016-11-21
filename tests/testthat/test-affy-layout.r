@@ -3,7 +3,7 @@ context("Affymetrix array layout")
 if (requireNamespace("affydata", quietly = TRUE)) {
 
   data(Dilution, package = "affydata")
-  affy.mat <- ma_layout(Dilution, transpose = TRUE)
+  affy.mat <- marray(Dilution, transpose = TRUE)
 
   test_that("Affymetrix GeneChip dimensions", {
     expect_identical(dimnames(affy.mat)[[3]], Biobase::sampleNames(Dilution))
@@ -20,7 +20,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
 
 
   test_that("PM xy locations contain expected values", {
-    affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "pm")
+    affy.mat <- marray(Dilution, transpose = FALSE, probes = "pm")
     index    <- unlist(affy::pmindex(Dilution), use.names = FALSE)
     probes   <- sample(index, 5)
 
@@ -33,7 +33,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
   })
 
   test_that("MM xy locations contain expected values", {
-    affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "mm")
+    affy.mat <- marray(Dilution, transpose = FALSE, probes = "mm")
     index    <- unlist(affy::mmindex(Dilution), use.names = FALSE)
     probes   <- sample(index, 5)
 
@@ -46,7 +46,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
   })
 
   test_that("Combiend PM/MM xy locations contain expected values", {
-    affy.mat <- ma_layout(Dilution, transpose = FALSE, probes = "all")
+    affy.mat <- marray(Dilution, transpose = FALSE, probes = "all")
     index    <- unlist(affy::indexProbes(Dilution, which = "both"), use.names = FALSE)
     probes   <- sample(index, 5)
 
