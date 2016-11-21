@@ -1,11 +1,10 @@
-Package: arraygrid
+Package: mimager
+Version: 0.1.0.9000
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Title: mimager: The Microarray Imager
+Description: Easily visualize and inspect microarrays for spatial artifacts.
+Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre"))
+License: MIT
 LazyData: TRUE
 Imports:
     grDevices,
@@ -31,10 +30,12 @@ Collate:
     'utils.r'
     'utils-affy.r'
     'utils-arrays.r'
-RoxygenNote: 5.0.1
 Suggests:
     knitr,
     rmarkdown,
     testthat,
     Matrix
 VignetteBuilder: knitr
+URL: https://github.com/aaronwolen/mimager
+BugReports: https://github.com/aaronwolen/mimager/issues
+RoxygenNote: 5.0.1
