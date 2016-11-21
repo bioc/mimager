@@ -13,7 +13,7 @@ setGeneric("ma_values",
            probes = NULL,
            select = NULL, ...) standardGeneric("ma_values"))
 
-setGeneric("ma_image",
+setGeneric("mimage",
   function(object,
            colors,
            select = NULL,
@@ -27,6 +27,6 @@ setGeneric("ma_image",
            transform, ...) {
     empty.rows <- match.arg(empty.rows, c("fill", "drop", "ignore"))
     stopifnot(empty.thresh > 0 & empty.thresh <= 1)
-    standardGeneric("ma_image")
+    standardGeneric("mimage")
 })
 

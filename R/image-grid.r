@@ -1,4 +1,6 @@
-#' Display a grid of color images representing microarray chips
+#' Microarray image
+#'
+#' Display a grid of color images representing microarray chips.
 #'
 #' Visualize microarray probe intensities arranged by their physical location on
 #' the array. A false color image is produced for each sample in the
@@ -16,11 +18,12 @@
 #'   (\code{"drop"}), or should they be left alone (\code{"nothing"})
 #' @param empty.thresh what proportion of features must be missing from a row to
 #'   consider that row empty
-#' @param transform a function to be applied to the values prior to visualization
-#' @name ma_image
-#' @export
+#' @param transform a function to be applied to the values prior to visualizatio
 
-setMethod("ma_image", c(object = "AffyBatch"),
+
+#' @name mimage
+#' @export
+setMethod("mimage", c(object = "AffyBatch"),
   function(object,
            colors,
            select = NULL,
@@ -42,15 +45,13 @@ setMethod("ma_image", c(object = "AffyBatch"),
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
-
-#' @rdname ma_image
+#' @rdname mimage
 #' @export
-
-setMethod("ma_image", c(object = "PLMset"),
+setMethod("mimage", c(object = "PLMset"),
   function(object,
            colors,
            select = NULL,
@@ -74,11 +75,13 @@ setMethod("ma_image", c(object = "PLMset"),
     object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
-setMethod("ma_image", c(object = "FeatureSet"),
+#' @name mimage
+#' @export
+setMethod("mimage", c(object = "FeatureSet"),
   function(object,
            colors,
            select = NULL,
@@ -100,11 +103,13 @@ setMethod("ma_image", c(object = "FeatureSet"),
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
-setMethod("ma_image", c(object = "oligoPLM"),
+#' @name mimage
+#' @export
+setMethod("mimage", c(object = "oligoPLM"),
   function(object,
            colors,
            select = NULL,
@@ -127,16 +132,15 @@ setMethod("ma_image", c(object = "oligoPLM"),
     object <- marray(object, probes, select, transpose = TRUE, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
 
 
-#' @rdname ma_image
+#' @rdname mimage
 #' @export
-
-setMethod("ma_image", c(object = "array"),
+setMethod("mimage", c(object = "array"),
   function(object,
            colors,
            select = NULL,
@@ -151,12 +155,12 @@ setMethod("ma_image", c(object = "array"),
   if (missing(legend.label)) legend.label <- "Values"
   if (missing(transform))    transform <- identity
 
-  .ma_image(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+  .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
 })
 
 
 
-.ma_image <- function(object,
+.mimage <- function(object,
            colors,
            legend.label,
            nrow = NULL,
