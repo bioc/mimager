@@ -18,5 +18,14 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
       mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = oligo::geometry(obj))
       expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
     })
+
+    test_that("Single sample objects return an array", {
+      obj <- obj[, 1]
+      ary <- marray(obj)
+
+      expect_is(ary, "array")
+      expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
+      expect_identical(dim(ary)[1:2], oligo::geometry(obj))
+    })
   }
 }

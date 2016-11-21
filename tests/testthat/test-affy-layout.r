@@ -45,7 +45,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     expect_equivalent(test.mat, ref.mat)
   })
 
-  test_that("Combiend PM/MM xy locations contain expected values", {
+  test_that("Combined PM/MM xy locations contain expected values", {
     affy.mat <- marray(Dilution, transpose = FALSE, probes = "all")
     index    <- unlist(affy::indexProbes(Dilution, which = "both"), use.names = FALSE)
     probes   <- sample(index, 5)
@@ -56,5 +56,15 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     ref.mat  <- affy::exprs(Dilution)[probes,]
 
     expect_equivalent(test.mat, ref.mat)
+  })
+
+  test_that("Single sample objects return an array", {
+    obj <- Dilution[, 1]
+    ary <- marray(obj)
+
+    expect_is(ary, "array")
+    expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
+    expect_identical(nrow(ary), nrow(obj))
+    expect_identical(ncol(ary), ncol(obj))
   })
 }

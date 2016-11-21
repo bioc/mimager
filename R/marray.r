@@ -26,7 +26,7 @@ setMethod("marray", c(object = "AffyBatch"),
 
     probes <- check_probe(object, probes)
     index  <- mindex(object, probes)
-    values <- Biobase::exprs(object)[index$index, select]
+    values <- Biobase::exprs(object)[index$index, select, drop = FALSE]
 
     to_array(values, nrow(object), ncol(object), index[c("x", "y")], transpose)
 })

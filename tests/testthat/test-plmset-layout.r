@@ -72,4 +72,12 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
 
     expect_equivalent(test.mat, ref.mat)
   })
+
+  test_that("Single sample objects return an array", {
+    obj <- affyPLM::fitPLM(Dilution[, 1])
+    ary <- marray(obj)
+
+    expect_is(ary, "array")
+    expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
+  })
 }
