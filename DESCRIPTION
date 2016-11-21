@@ -22,7 +22,7 @@ Collate:
     'all-generics.r'
     'build-legend.r'
     'checks.r'
-    'image-grid.r'
+    'mimage.r'
     'marray.r'
     'ma-values.r'
     'maimg-package.r'
