@@ -27,9 +27,9 @@ Collate:
     'ma-values.r'
     'maimg-package.r'
     'mindex.r'
-    'utils.r'
     'utils-affy.r'
     'utils-arrays.r'
+    'utils-plot.r'
 Suggests:
     knitr,
     rmarkdown,
