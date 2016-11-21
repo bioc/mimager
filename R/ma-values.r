@@ -4,7 +4,7 @@
 #
 # @param select variables to keep
 
-setMethod("ma_values", c(object = "AffyBatch"),
+setMethod("mvalues", c(object = "AffyBatch"),
   function(object,
            probes = NULL,
            select = NULL) {
@@ -21,7 +21,7 @@ setMethod("ma_values", c(object = "AffyBatch"),
 
 
 # Access PLMset values
-setMethod("ma_values", c(object = "PLMset"),
+setMethod("mvalues", c(object = "PLMset"),
   function(object,
            probes = NULL,
            select = NULL,

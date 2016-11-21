@@ -43,7 +43,7 @@ setMethod("marray", c(object = "PLMset"),
 
     probes <- check_probe(object,probes)
     index  <- mindex(object, probes)
-    values <- ma_values(object, probes, select, type)
+    values <- mvalues(object, probes, select, type)
 
     to_array(values, object@nrow, object@ncol, index[c("x", "y")], transpose)
 })

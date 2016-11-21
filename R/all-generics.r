@@ -8,10 +8,10 @@ setGeneric("marray",
            select = NULL,
            transpose = FALSE, ...) standardGeneric("marray"))
 
-setGeneric("ma_values",
+setGeneric("mvalues",
   function(object,
            probes = NULL,
-           select = NULL, ...) standardGeneric("ma_values"))
+           select = NULL, ...) standardGeneric("mvalues"))
 
 setGeneric("mimage",
   function(object,

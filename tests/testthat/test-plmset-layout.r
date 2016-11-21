@@ -33,7 +33,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
   })
 
   test_that("Warning is thrown if model didn't include MM probes", {
-    expect_warning(ma_values(plm, probes = "mm"))
+  expect_warning(mvalues(plm, probes = "mm"))
   })
 
 
@@ -53,7 +53,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
   })
 
   test_that("Warning is thrown if model didn't include PM probes", {
-    expect_warning(ma_values(plm, probes = "pm"))
+    expect_warning(mvalues(plm, probes = "pm"))
   })
 
 
@@ -68,7 +68,7 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
     coords   <- affy::indices2xy(probes, nc = plm@ncol)
 
     test.mat <- apply(affy.plm, 3, "[", coords)
-    ref.mat  <- ma_values(plm, probes = "all")[as.character(probes),]
+    ref.mat  <- mvalues(plm, probes = "all")[as.character(probes),]
 
     expect_equivalent(test.mat, ref.mat)
   })
