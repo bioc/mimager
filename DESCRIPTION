@@ -19,14 +19,14 @@ Imports:
     affyPLM,
     oligo
 Collate:
+    'mimager-package.r'
     'all-generics.r'
-    'build-legend.r'
-    'checks.r'
     'mimage.r'
     'marray.r'
-    'ma-values.r'
-    'mimager-package.r'
+    'mvalues.r'
     'mindex.r'
+    'build-legend.r'
+    'checks.r'
     'utils-affy.r'
     'utils-arrays.r'
     'utils-plot.r'
