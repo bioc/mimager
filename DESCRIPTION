@@ -23,7 +23,7 @@ Collate:
     'build-legend.r'
     'checks.r'
     'image-grid.r'
-    'ma-layout-affy.r'
+    'marray.r'
     'ma-values.r'
     'maimg-package.r'
     'mindex.r'
