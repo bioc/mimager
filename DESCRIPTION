@@ -17,7 +17,8 @@ Imports:
     DBI,
     affy,
     affyPLM,
-    oligo
+    oligo,
+    oligoClasses
 Collate:
     'mimager-package.r'
     'all-generics.r'
