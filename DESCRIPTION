@@ -6,6 +6,10 @@ Description: Easily visualize and inspect microarrays for spatial artifacts.
 Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre"))
 License: MIT
 LazyData: TRUE
+Depends: 
+    BiocGenerics,
+    Biobase,
+    affy
 Imports:
     grDevices,
     methods,
@@ -13,9 +17,7 @@ Imports:
     grid,
     gtable,
     scales,
-    Biobase,
     DBI,
-    affy,
     affyPLM,
     oligo,
     oligoClasses
