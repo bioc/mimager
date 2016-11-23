@@ -163,7 +163,7 @@ setMethod("mimage", c(object = "array"),
            range = NULL,
            transform) {
 
-  if (missing(colors))       colors <- scales::seq_gradient_pal()(seq(0, 1, 0.1))
+  if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
   if (missing(legend.label)) legend.label <- "Values"
   if (missing(transform))    transform <- identity
 
