@@ -6,7 +6,7 @@ build_legend <- function(breaks, colors, labels, title) {
 
   nbreaks <- length(breaks)
 
-  legend.grob <- grid::rasterGrob(colors,
+  legend.grob <- grid::rasterGrob(rev(colors),
              x = unit(0, "npc"),
         interp = FALSE,
           just = "left",
