@@ -24,7 +24,7 @@ setMethod("mindex", c(object = "PLMset"),
 
   index <- data.frame(
     fset = rep(index$fset, 2),
-    stack(index, select = -fset),
+    utils::stack(index[setdiff(names(index), "fset")]),
     stringsAsFactors = FALSE
   )
   names(index) <- c("fset", "index", "type")
@@ -89,5 +89,5 @@ setMethod("mindex", c(object = "oligoPLM"),
   if (class(object) %in% "ExonFeatureSet")
     out[c("x", "y")] <- out[c("x", "y")] + 1
 
-  setNames(out, c("index", "x", "y", "fset", "type"))
+  stats::setNames(out, c("index", "x", "y", "fset", "type"))
 }

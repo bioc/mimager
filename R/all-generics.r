@@ -2,17 +2,21 @@ setGeneric("mindex",
   function(object,
            probes = NULL) standardGeneric("mindex"))
 
+setGeneric("mvalues",
+  function(object,
+           probes = NULL,
+           select = NULL, ...) standardGeneric("mvalues"))
+
+#' @rdname marray
+#' @export
 setGeneric("marray",
   function(object,
            probes = NULL,
            select = NULL,
            transpose = FALSE, ...) standardGeneric("marray"))
 
-setGeneric("mvalues",
-  function(object,
-           probes = NULL,
-           select = NULL, ...) standardGeneric("mvalues"))
-
+#' @rdname mimage
+#' @export
 setGeneric("mimage",
   function(object,
            colors,

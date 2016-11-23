@@ -19,9 +19,10 @@
 #' @param empty.thresh what proportion of features must be missing from a row to
 #'   consider that row empty
 #' @param transform a function to be applied to the values prior to visualizatio
-
-
 #' @name mimage
+NULL
+
+#' @rdname mimage
 #' @export
 setMethod("mimage", c(object = "AffyBatch"),
   function(object,
@@ -79,7 +80,7 @@ setMethod("mimage", c(object = "PLMset"),
 })
 
 
-#' @name mimage
+#' @rdname mimage
 #' @export
 setMethod("mimage", c(object = "FeatureSet"),
   function(object,
@@ -107,7 +108,7 @@ setMethod("mimage", c(object = "FeatureSet"),
 })
 
 
-#' @name mimage
+#' @rdname mimage
 #' @export
 setMethod("mimage", c(object = "oligoPLM"),
   function(object,

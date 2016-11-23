@@ -12,9 +12,17 @@
 #' @param transpose \code{TRUE} (the default), ensures the reconstructed
 #'   microarrays are vertically oriented, as is typically expected. Set to
 #'   \code{FALSE} to return an array in the orientation strictly specified by
-#'   the coordinates
-
+#'   the platform coordinates
+#' @param type for objects containing probe-level models (e.g., \code{PLMsets}),
+#'   specify either \code{"residuals"} (the default) or \code{"weights"}
+#' @param ... additional arguments
+#'
+#' @examples
+#'
 #' @name marray
+NULL
+
+#' @rdname marray
 #' @export
 setMethod("marray", c(object = "AffyBatch"),
   function(object,
@@ -32,7 +40,7 @@ setMethod("marray", c(object = "AffyBatch"),
 })
 
 
-#' @name marray
+#' @rdname marray
 #' @export
 setMethod("marray", c(object = "PLMset"),
   function(object,
@@ -49,7 +57,7 @@ setMethod("marray", c(object = "PLMset"),
 })
 
 
-#' @name marray
+#' @rdname marray
 #' @export
 setMethod("marray", c(object = "FeatureSet"),
   function(object,
@@ -70,7 +78,7 @@ setMethod("marray", c(object = "FeatureSet"),
 })
 
 
-#' @name marray
+#' @rdname marray
 #' @export
 setMethod("marray", c(object = "oligoPLM"),
   function(object,

@@ -1,23 +1,25 @@
 ---
-title: "maimg overview"
+title: "mimager overview"
 author: "Aaron Wolen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{mimager overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r config, include=FALSE}
 library(knitr)
 opts_chunk$set(fig.dev = "png", fig.width = 5, fig.height = 4)
-
-library(devtools)
-devtools::load_all()
 ```
 
-The purpose `maimag` is to make inspecting microarray chips for spatial artifacts easy. 
+The purpose `maimager` is to make inspecting microarray chips for spatial artifacts easy. In this vignette we'll work with the `Dilution` data provided by the affydata package.
+
+```{r setup, warning=FALSE}
+library(mimager)
+data("Dilution", package = "affydata")
+```
 
 ## Object types
 
@@ -25,13 +27,11 @@ The purpose `maimag` is to make inspecting microarray chips for spatial artifact
 
 Simply passing an `AffyBatch` object to `mimage()` will produce a grid of images that each represent one chip in the sample.
 
-```{r affy-data, warning=FALSE}
-data("Dilution", package = "affydata")
-
+```{r affy-data}
 mimage(Dilution)
 ```
 
-By default, only perfect-match (PM) probes are included; rows of mismatch (MM) probes are filled with their PM counterparts. However, the `probes` argument can be used to visualize only MM probes (`probes="mm"`) or both (`probes="both"`).
+By default, only perfect-match (PM) probes are included; rows of mismatch (MM) probes are filled with their PM counterparts. However, the `probes` argument can be used to visualize only MM probes (`probes="mm"`) or both (`probes="all"`).
 
 ### AffyPLM objects
 

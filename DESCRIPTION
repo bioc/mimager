@@ -3,14 +3,15 @@ Version: 0.1.0.9000
 Type: Package
 Title: mimager: The Microarray Imager
 Description: Easily visualize and inspect microarrays for spatial artifacts.
-Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre"))
-License: MIT
+Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre", "cph"))
+License: MIT + file LICENSE
 LazyData: TRUE
-Depends: 
-    BiocGenerics,
+Depends:
     Biobase,
     affy
 Imports:
+    BiocGenerics,
+    S4Vectors,
     grDevices,
     methods,
     abind,
@@ -37,7 +38,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    Matrix
+    Matrix,
+    affydata
 VignetteBuilder: knitr
 URL: https://github.com/aaronwolen/mimager
 BugReports: https://github.com/aaronwolen/mimager/issues
