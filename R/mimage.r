@@ -19,6 +19,17 @@
 #' @param empty.thresh what proportion of features must be missing from a row to
 #'   consider that row empty
 #' @param transform a function to be applied to the values prior to visualizatio
+#'
+#' @examples
+#' # standard array visualization
+#' mimage(iris3)
+#'
+#' # microarray visualization
+#' if (require(affydata, quietly = TRUE)) {
+#'   data("Dilution", package = "affydata")
+#'   mimage(Dilution, select = c("20A", "10A"))
+#' }
+#'
 #' @name mimage
 NULL
 
@@ -170,9 +181,16 @@ setMethod("mimage", c(object = "array"),
            range = NULL,
            transform) {
 
-  object <- transform(object)
-  n <- dim(object)[3]
+  if (is.matrix(object)) {
+    object <- array(object,
+                    dim = c(dim(object), 1),
+                    dimnames = c(dimnames(object), list(NULL)))
+  }
 
+  object <- transform(object)
+
+  # layout plot table
+  n <- dim(object)[3]
   dims <- layout_dims(n, nrow, ncol)
   dims <- trim_dims(n, dims[1], dims[2])
 

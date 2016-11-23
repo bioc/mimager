@@ -18,6 +18,10 @@
 #' @param ... additional arguments
 #'
 #' @examples
+#' if (require(affydata, quietly = TRUE)) {
+#'   data("Dilution", package = "affydata")
+#'   dilution.array <- marray(Dilution, select = c("20A", "10A"))
+#' }
 #'
 #' @name marray
 NULL
