@@ -14,7 +14,6 @@ Imports:
     S4Vectors,
     grDevices,
     methods,
-    abind,
     grid,
     gtable,
     scales,
@@ -39,6 +38,7 @@ Suggests:
     rmarkdown,
     testthat,
     Matrix,
+    abind,
     affydata
 VignetteBuilder: knitr
 URL: https://github.com/aaronwolen/mimager
