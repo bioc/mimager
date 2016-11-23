@@ -217,8 +217,6 @@ setMethod("mimage", c(object = "array"),
     y.rng <- range(seq_len(ncol(object)) / ncol(object))
 
     obj.raster <- lapply(obj.raster, grid::editGrob,
-           x = grid::unit(mean(x.rng), "native"),
-           y = grid::unit(mean(y.rng), "native"),
            width = grid::unit(diff(x.rng), "native"),
            height = grid::unit(diff(y.rng), "native"))
   }
