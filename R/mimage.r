@@ -242,7 +242,7 @@ setMethod("mimage", c(object = "array"),
 
   final.table <- gtable_matrix("image.table",
               grobs = rbind(obj.labels, obj.raster)[row.order, , drop = FALSE],
-            heights = heights, widths = widths)
+            heights = heights, widths = widths, respect = fixed)
 
   # legend
   legend.table <- build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
