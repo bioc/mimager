@@ -12,6 +12,7 @@ Depends:
 Imports:
     BiocGenerics,
     S4Vectors,
+    preprocessCore,
     grDevices,
     methods,
     grid,
@@ -30,6 +31,7 @@ Collate:
     'mindex.r'
     'build-legend.r'
     'checks.r'
+    'transformations.r'
     'utils-affy.r'
     'utils-arrays.r'
     'utils-plot.r'

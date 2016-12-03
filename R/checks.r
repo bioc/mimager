@@ -1,3 +1,11 @@
+check_trim <- function(x) {
+  if (x >= 0 & x <= 1) {
+    return(x)
+  } else {
+    stop("trim must be between 0 and 1", call. = FALSE)
+  }
+}
+
 check_probe <- function(object, probe) {
   if(is.null(probe)) probe <- "pm"
   choices <- switch(class(object),
