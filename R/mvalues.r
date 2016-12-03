@@ -34,7 +34,7 @@ setMethod("mvalues", c(object = "PLMset"),
 
     if (type == "resid") {
       resids <- slot(object, "residuals")
-      n <- S4Vectors::elementLengths(resids)
+      n <- S4Vectors::elementNROWS(resids)
 
       # TODO: dry this out
       if (probes %in% c("pm", "all")) {
