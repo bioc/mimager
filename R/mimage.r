@@ -3,16 +3,24 @@
 #' Display a grid of color images representing microarray chips.
 #'
 #' Visualize microarray probe intensities arranged by their physical location on
-#' the array. A false color image is produced for each sample in the
-#' microarray object and arranged in a grid.
+#' the array. A false color image is produced for each sample in the microarray
+#' object and arranged in a grid.
+#'
+#' By default a 98% winsorization is performed prior to visualization, pulling
+#' in values outside of the 1st and 99th percentiles, which helps avoid the
+#' washing out of regional patterns by extreme values. This can modified using
+#' the \code{trim} argument to provide a new percentile, or a range of 2 values defining
+#' the min/max of the trimmed endpoints.
 #'
 #' @inheritParams marray
 #' @param colors a vector of colors used to represent probe values
 #' @param legend.label Legend label
 #' @param ncol optional, number of columns in grid layout
 #' @param nrow optional, number of rows in grid layout
-#' @param fixed Force images to assume a fixed aspect ratio corresponding to their physical dimensions
-#' @param range optional, if defined, values will be limited to the defined range
+#' @param fixed Force images to assume a fixed aspect ratio corresponding to
+#'   their physical dimensions
+#' @param trim a percentile (default = 0.02) or range or 2 values, see DETAILS
+#'   for more information
 #' @param empty.rows Should empty rows be filled with values from neighboring
 #'   rows (the default, \code{"fill"}), or should they be dropped
 #'   (\code{"drop"}), or should they be left alone (\code{"nothing"})
@@ -43,10 +51,10 @@ setMethod("mimage", c(object = "AffyBatch"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
            empty.rows = "fill",
            empty.thresh = 0.6,
            transform,
+           trim = 0.01,
            probes) {
 
     if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
@@ -57,7 +65,7 @@ setMethod("mimage", c(object = "AffyBatch"),
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
 })
 
 
@@ -71,10 +79,10 @@ setMethod("mimage", c(object = "PLMset"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
            empty.rows = "fill",
            empty.thresh = 0.6,
            transform = identity,
+           trim = 0.01,
            probes,
            type) {
 
@@ -87,7 +95,7 @@ setMethod("mimage", c(object = "PLMset"),
     object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
 })
 
 
@@ -101,10 +109,10 @@ setMethod("mimage", c(object = "FeatureSet"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
            empty.rows = "fill",
            empty.thresh = 0.6,
            transform,
+           trim = 0.01,
            probes) {
 
     if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
@@ -115,7 +123,7 @@ setMethod("mimage", c(object = "FeatureSet"),
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
 })
 
 
@@ -129,10 +137,10 @@ setMethod("mimage", c(object = "oligoPLM"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
            empty.rows = "fill",
            empty.thresh = 0.6,
            transform,
+           trim = 0.01,
            probes,
            type) {
 
@@ -144,7 +152,7 @@ setMethod("mimage", c(object = "oligoPLM"),
     object <- marray(object, probes, select, transpose = TRUE, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
 })
 
 
@@ -160,14 +168,14 @@ setMethod("mimage", c(object = "array"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
-           transform) {
+           transform,
+           trim = 0.01) {
 
   if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
   if (missing(legend.label)) legend.label <- "Values"
   if (missing(transform))    transform <- identity
 
-  .mimage(object, colors, legend.label, nrow, ncol, fixed, range, transform)
+  .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
 })
 
 
@@ -178,8 +186,8 @@ setMethod("mimage", c(object = "array"),
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
-           transform) {
+           transform,
+           trim) {
 
   if (is.matrix(object)) {
     object <- array(object,
@@ -188,6 +196,7 @@ setMethod("mimage", c(object = "array"),
   }
 
   object <- transform(object)
+  object <- trim_values(object, trim)
 
   # layout plot table
   n <- dim(object)[3]
@@ -200,9 +209,6 @@ setMethod("mimage", c(object = "array"),
     dimnames(object)[[3]] <- paste0("sample", seq_len(n))
 
   labels <- dimnames(object)[[3]]
-
-  if (!is.null(range)) object <- scales::squish(object, range)
-
   legend <- train_legend(object, colors)
   obj.colors <- scale_colors(object, legend$palette)
 

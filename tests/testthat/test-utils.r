@@ -63,3 +63,17 @@ test_that("Empty rows are filled with values from adjacent rows", {
   out <- fill_rows(x, 0.8)
   expect_identical(out[c(1, 3),], x[c(2, 4),])
 })
+
+
+test_that("trim_values winsorizes to a specified percentile", {
+  x <- c(-1, 1:3, 10)
+  expect_error(trim_values(x, -1))
+  expect_error(trim_values(x, 2))
+  expect_equal(trim_values(x, 0.05), c(-0.6, 1, 2, 3, 8.6))
+})
+
+test_that("trim_values squishes values into a specified range", {
+  x <- c(-1, 1:3, 10)
+  expect_error(trim_values(x, c(1, 3, 4)))
+  expect_equal(trim_values(x, c(1, 3)), c(1, 1, 2, 3, 3))
+})

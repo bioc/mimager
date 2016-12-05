@@ -39,13 +39,11 @@ The `affyPLM` package fits probe-level linear models (PLMs), the residuals from 
 
 However, visualizing `PLMset` objects entails one extra argument: `type`, which specifies whether you want to visualize the PLM residuals (`type = "resid"`, the default) or weights (`type = "weights"`).
 
-Here, I've used the `range` argument to restrict the range of residuals, which often helps to make spatial artifacts more apparent.
-
 ```{r affyplm-data, message=FALSE}
 library(affyPLM)
 DilutionPLM <- fitPLM(Dilution)
 
-mimage(DilutionPLM, type = "resid", range = c(-2, 2))
+mimage(DilutionPLM, type = "resid")
 ```
 
 ## Transformations

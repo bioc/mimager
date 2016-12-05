@@ -51,4 +51,17 @@ train_legend <- function(x, colors) {
     legend$palette <- scales::gradient_n_pal(colours = colors)
     legend$fill <- scales::cscale(legend$breaks, legend$palette)
     return(legend)
+}
+
+# winsorize values to a specified range or percentile
+trim_values <- function(x, trim) {
+  trim <- check_trim(trim)
+
+  # convert percentile to a range
+  if (length(trim) == 1) {
+    percentiles <- c(trim, 1 - trim)
+    trim <- stats::quantile(x, percentiles, na.rm = TRUE, names = FALSE)
   }
+  scales::squish(x, trim)
+}
+

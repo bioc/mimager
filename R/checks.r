@@ -1,9 +1,12 @@
 check_trim <- function(x) {
-  if (x >= 0 & x <= 1) {
+  if (length(x) == 1) {
+    if (x >= 0 && x <= 1) return(x)
+  } else if (length(x) == 2) {
     return(x)
-  } else {
-    stop("trim must be between 0 and 1", call. = FALSE)
   }
+  stop("trim must be either a single value between 0 and 1 or a vector of ",
+       "2 values defining a range.",
+       call. = FALSE)
 }
 
 check_probe <- function(object, probe) {

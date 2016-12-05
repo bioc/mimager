@@ -25,10 +25,10 @@ setGeneric("mimage",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           range = NULL,
            empty.rows  = "fill",
            empty.thresh = 0.6,
-           transform, ...) {
+           transform,
+           trim = 0.01, ...) {
     empty.rows <- match.arg(empty.rows, c("fill", "drop", "ignore"))
     stopifnot(empty.thresh > 0 & empty.thresh <= 1)
     standardGeneric("mimage")
