@@ -33,7 +33,7 @@ setMethod("mvalues", c(object = "PLMset"),
     values <- index <- NULL
 
     if (type == "resid") {
-      resids <- slot(object, "residuals")
+      resids <- methods::slot(object, "residuals")
       n <- S4Vectors::elementNROWS(resids)
 
       # TODO: dry this out
