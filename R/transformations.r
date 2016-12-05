@@ -1,5 +1,21 @@
-# Per-array rank transformation
-#
+#' Array rank
+#'
+#' Determines the rank of values within each element of a three-dimensional
+#' matrix.
+#'
+#' @param x a three-dimensional array of values
+#' @inheritParams base::rank
+#'
+#' @examples
+#' # microarray visualization
+#' if (require(affydata, quietly = TRUE)) {
+#'   data("Dilution", package = "affydata")
+#'   x <- arank(marray(Dilution, transpose = TRUE))
+#' }
+#'
+#' @seealso \code{\link[base]{rank}}
+#' @export
+
 arank <- function(x, na.last = TRUE, ties.method = "first") {
   ties.method <-
     match.arg(ties.method,
@@ -15,6 +31,26 @@ arank <- function(x, na.last = TRUE, ties.method = "first") {
 }
 
 
+#' Array relative log expression
+#'
+#' The relative log expression (RLE) quantifies the extent to which each sample
+#' in a dataset differs from a "reference" sample, which represents each probe's
+#' median value across all samples.
+#'
+#' @param x an array of two-dimensional matrices, each of which represents an
+#'   individual sample
+#' @param log2 do the values need to be $log_2$ transformed (\code{TRUE}, the default)
+#' @param normalize should the values be quantile normalized prior to calculating the RLE
+#'
+#' @examples
+#' # microarray visualization
+#' if (require(affydata, quietly = TRUE)) {
+#'   data("Dilution", package = "affydata")
+#'   x <- arle(marray(Dilution, transpose = TRUE))
+#' }
+#'
+#' @seealso \code{\link[affyPLM]{RLE}}
+#' @export
 arle <- function(x, log2 = TRUE, normalize = TRUE, trim = 0.02) {
   if (log2) x <- log2(x)
   trim <- check_trim(trim)
