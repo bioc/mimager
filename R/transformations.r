@@ -1,7 +1,7 @@
 #' Array rank
 #'
-#' Determines the rank of values within each element of a three-dimensional
-#' matrix.
+#' Determines the rank of values within each matrix of a three-dimensional
+#' array.
 #'
 #' @param x a three-dimensional array of values
 #' @inheritParams base::rank
