@@ -13,6 +13,7 @@
 #'   x <- arank(marray(Dilution, transpose = TRUE))
 #' }
 #'
+#' @family array transformations
 #' @seealso \code{\link[base]{rank}}
 #' @export
 
@@ -49,6 +50,7 @@ arank <- function(x, na.last = TRUE, ties.method = "first") {
 #'   x <- arle(marray(Dilution, transpose = TRUE))
 #' }
 #'
+#' @family array transformations
 #' @seealso \code{\link[affyPLM]{RLE}}
 #' @export
 arle <- function(x, log2 = TRUE, normalize = TRUE) {
