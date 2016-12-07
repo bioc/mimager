@@ -12,6 +12,7 @@
 #' the \code{trim} argument to provide a new percentile, or a range of 2 values defining
 #' the min/max of the trimmed endpoints.
 #'
+#' @template probes
 #' @inheritParams marray
 #' @param colors a vector of colors used to represent probe values
 #' @param legend.label Legend label

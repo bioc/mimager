@@ -5,7 +5,8 @@
 #' with values arranged to reflect the physical position of the corresponding
 #' feature (i.e., probe) on the microarray surface.
 #'
-#' @param object \code{AffyBatch} or \code{PLMset} object
+#' @template probes
+#' @param object a valid Bioconductor microarray data structure
 #' @param probes probe type see section for more information
 #' @param select a numeric, character or logical vector indicating samples to
 #'   include
