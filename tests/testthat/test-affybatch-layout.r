@@ -1,6 +1,5 @@
-context("AffyBatch layout")
-
 if (requireNamespace("affydata", quietly = TRUE)) {
+  context("AffyBatch layout")
 
   data(Dilution, package = "affydata")
   obj <- Dilution[, 1:4]
@@ -12,8 +11,6 @@ if (requireNamespace("affydata", quietly = TRUE)) {
   })
 
   test_that("array orientation", {
-    # verify that position of NAs in the generated array match the locations of
-    # positions missing from the index
     indx <- mindex(obj, probes = "all")
     mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = dim(obj))
     expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
@@ -27,5 +24,22 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
     expect_identical(nrow(ary), nrow(obj))
     expect_identical(ncol(ary), ncol(obj))
+  })
+
+
+  context("PLMset layout")
+
+  plm <- affyPLM::fitPLM(obj)
+  ary <- marray(plm, type = "residuals")
+
+  test_that("array dimensions", {
+    expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
+    expect_identical(dim(ary)[1:2], dim(obj))
+  })
+
+  test_that("array orientation", {
+    indx <- mindex(obj, probes = "pm")
+    mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = dim(obj))
+    expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
   })
 }
