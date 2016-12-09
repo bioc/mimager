@@ -43,7 +43,7 @@ However, visualizing `PLMset` objects entails one extra argument: `type`, which 
 library(affyPLM)
 DilutionPLM <- fitPLM(Dilution)
 
-mimage(DilutionPLM, type = "resid")
+mimage(DilutionPLM, type = "residuals")
 ```
 
 ## Transformations
@@ -51,7 +51,7 @@ mimage(DilutionPLM, type = "resid")
 Prior to visualization, the supplied microarray objects is converted to a $m \times n \times k$ array, where $m$ and $n$ correspond to the physical dimensions of the microarray chip and $k$ is the number of chips (or samples) in the dataset. The array is then transformed by whatever function is passed to the `transform` argument. For example, the default for `AffyBatch` batch objects is `transform=log2` in order to log-transform the probe intensities. Similarly, the `sign()` function could be used to visualize the signed residuals from a PLM model: 
 
 ```{r affyplm-signed-residuals}
-mimage(DilutionPLM, type = "resid", transform = sign, 
+mimage(DilutionPLM, type = "residuals", transform = sign, 
          legend.label = "Signed\nresiduals")
 ```
 
