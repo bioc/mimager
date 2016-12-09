@@ -86,7 +86,7 @@ setMethod("mindex", c(object = "oligoPLM"),
   out$fsetid <- as.character(out$fsetid)
 
   # account for 0-based indexing
-  if (class(object) %in% "ExonFeatureSet")
+  if (any(out[c("x", "y")] == 0))
     out[c("x", "y")] <- out[c("x", "y")] + 1
 
   stats::setNames(out, c("index", "x", "y", "fset", "type"))
