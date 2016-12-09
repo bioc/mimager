@@ -52,11 +52,22 @@ setMethod("marray", c(object = "PLMset"),
            probes = NULL,
            select = NULL,
            transpose = FALSE,
-           type = "resid") {
+           type = "residuals") {
 
-    probes <- check_probe(object,probes)
-    index  <- mindex(object, probes)
-    values <- mvalues(object, probes, select, type)
+    if (is.null(select)) select <- sampleNames(object)
+
+    values <- switch(type,
+      residuals = object@residuals,
+      weights   = object@weights
+    )
+    names(values) <- sub("([pm]m).*", "\\1", tolower(names(values)))
+
+    # determine which probe types were included in plm
+    values <- values[S4Vectors::elementNROWS(values) != 0]
+    probes <- ifelse(length(values) == 1, names(values), "all")
+
+    index  <- mindex(object, probes = probes)
+    values <- do.call("rbind", values)
 
     to_array(values, object@nrow, object@ncol, index[c("x", "y")], transpose)
 })

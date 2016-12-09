@@ -91,7 +91,7 @@ setMethod("mimage", c(object = "PLMset"),
     if (missing(legend.label)) legend.label <- "Residuals"
     if (missing(transform))    transform <- identity
     if (missing(probes))       probes <- "pm"
-    if (missing(type))         type <- "resid"
+    if (missing(type))         type <- "residuals"
 
     object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
