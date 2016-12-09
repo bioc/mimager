@@ -27,7 +27,6 @@ Collate:
     'all-generics.r'
     'mimage.r'
     'marray.r'
-    'mvalues.r'
     'mindex.r'
     'build-legend.r'
     'checks.r'

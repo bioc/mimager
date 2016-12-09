@@ -32,10 +32,6 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
     expect_equivalent(test.mat, ref.mat)
   })
 
-  test_that("Warning is thrown if model didn't include MM probes", {
-  expect_warning(mvalues(plm, probes = "mm"))
-  })
-
 
   plm <- affyPLM::fitPLM(Dilution, MM ~ -1 + probes + samples)
 
@@ -50,10 +46,6 @@ if (requireNamespace(c("affydata", "affyPLM"), quietly = TRUE)) {
     ref.mat  <- affyPLM::resid(plm)$MM.resid[match(probes, index),]
 
     expect_equivalent(test.mat, ref.mat)
-  })
-
-  test_that("Warning is thrown if model didn't include PM probes", {
-    expect_warning(mvalues(plm, probes = "pm"))
   })
 
 

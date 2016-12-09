@@ -2,11 +2,6 @@ setGeneric("mindex",
   function(object,
            probes = NULL) standardGeneric("mindex"))
 
-setGeneric("mvalues",
-  function(object,
-           probes = NULL,
-           select = NULL, ...) standardGeneric("mvalues"))
-
 #' @rdname marray
 #' @export
 setGeneric("marray",
