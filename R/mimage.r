@@ -58,7 +58,8 @@ setMethod("mimage", c(object = "AffyBatch"),
            trim = 0.01,
            probes) {
 
-    if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
+    if (missing(colors))
+      colors <- scales::brewer_pal(palette = "YlGnBu")(9)
     if (missing(legend.label)) legend.label <- "Expression"
     if (missing(transform))    transform <- log2
     if (missing(probes))       probes <- "pm"
@@ -116,7 +117,8 @@ setMethod("mimage", c(object = "FeatureSet"),
            trim = 0.01,
            probes) {
 
-    if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
+    if (missing(colors))
+      colors <- scales::brewer_pal(palette = "YlGnBu")(9)
     if (missing(legend.label)) legend.label <- "Expression"
     if (missing(transform))    transform <- log2
     if (missing(probes))       probes <- "pm"
@@ -214,7 +216,7 @@ setMethod("mimage", c(object = "array"),
   obj.colors <- scale_colors(object, legend$palette)
 
   obj.raster <- lapply(labels, function(l) {
-    grid::rasterGrob(obj.colors[,,l],
+    grid::rasterGrob(obj.colors[,, l],
                      interpolate = FALSE,
                      name = paste0("image.", l))
   })
@@ -248,11 +250,12 @@ setMethod("mimage", c(object = "array"),
   widths  <- rep(grid::unit(1, "null"), dims[2])
 
   final.table <- gtable_matrix("image.table",
-              grobs = rbind(obj.labels, obj.raster)[row.order, , drop = FALSE],
+              grobs = rbind(obj.labels, obj.raster)[row.order,, drop = FALSE],
             heights = heights, widths = widths, respect = fixed)
 
   # legend
-  legend.table <- build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
+  legend.table <-
+    build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
 
   final.table <- gtable_add_cols(final.table, gtable_width(legend.table))
 

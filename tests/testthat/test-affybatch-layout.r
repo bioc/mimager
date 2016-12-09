@@ -15,7 +15,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     test_that("array orientation", {
       indx <- mindex(obj, probes = "all")
       mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = dim(obj))
-      expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
+      expect_equal(which(is.na(ary[,, 1])), Matrix::which(!mask))
     })
 
     test_that("Single sample objects return an array", {
@@ -42,7 +42,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     test_that("array orientation", {
       indx <- mindex(obj, probes = "pm")
       mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = dim(obj))
-      expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
+      expect_equal(which(is.na(ary[,, 1])), Matrix::which(!mask))
     })
   }
 }

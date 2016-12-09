@@ -15,7 +15,6 @@ layout_dims <- function(n, nrow = NULL, ncol = NULL) {
 }
 
 # reduce nrow/ncol to prevent empty rows/columns in grid layout
-# dims: c(nrow, ncol)
 trim_dims <- function(n, nrow, ncol) {
   i <- seq_len(n)[1:prod(nrow, ncol)]
   m <- matrix(i, nrow, ncol, byrow = TRUE)
@@ -64,4 +63,3 @@ trim_values <- function(x, trim) {
   }
   scales::squish(x, trim)
 }
-

@@ -28,4 +28,3 @@ setGeneric("mimage",
     stopifnot(empty.thresh > 0 & empty.thresh <= 1)
     standardGeneric("mimage")
 })
-

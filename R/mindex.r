@@ -53,7 +53,8 @@ setMethod("mindex", c(object = "oligoPLM"),
   annot  <- check_annotation(oligo::annotation(object))
   status <- require(annot, character.only = TRUE, quietly = TRUE)
   if (!status)
-    stop("Please install the ", annot, " package from BioConductor.", call. = FALSE)
+    stop("Please install the ", annot, " package from BioConductor.",
+         call. = FALSE)
   dbcon <- oligo::db(get(annot))
   tbls  <- DBI::dbListTables(dbcon)
 
@@ -68,12 +69,14 @@ setMethod("mindex", c(object = "oligoPLM"),
     bg.index <- DBI::dbGetQuery(dbcon, sql)
     bg.index$type <- "bg"
   }
+
+  fields <- c("fid", "x", "y", "fsetid")
   if (probes %in% c("mm", "all") & "mmfeature" %in% tbls) {
-    mm.index <- DBI::dbReadTable(dbcon, "mmfeature")[, c("fid", "x", "y", "fsetid")]
+    mm.index <- DBI::dbReadTable(dbcon, "mmfeature")[, fields]
     mm.index$type <- "mm"
   }
   if (probes %in% c("pm", "all")) {
-    pm.index <- DBI::dbReadTable(dbcon, "pmfeature")[, c("fid", "x", "y", "fsetid")]
+    pm.index <- DBI::dbReadTable(dbcon, "pmfeature")[, fields]
     pm.index$type <- "pm"
   }
 

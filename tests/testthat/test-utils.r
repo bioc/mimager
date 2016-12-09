@@ -23,7 +23,7 @@ test_that("Array is recreated from matrix and coordinates", {
   x.array  <- array(x.idx, c(x.dim, n))
 
   x.coords <- arrayInd(x.idx, dim(x.array))
-  x.coords <- x.coords[x.coords[,3] == 1, 1:2] # keep coords for 1st array element
+  x.coords <- x.coords[x.coords[, 3] == 1, 1:2]
   x.coords <- setNames(data.frame(x.coords), c("x", "y"))
 
   x.mat <- matrix(x.idx, ncol = n)
@@ -43,25 +43,25 @@ test_that("Empty rows are filled with values from adjacent rows", {
                 c(1, rep(NA, 4)),
                 6:10), ncol = 5, byrow = TRUE)
   x2 <- abind::abind(x, x, along = 3)
-  x2[,,2] <- x2[,,2] + 1
+  x2[,, 2] <- x2[,, 2] + 1
 
   # missings must exceed threshold
   out <- fill_rows(x, empty.thresh = 1)
-  expect_identical(c(1, rep(NA, 4)), out[2,])
+  expect_identical(c(1, rep(NA, 4)), out[2, ])
 
   # missing row is filled
   out <- fill_rows(x, 0.8)
-  expect_identical(out[1,], out[2,])
+  expect_identical(out[1, ], out[2, ])
 
   # extends to arrays
   out <- fill_rows(x2, 0.8)
-  expect_identical(out[1,,1], out[2,,1])
-  expect_identical(out[1,,2], out[2,,2])
+  expect_identical(out[1,, 1], out[2,, 1])
+  expect_identical(out[1,, 2], out[2,, 2])
 
   # fill-up if first row is empty
   x <- rbind(NA, x)
   out <- fill_rows(x, 0.8)
-  expect_identical(out[c(1, 3),], x[c(2, 4),])
+  expect_identical(out[c(1, 3), ], x[c(2, 4), ])
 
   # warn if too many rows are empty
   expect_warning(

@@ -3,7 +3,7 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
     context("oligo featureset layout")
 
     data(affyGeneFS, package = "oligoData")
-    suppressPackageStartupMessages(library(pd.hugene.1.0.st.v1))
+    suppressPackageStartupMessages(library("pd.hugene.1.0.st.v1"))
 
     obj <- affyGeneFS[, 1:4]
     ary <- marray(obj, transpose = FALSE)
@@ -14,11 +14,13 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
     })
 
     test_that("Affymetrix Gene ST orientation", {
-      # verify that position of NAs in the generated array match the locations of
-      # positions missing from the index
+      # verify that position of NAs in the generated array match the locations
+      # of positions missing from the index
       indx <- mindex(obj, probes = "all")
-      mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = oligo::geometry(obj))
-      expect_equal(which(is.na(ary[,,1])), Matrix::which(!mask))
+      mask <- Matrix::sparseMatrix(i = indx$x,
+                                   j = indx$y,
+                                   dims = oligo::geometry(obj))
+      expect_equal(which(is.na(ary[, , 1])), Matrix::which(!mask))
     })
 
     test_that("Single sample objects return an array", {

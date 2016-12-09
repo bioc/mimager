@@ -21,9 +21,9 @@ fill_rows <- function(x, empty.thresh) {
   # if 1st row is empty fill-up instead of down
   offset <- ifelse(any(na.rows == 1), 1, -1)
   if (ndims == 2) {
-    x[na.rows,] <- x[na.rows + offset,]
+    x[na.rows, ] <- x[na.rows + offset, ]
   } else if (ndims == 3) {
-    x[na.rows,,] <- x[na.rows + offset,,]
+    x[na.rows,, ] <- x[na.rows + offset,, ]
   } else {
     stop("x must be a 2d matrix or 3d array.", call. = FALSE)
   }
