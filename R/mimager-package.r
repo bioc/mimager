@@ -27,7 +27,7 @@
 #' @importClassesFrom affyPLM PLMset
 #' @importClassesFrom oligoClasses FeatureSet
 #' @importClassesFrom oligo oligoPLM
-#' @importFrom Biobase featureNames
+#' @importFrom Biobase featureNames sampleNames
 #' @importFrom grid unit
 #' @import gtable
 NULL

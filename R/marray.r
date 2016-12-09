@@ -35,7 +35,7 @@ setMethod("marray", c(object = "AffyBatch"),
            select = NULL,
            transpose = FALSE) {
 
-    if (is.null(select)) select <- Biobase::sampleNames(object)
+    if (is.null(select)) select <- sampleNames(object)
 
     probes <- check_probe(object, probes)
     index  <- mindex(object, probes)
@@ -87,7 +87,7 @@ setMethod("marray", c(object = "FeatureSet"),
 
     # much more efficient to return all values simultaneously with exprs() than
     # use pm/mm accessors
-    if (is.null(select)) select <- Biobase::sampleNames(object)
+    if (is.null(select)) select <- sampleNames(object)
     values <- Biobase::exprs(object)[index$index, select, drop = FALSE]
 
     to_array(values, dims[1], dims[2], index[c("x", "y")], transpose)
