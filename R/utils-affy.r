@@ -5,6 +5,9 @@ setMethod("featureNames", signature(object = "PLMset"),
       ls(envir = cdf.envir)
   })
 
+setMethod("sampleNames", signature(object = "oligoPLM"),
+  function(object) colnames(oligo::coef(object)))
+
 # Return the index and xy-coords for Affymetrix probes
 #
 # If probes=pm or probes=mm then the index is repeated for the specified
@@ -44,6 +47,11 @@ probe_index <- function(object, probes) {
 fill_rows <- function(x, empty.thresh) {
   ndims   <- length(dim(x))
   na.rows <- which(rowMeans(is.na(x)) >= empty.thresh, useNames = FALSE)
+
+  if (length(na.rows) / nrow(x) > 0.55) {
+    warning("Too many empty rows to fill", call. = FALSE)
+    return(x)
+  }
 
   # if 1st row is empty fill-up instead of down
   offset <- ifelse(any(na.rows == 1), 1, -1)

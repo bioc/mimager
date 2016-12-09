@@ -62,6 +62,11 @@ test_that("Empty rows are filled with values from adjacent rows", {
   x <- rbind(NA, x)
   out <- fill_rows(x, 0.8)
   expect_identical(out[c(1, 3),], x[c(2, 4),])
+
+  # warn if too many rows are empty
+  expect_warning(
+    fill_rows(rbind(x, matrix(NA, ncol = ncol(x), nrow = 2)), 0.8)
+  )
 })
 
 

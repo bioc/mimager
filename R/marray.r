@@ -92,6 +92,8 @@ setMethod("marray", c(object = "oligoPLM"),
            transpose = FALSE,
            type = "residuals") {
 
+    if (is.null(select)) select <- sampleNames(object)
+
     type  <- match.arg(type, c("residuals", "weights"))
     index <- mindex(object, probes = "all")
     dims  <- oligo::geometry(object)
@@ -101,10 +103,13 @@ setMethod("marray", c(object = "oligoPLM"),
       weights   = oligo::weights(object)
     )
 
-    # only include annotated probes
-    values <- values[index$index,]
-    dimnames(values) <- list(index$index, colnames(object@chip.coefs))
-    if (!is.null(select)) values <- values[, select, drop = FALSE]
+    # only include indexed probes
+    # (this seems like a dangerous approach but oligo::fitProbeLevelModel
+    #  *always* returns matrices with dimensions equal to the input)
+    values <- values[index$index, ]
+    dimnames(values) <- list(index$index, sampleNames(object))
+
+    values <- values[, select, drop = FALSE]
 
     to_array(values, dims[1], dims[2], index[c("x", "y")], transpose)
 })
