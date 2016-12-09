@@ -1,8 +1,10 @@
-context("oligo featureset layout")
-
 if (requireNamespace("oligoData", quietly = TRUE)) {
-  if (suppressPackageStartupMessages(require("pd.hugene.1.0.st.v1", quietly = TRUE))) {
+  if (requireNamespace("pd.hugene.1.0.st.v1", quietly = TRUE)) {
+    context("oligo featureset layout")
+
     data(affyGeneFS, package = "oligoData")
+    suppressPackageStartupMessages(library(pd.hugene.1.0.st.v1))
+
     obj <- affyGeneFS[, 1:4]
     ary <- marray(obj, transpose = FALSE)
 

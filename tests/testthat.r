@@ -1,6 +1,6 @@
 library(testthat)
-library(arraygrid)
+library(mimager)
 
-if (requireNamespace("affydata"))
-  test_file("tests/testthat/test-affy-layout.r")
+test_check("mimager")
+
 

@@ -40,7 +40,10 @@ Suggests:
     testthat,
     Matrix,
     abind,
-    affydata
+    affydata,
+    hgu95av2cdf,
+    oligoData,
+    pd.hugene.1.0.st.v1
 VignetteBuilder: knitr
 URL: https://github.com/aaronwolen/mimager
 BugReports: https://github.com/aaronwolen/mimager/issues
