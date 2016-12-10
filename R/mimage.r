@@ -6,11 +6,13 @@
 #' the array. A false color image is produced for each sample in the microarray
 #' object and arranged in a grid.
 #'
-#' By default a 98% winsorization is performed prior to visualization, pulling
-#' in values outside of the 1st and 99th percentiles, which helps avoid the
-#' washing out of regional patterns by extreme values. This can modified using
-#' the \code{trim} argument to provide a new percentile, or a range of 2 values defining
-#' the min/max of the trimmed endpoints.
+#' @section Trimming:
+#'
+#' By default, a 98\% winsorization is performed prior to visualization, pulling
+#' in values outside of the 1st and 99th percentiles to their respective
+#' endpoints. This can modified using the \code{trim} argument to provide either
+#' a new percentile, or a range of 2 values defining the min/max of the trimmed
+#' endpoints. Set \code{trim = 0} to avoid trimming altogether.
 #'
 #' @template probes
 #' @inheritParams marray
