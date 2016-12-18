@@ -13,5 +13,7 @@
 #'   \tab \code{"all"} \tab \code{"pm"} \tab - \tab \code{"bg"}\cr
 #' \code{ExonFeatureSet}
 #'   \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab \code{"bg"} \cr
+#' \code{SnpFeatureSet}
+#'   \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
 #' }
 #'

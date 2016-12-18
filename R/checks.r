@@ -16,7 +16,8 @@ check_probe <- function(object, probe) {
     PLMset               = c("all", "pm", "mm"),
     ExpressionFeatureSet = c("all", "pm", "mm"),
     GeneFeatureSet       = c("all", "pm", "bg"),
-    ExonFeatureSet       = c("all", "pm", "mm", "bg")
+    ExonFeatureSet       = c("all", "pm", "mm", "bg"),
+    SnpFeatureSet        = c("all", "pm", "mm")
   )
   if (all(probe %in% choices)) return(probe)
   stop(
