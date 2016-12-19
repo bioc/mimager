@@ -13,6 +13,8 @@ fill_rows <- function(x, empty.thresh) {
   ndims   <- length(dim(x))
   na.rows <- which(rowMeans(is.na(x)) >= empty.thresh, useNames = FALSE)
 
+  if (length(na.rows) == 0) return(x)
+
   if (length(na.rows) / nrow(x) > 0.55) {
     warning("Too many empty rows to fill", call. = FALSE)
     return(x)
@@ -20,6 +22,9 @@ fill_rows <- function(x, empty.thresh) {
 
   # if 1st row is empty fill-up instead of down
   offset <- ifelse(any(na.rows == 1), 1, -1)
+  # can't fill last row if we're filling-up
+  if (offset == 1 & max(na.rows) == nrow(x)) na.rows <- head(na.rows, -1)
+
   if (ndims == 2) {
     x[na.rows, ] <- x[na.rows + offset, ]
   } else if (ndims == 3) {
