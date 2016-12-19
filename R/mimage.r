@@ -1,7 +1,5 @@
 #' Microarray image
 #'
-#' Display a grid of color images representing microarray chips.
-#'
 #' Visualize microarray probe intensities arranged by their physical location on
 #' the array. A false color image is produced for each sample in the microarray
 #' object and arranged in a grid.
@@ -14,6 +12,16 @@
 #' a new percentile, or a range of 2 values defining the min/max of the trimmed
 #' endpoints. Set \code{trim = 0} to avoid trimming altogether.
 #'
+#' @section Empty Rows:
+#'
+#' By virtue of platform design, unindexed probes or The presence of rows that
+#' are comprised entirely (or mostly) of missing values can create undesirable
+#' rasterization artifacts in the array images. To avoid this, empty rows are,
+#' by default, filled with values from a neighboring row. The threshold for what
+#' constitutes an empty row can be tweaked with the \code{empty.thresh}
+#' argument. Such empty rows are the result of either platform design, unindexed
+#' probes or probe selection (e.g., including only \code{PM} probes).
+#'
 #' @template probes
 #' @inheritParams marray
 #' @param colors a vector of colors used to represent probe values
@@ -22,11 +30,11 @@
 #' @param nrow optional, number of rows in grid layout
 #' @param fixed Force images to assume a fixed aspect ratio corresponding to
 #'   their physical dimensions
-#' @param trim a percentile (default = 0.02) or range or 2 values, see DETAILS
-#'   for more information
+#' @param trim a percentile (default = \code{0.02}) or range or 2 values see
+#'   \bold{trimming} section for details
 #' @param empty.rows Should empty rows be filled with values from neighboring
-#'   rows (the default, \code{"fill"}), or should they be dropped
-#'   (\code{"drop"}), or should they be left alone (\code{"nothing"})
+#'   rows (the default, \code{"fill"}), should they be dropped
+#'   (\code{"drop"}) entirely, or should they be left alone (\code{"ignore"})
 #' @param empty.thresh what proportion of features must be missing from a row to
 #'   consider that row empty
 #' @param transform a function to be applied to the values prior to visualizatio
