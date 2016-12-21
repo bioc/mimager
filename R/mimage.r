@@ -94,7 +94,7 @@ setMethod("mimage", c(object = "PLMset"),
            type = "residuals",
            select = NULL,
            colors = NULL,
-           legend.label = "Residuals",
+           legend.label = type,
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
@@ -104,7 +104,12 @@ setMethod("mimage", c(object = "PLMset"),
            trim = 0.01,
            fontsize = 12) {
 
-    if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
+    type <- check_type(object, type)
+    if (is.null(colors))
+      colors <- switch(type,
+        residuals = scales::brewer_pal(palette = "RdBu"),
+        weights = scales::brewer_pal(palette = "YlGnBu", direction = -1)
+      )(9)
 
     object <- marray(object, type, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
@@ -162,7 +167,7 @@ setMethod("mimage", c(object = "oligoPLM"),
            type = "residuals",
            select = NULL,
            colors = NULL,
-           legend.label = "Residuals",
+           legend.label = type,
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
@@ -172,7 +177,12 @@ setMethod("mimage", c(object = "oligoPLM"),
            trim = 0.01,
            fontsize = 12) {
 
-    if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
+    type <- check_type(object, type)
+    if (is.null(colors))
+      colors <- switch(type,
+        residuals = scales::brewer_pal(palette = "RdBu"),
+        weights = scales::brewer_pal(palette = "YlGnBu", direction = -1)
+      )(9)
 
     object <- marray(object, type, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
