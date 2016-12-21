@@ -244,8 +244,8 @@ setMethod("mimage", c(object = "array"),
     y.rng <- range(seq_len(ncol(object)) / ncol(object))
 
     obj.raster <- lapply(obj.raster, grid::editGrob,
-           width = grid::unit(diff(x.rng), "native"),
-           height = grid::unit(diff(y.rng), "native"))
+           width  = unit(diff(x.rng), "native"),
+           height = unit(diff(y.rng), "native"))
   }
 
 
@@ -264,11 +264,11 @@ setMethod("mimage", c(object = "array"),
 
   row.order <- order(rep(seq_len(dims[1]), 2))
 
-  img.unit <- grid::unit(1, "null")
-  lbl.unit <- grid::unit(1, "grobwidth", obj.labels[[1]])
+  img.unit <- unit(1, "null")
+  lbl.unit <- unit(1, "grobwidth", obj.labels[[1]])
 
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
-  widths  <- rep(grid::unit(1, "null"), dims[2])
+  widths  <- rep(unit(1, "null"), dims[2])
 
   final.table <- gtable_matrix("image.table",
               grobs = rbind(obj.labels, obj.raster)[row.order,, drop = FALSE],
