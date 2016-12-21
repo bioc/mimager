@@ -23,7 +23,7 @@ fill_rows <- function(x, empty.thresh) {
   # if 1st row is empty fill-up instead of down
   offset <- ifelse(any(na.rows == 1), 1, -1)
   # can't fill last row if we're filling-up
-  if (offset == 1 & max(na.rows) == nrow(x)) na.rows <- head(na.rows, -1)
+  if (offset == 1 & max(na.rows) == nrow(x)) na.rows <- utils::head(na.rows, -1)
 
   if (ndims == 2) {
     x[na.rows, ] <- x[na.rows + offset, ]
