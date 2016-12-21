@@ -6,7 +6,7 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
     suppressPackageStartupMessages(library("pd.hugene.1.0.st.v1"))
 
     obj <- affyGeneFS[, 1:4]
-    ary <- marray(obj, transpose = FALSE)
+    ary <- marray(obj, transpose = TRUE)
 
     test_that("Affymetrix Gene ST dimensions", {
       expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
@@ -17,8 +17,8 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
       # verify that position of NAs in the generated array match the locations
       # of positions missing from the index
       indx <- mindex(obj, probes = "all")
-      mask <- Matrix::sparseMatrix(i = indx$x,
-                                   j = indx$y,
+      mask <- Matrix::sparseMatrix(i = indx$y,
+                                   j = indx$x,
                                    dims = oligo::geometry(obj))
       expect_equal(which(is.na(ary[, , 1])), Matrix::which(!mask))
     })
