@@ -271,14 +271,12 @@ setMethod("mimage", c(object = "array"),
            height = unit(diff(y.rng), "native"))
   }
 
-
   obj.raster <- lapply(obj.raster[1:prod(dims)], "%||%", grid::nullGrob())
   obj.raster <- matrix(obj.raster, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
   obj.labels <- lapply(labels, function(l) {
    grid::textGrob(l,
                   name = paste0("label.", l),
-                  just = c(0.5, 0.8),
                   gp = gpar(fontsize = fontsize))
   })
 
@@ -288,7 +286,7 @@ setMethod("mimage", c(object = "array"),
   row.order <- order(rep(seq_len(dims[1]), 2))
 
   img.unit <- unit(1, "null")
-  lbl.unit <- unit(1, "grobwidth", obj.labels[[1]])
+  lbl.unit <- unit(2, "grobheight", obj.labels[[1]])
 
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
   widths  <- rep(unit(1, "null"), dims[2])
