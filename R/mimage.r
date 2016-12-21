@@ -106,7 +106,7 @@ setMethod("mimage", c(object = "PLMset"),
 
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
 
-    object <- marray(object, type, transpose = TRUE, select, type)
+    object <- marray(object, type, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .mimage(object,
