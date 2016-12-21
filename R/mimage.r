@@ -38,6 +38,7 @@
 #' @param empty.thresh what proportion of features must be missing from a row to
 #'   consider that row empty
 #' @param transform a function to be applied to the values prior to visualizatio
+#' @param fontsize font size for labels and legend
 #'
 #' @examples
 #' # standard array visualization
@@ -66,7 +67,9 @@ setMethod("mimage", c(object = "AffyBatch"),
            empty.thresh = 0.6,
            transform,
            trim = 0.01,
-           probes) {
+           fontsize = 12,
+           probes
+           ) {
 
     if (missing(colors))
       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
@@ -77,7 +80,7 @@ setMethod("mimage", c(object = "AffyBatch"),
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
 
@@ -96,7 +99,8 @@ setMethod("mimage", c(object = "PLMset"),
            transform = identity,
            trim = 0.01,
            probes,
-           type) {
+           type,
+           fontsize = 12) {
 
     if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
     if (missing(legend.label)) legend.label <- "Residuals"
@@ -107,7 +111,7 @@ setMethod("mimage", c(object = "PLMset"),
     object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
 
@@ -125,7 +129,8 @@ setMethod("mimage", c(object = "FeatureSet"),
            empty.thresh = 0.6,
            transform,
            trim = 0.01,
-           probes) {
+           probes,
+           fontsize = 12) {
 
     if (missing(colors))
       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
@@ -133,10 +138,10 @@ setMethod("mimage", c(object = "FeatureSet"),
     if (missing(transform))    transform <- log2
     if (missing(probes))       probes <- "pm"
 
-    object <- marray(object, probes, transpose = TRUE, select)
+    object <- marray(object, probes, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
 
@@ -155,7 +160,8 @@ setMethod("mimage", c(object = "oligoPLM"),
            transform,
            trim = 0.01,
            probes,
-           type) {
+           type,
+           fontsize = 12) {
 
     if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
     if (missing(legend.label)) legend.label <- "Expression"
@@ -165,7 +171,7 @@ setMethod("mimage", c(object = "oligoPLM"),
     object <- marray(object, probes, select, transpose = TRUE, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
+    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
 
@@ -182,13 +188,14 @@ setMethod("mimage", c(object = "array"),
            ncol = NULL,
            fixed = FALSE,
            transform,
-           trim = 0.01) {
+           trim = 0.01,
+           fontsize = 12) {
 
   if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
   if (missing(legend.label)) legend.label <- "Values"
   if (missing(transform))    transform <- identity
 
-  .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim)
+  .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
 
@@ -200,7 +207,8 @@ setMethod("mimage", c(object = "array"),
            ncol = NULL,
            fixed = FALSE,
            transform,
-           trim) {
+           trim,
+           fontsize) {
 
   if (is.matrix(object)) {
     object <- array(object,
@@ -245,7 +253,10 @@ setMethod("mimage", c(object = "array"),
   obj.raster <- matrix(obj.raster, nrow = dims[1], ncol = dims[2], byrow = TRUE)
 
   obj.labels <- lapply(labels, function(l) {
-   grid::textGrob(l, name = paste0("label.", l), just = c(0.5, 0.8))
+   grid::textGrob(l,
+                  name = paste0("label.", l),
+                  just = c(0.5, 0.8),
+                  gp = gpar(fontsize = fontsize))
   })
 
   obj.labels <- lapply(obj.labels[1:prod(dims)], "%||%", grid::nullGrob())
@@ -254,7 +265,7 @@ setMethod("mimage", c(object = "array"),
   row.order <- order(rep(seq_len(dims[1]), 2))
 
   img.unit <- grid::unit(1, "null")
-  lbl.unit <- grid::unit(2, "strheight", labels[1])
+  lbl.unit <- grid::unit(1, "grobwidth", obj.labels[[1]])
 
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
   widths  <- rep(grid::unit(1, "null"), dims[2])
@@ -265,7 +276,7 @@ setMethod("mimage", c(object = "array"),
 
   # legend
   legend.table <-
-    build_legend(legend$breaks, legend$fill, legend$labels, legend.label)
+    build_legend(legend$breaks, legend$fill, legend$labels, legend.label, fontsize)
 
   final.table <- gtable_add_cols(final.table, gtable_width(legend.table))
 

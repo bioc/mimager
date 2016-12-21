@@ -1,10 +1,26 @@
 
-build_legend <- function(breaks, colors, labels, title) {
-
-  key.height <- unit(1.2, "lines")
-  key.width  <- unit(1.2, "lines")
+build_legend <- function(breaks, colors, labels, title, fontsize) {
 
   nbreaks <- length(breaks)
+
+  # provide title *after* sizing keys in cases it contains line breaks
+  legend.title <- grid::textGrob("",
+            x = unit(0, "npc"),
+            y = unit(1, "npc"),
+         just = c("left", "top"),
+         name = "legend.title",
+         gp = gpar(fontsize = fontsize * 1.1))
+
+  key.width  <- unit(1.2, "lines")
+  key.height <- max(key.width, unit(2, "grobheight", legend.title))
+  legend.title$label <- title
+
+  legend.text <- grid::textGrob(labels,
+            x = unit(0, "npc"),
+            y = unit(seq_len(nbreaks) / nbreaks, "npc") - (key.height * 0.5),
+         just = "left",
+         gp = gpar(fontsize = fontsize * 0.9),
+         name = "legend.text")
 
   legend <- grid::rasterGrob(rev(colors),
              x = unit(0, "npc"),
@@ -13,18 +29,6 @@ build_legend <- function(breaks, colors, labels, title) {
           name = "legend.key",
          width = grid::convertWidth(key.width, "mm"),
         height = grid::convertHeight(key.height * nbreaks, "mm"))
-
-  legend.text <- grid::textGrob(labels,
-            x = unit(0, "npc"),
-            y = unit(seq_len(nbreaks) / nbreaks, "npc") - (key.height * 0.5),
-         just = "left",
-         name = "legend.text")
-
-  legend.title <- grid::textGrob(title,
-            x = unit(0, "npc"),
-            y = unit(1, "npc"),
-         just = c("left", "top"),
-         name = "legend.title")
 
   legend.table <- gtable(name = "legend",
     widths = grid::unit.c(key.width,

@@ -28,6 +28,6 @@
 #' @importClassesFrom oligoClasses FeatureSet
 #' @importClassesFrom oligo oligoPLM
 #' @importFrom Biobase featureNames sampleNames
-#' @importFrom grid unit
+#' @importFrom grid unit gpar
 #' @import gtable
 NULL

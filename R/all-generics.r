@@ -23,7 +23,7 @@ setGeneric("mimage",
            empty.rows  = "fill",
            empty.thresh = 0.6,
            transform,
-           trim = 0.01, ...) {
+           trim = 0.01, fontsize = 12, ...) {
     empty.rows <- match.arg(empty.rows, c("fill", "drop", "ignore"))
     stopifnot(empty.thresh > 0 & empty.thresh <= 1)
     standardGeneric("mimage")
