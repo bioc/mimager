@@ -8,21 +8,21 @@ setGeneric("marray",
   function(object,
            probes = NULL,
            select = NULL,
-           transpose = FALSE, ...) standardGeneric("marray"))
+           transpose = NULL, ...) standardGeneric("marray"))
 
 #' @rdname mimage
 #' @export
 setGeneric("mimage",
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
-           legend.label,
+           legend.label = NULL,
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
            empty.rows  = "fill",
            empty.thresh = 0.6,
-           transform,
+           transform = NULL,
            trim = 0.01, fontsize = 12, ...) {
     empty.rows <- match.arg(empty.rows, c("fill", "drop", "ignore"))
     stopifnot(empty.thresh > 0 & empty.thresh <= 1)

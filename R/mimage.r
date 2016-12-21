@@ -57,25 +57,21 @@ NULL
 #' @export
 setMethod("mimage", c(object = "AffyBatch"),
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
-           legend.label,
+           legend.label = "Intensity",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
            empty.rows = "fill",
            empty.thresh = 0.6,
-           transform,
+           transform = log2,
            trim = 0.01,
            fontsize = 12,
-           probes
+           probes = "pm"
            ) {
 
-    if (missing(colors))
-      colors <- scales::brewer_pal(palette = "YlGnBu")(9)
-    if (missing(legend.label)) legend.label <- "Expression"
-    if (missing(transform))    transform <- log2
-    if (missing(probes))       probes <- "pm"
+    if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
 
     object <- marray(object, probes, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
@@ -88,9 +84,9 @@ setMethod("mimage", c(object = "AffyBatch"),
 #' @export
 setMethod("mimage", c(object = "PLMset"),
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
-           legend.label,
+           legend.label = "Residuals",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
@@ -98,15 +94,11 @@ setMethod("mimage", c(object = "PLMset"),
            empty.thresh = 0.6,
            transform = identity,
            trim = 0.01,
-           probes,
-           type,
+           probes = "pm",
+           type = "residuals",
            fontsize = 12) {
 
-    if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
-    if (missing(legend.label)) legend.label <- "Residuals"
-    if (missing(transform))    transform <- identity
-    if (missing(probes))       probes <- "pm"
-    if (missing(type))         type <- "residuals"
+    if (is.null(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
 
     object <- marray(object, probes, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
@@ -119,24 +111,20 @@ setMethod("mimage", c(object = "PLMset"),
 #' @export
 setMethod("mimage", c(object = "FeatureSet"),
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
-           legend.label,
+           legend.label = "Intensity",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
            empty.rows = "fill",
            empty.thresh = 0.6,
-           transform,
+           transform = log2,
            trim = 0.01,
-           probes,
+           probes = "pm",
            fontsize = 12) {
 
-    if (missing(colors))
-      colors <- scales::brewer_pal(palette = "YlGnBu")(9)
-    if (missing(legend.label)) legend.label <- "Expression"
-    if (missing(transform))    transform <- log2
-    if (missing(probes))       probes <- "pm"
+    if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
 
     object <- marray(object, probes, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
@@ -149,24 +137,21 @@ setMethod("mimage", c(object = "FeatureSet"),
 #' @export
 setMethod("mimage", c(object = "oligoPLM"),
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
-           legend.label,
+           legend.label = "Residuals",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
            empty.rows = "fill",
            empty.thresh = 0.6,
-           transform,
+           transform = identity,
            trim = 0.01,
-           probes,
-           type,
+           probes = "pm",
+           type = "Residuals",
            fontsize = 12) {
 
-    if (missing(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
-    if (missing(legend.label)) legend.label <- "Expression"
-    if (missing(transform))    transform <- identity
-    if (missing(probes))       probes <- "pm"
+    if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
 
     object <- marray(object, probes, select, transpose = TRUE, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
@@ -175,26 +160,21 @@ setMethod("mimage", c(object = "oligoPLM"),
 })
 
 
-
-
 #' @rdname mimage
 #' @export
 setMethod("mimage", c(object = "array"),
   function(object,
-           colors,
+           colors = NULL,
            select = NULL,
            legend.label = "Values",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
-           transform,
+           transform = identity,
            trim = 0.01,
            fontsize = 12) {
 
-  if (missing(colors))       colors <- scales::brewer_pal(palette = "YlGnBu")(9)
-  if (missing(legend.label)) legend.label <- "Values"
-  if (missing(transform))    transform <- identity
-
+  if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
   .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 

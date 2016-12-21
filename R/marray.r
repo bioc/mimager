@@ -79,7 +79,7 @@ setMethod("marray", c(object = "FeatureSet"),
   function(object,
            probes = NULL,
            select = NULL,
-           transpose = FALSE) {
+           transpose = NULL) {
 
     probes <- check_probe(object, probes)
     index  <- mindex(object, probes)
