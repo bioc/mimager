@@ -6,13 +6,12 @@
 #  - type: feature type (e.g., pm, mm or bg)
 #  - fset: featureset identifier
 setMethod("mindex", c(object = "AffyBatch"),
-  function(object, probes = NULL) .affy_mindex(object, probes))
+  function(object, type = "pm") .affy_mindex(object, type))
 
 setMethod("mindex", c(object = "PLMset"),
-  function(object, probes = NULL) .affy_mindex(object, probes))
+  function(object, type = "pm") .affy_mindex(object, type))
 
 .affy_mindex <- function(object, probes) {
-  probes <- check_probe(object, probes)
   cdf    <- affy::getCdfInfo(object)
   index  <- BiocGenerics::mget(featureNames(object), cdf, ifnotfound = NA)
 
@@ -41,13 +40,10 @@ setMethod("mindex", c(object = "PLMset"),
 
 
 setMethod("mindex", c(object = "FeatureSet"),
-  function(object, probes = NULL) {
-    probes <- check_probe(object, probes)
-    .featureset_mindex(object, probes)
-})
+  function(object, type = "pm") .featureset_mindex(object, type))
 
 setMethod("mindex", c(object = "oligoPLM"),
-  function(object, probes = NULL) .featureset_mindex(object, probes))
+  function(object, type = "pm") .featureset_mindex(object, type))
 
 .featureset_mindex <- function(object, probes) {
   annot  <- check_annotation(oligo::annotation(object))

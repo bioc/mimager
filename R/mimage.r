@@ -57,8 +57,9 @@ NULL
 #' @export
 setMethod("mimage", c(object = "AffyBatch"),
   function(object,
-           colors = NULL,
+           type = "pm",
            select = NULL,
+           colors = NULL,
            legend.label = "Intensity",
            nrow = NULL,
            ncol = NULL,
@@ -67,13 +68,11 @@ setMethod("mimage", c(object = "AffyBatch"),
            empty.thresh = 0.6,
            transform = log2,
            trim = 0.01,
-           fontsize = 12,
-           probes = "pm"
-           ) {
+           fontsize = 12) {
 
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
 
-    object <- marray(object, probes, transpose = TRUE, select)
+    object <- marray(object, type, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
@@ -84,8 +83,9 @@ setMethod("mimage", c(object = "AffyBatch"),
 #' @export
 setMethod("mimage", c(object = "PLMset"),
   function(object,
-           colors = NULL,
+           type = "residuals",
            select = NULL,
+           colors = NULL,
            legend.label = "Residuals",
            nrow = NULL,
            ncol = NULL,
@@ -94,13 +94,11 @@ setMethod("mimage", c(object = "PLMset"),
            empty.thresh = 0.6,
            transform = identity,
            trim = 0.01,
-           probes = "pm",
-           type = "residuals",
            fontsize = 12) {
 
     if (is.null(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
 
-    object <- marray(object, probes, transpose = TRUE, select, type)
+    object <- marray(object, type, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
@@ -111,8 +109,9 @@ setMethod("mimage", c(object = "PLMset"),
 #' @export
 setMethod("mimage", c(object = "FeatureSet"),
   function(object,
-           colors = NULL,
+           type = "pm",
            select = NULL,
+           colors = NULL,
            legend.label = "Intensity",
            nrow = NULL,
            ncol = NULL,
@@ -121,12 +120,11 @@ setMethod("mimage", c(object = "FeatureSet"),
            empty.thresh = 0.6,
            transform = log2,
            trim = 0.01,
-           probes = "pm",
            fontsize = 12) {
 
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
 
-    object <- marray(object, probes, select, transpose = TRUE)
+    object <- marray(object, type, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
@@ -137,8 +135,9 @@ setMethod("mimage", c(object = "FeatureSet"),
 #' @export
 setMethod("mimage", c(object = "oligoPLM"),
   function(object,
-           colors = NULL,
+           type = "residuals",
            select = NULL,
+           colors = NULL,
            legend.label = "Residuals",
            nrow = NULL,
            ncol = NULL,
@@ -147,13 +146,11 @@ setMethod("mimage", c(object = "oligoPLM"),
            empty.thresh = 0.6,
            transform = identity,
            trim = 0.01,
-           probes = "pm",
-           type = "Residuals",
            fontsize = 12) {
 
     if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
 
-    object <- marray(object, probes, select, transpose = TRUE, type)
+    object <- marray(object, type, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
     .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
@@ -164,17 +161,23 @@ setMethod("mimage", c(object = "oligoPLM"),
 #' @export
 setMethod("mimage", c(object = "array"),
   function(object,
-           colors = NULL,
+           type = NULL,
            select = NULL,
+           colors = NULL,
            legend.label = "Values",
            nrow = NULL,
            ncol = NULL,
            fixed = FALSE,
+           empty.rows = "ignore",
+           empty.thresh = 1.0,
            transform = identity,
-           trim = 0.01,
+           trim = 0.0,
            fontsize = 12) {
 
+  if (!is.null(type)) warning("type is ignored for arrays", call. = FALSE)
   if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
+  if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
+
   .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
 })
 
@@ -183,9 +186,9 @@ setMethod("mimage", c(object = "array"),
 .mimage <- function(object,
            colors,
            legend.label,
-           nrow = NULL,
-           ncol = NULL,
-           fixed = FALSE,
+           nrow,
+           ncol,
+           fixed,
            transform,
            trim,
            fontsize) {

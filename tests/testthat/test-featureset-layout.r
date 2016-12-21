@@ -16,7 +16,7 @@ if (requireNamespace("oligoData", quietly = TRUE)) {
     test_that("Affymetrix Gene ST orientation", {
       # verify that position of NAs in the generated array match the locations
       # of positions missing from the index
-      indx <- mindex(obj, probes = "all")
+      indx <- mindex(obj, type = "all")
       mask <- Matrix::sparseMatrix(i = indx$y,
                                    j = indx$x,
                                    dims = oligo::geometry(obj))

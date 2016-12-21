@@ -9,19 +9,20 @@ check_trim <- function(x) {
        call. = FALSE)
 }
 
-check_probe <- function(object, probe) {
-  if (is.null(probe)) probe <- "pm"
+check_type <- function(object, type) {
+  if (is.null(type)) type <- "pm"
   choices <- switch(class(object),
     AffyBatch            = c("all", "pm", "mm"),
-    PLMset               = c("all", "pm", "mm"),
     ExpressionFeatureSet = c("all", "pm", "mm"),
     GeneFeatureSet       = c("all", "pm", "bg"),
     ExonFeatureSet       = c("all", "pm", "mm", "bg"),
-    SnpFeatureSet        = c("all", "pm", "mm")
+    SnpFeatureSet        = c("all", "pm", "mm"),
+    PLMset               = c("residuals", "weights"),
+    oligoPLM             = c("residuals", "weights")
   )
-  if (all(probe %in% choices)) return(probe)
+  if (all(type %in% choices)) return(type)
   stop(
-    "Invalid probe for ", class(object), " should be one of ",
+    "Invalid type for ", class(object), " should be one of ",
     paste(choices, collapse = ", "),
     call. = FALSE
   )

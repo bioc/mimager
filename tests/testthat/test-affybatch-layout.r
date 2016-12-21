@@ -5,7 +5,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     data(Dilution, package = "affydata")
     suppressWarnings(library(hgu95av2cdf))
     obj <- Dilution[, 1:4]
-    ary <- marray(obj, transpose = TRUE, probes = "all")
+    ary <- marray(obj, transpose = TRUE, type = "all")
 
     test_that("array dimensions", {
       expect_identical(dimnames(ary)[[3]], Biobase::sampleNames(obj))
@@ -13,7 +13,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     })
 
     test_that("array orientation", {
-      indx <- mindex(obj, probes = "all")
+      indx <- mindex(obj, type = "all")
       mask <- Matrix::sparseMatrix(i = indx$y, j = indx$x, dims = dim(obj))
       expect_equal(which(is.na(ary[,, 1])), Matrix::which(!mask))
     })
@@ -40,7 +40,7 @@ if (requireNamespace("affydata", quietly = TRUE)) {
     })
 
     test_that("array orientation", {
-      indx <- mindex(obj, probes = "pm")
+      indx <- mindex(obj, type = "pm")
       mask <- Matrix::sparseMatrix(i = indx$x, j = indx$y, dims = dim(obj))
       expect_equal(which(is.na(ary[,, 1])), Matrix::which(!mask))
     })

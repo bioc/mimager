@@ -7,15 +7,16 @@
 #'
 #' @template probes
 #' @param object a valid Bioconductor microarray data structure
-#' @param probes probe type see section for more information
+#' @param type for microarray objects \code{type} refers to \emph{probe type};
+#'   for objects containing probe-level models (e.g., \code{PLMsets})
+#'   \code{type} refers to the \emph{value type} (i.e, \code{"residuals"} or
+#'   \code{"weights"}). See probe type section for more information.
 #' @param select a numeric, character or logical vector indicating samples to
 #'   include
 #' @param transpose \code{TRUE} (the default), ensures the reconstructed
 #'   microarrays are vertically oriented, as is typically expected. Set to
 #'   \code{FALSE} to return an array in the orientation strictly specified by
 #'   the platform coordinates
-#' @param type for objects containing probe-level models (e.g., \code{PLMsets}),
-#'   specify either \code{"residuals"} (the default) or \code{"weights"}
 #' @param ... additional arguments
 #'
 #' @examples
@@ -31,14 +32,14 @@ NULL
 #' @export
 setMethod("marray", c(object = "AffyBatch"),
   function(object,
-           probes = NULL,
+           type = "pm",
            select = NULL,
            transpose = FALSE) {
 
     if (is.null(select)) select <- sampleNames(object)
 
-    probes <- check_probe(object, probes)
-    index  <- mindex(object, probes)
+    type <- check_type(object, type)
+    index  <- mindex(object, type)
     values <- Biobase::exprs(object)[index$index, select, drop = FALSE]
 
     to_array(values, nrow(object), ncol(object), index[c("x", "y")], transpose)
@@ -49,10 +50,9 @@ setMethod("marray", c(object = "AffyBatch"),
 #' @export
 setMethod("marray", c(object = "PLMset"),
   function(object,
-           probes = NULL,
+           type = "residuals",
            select = NULL,
-           transpose = FALSE,
-           type = "residuals") {
+           transpose = FALSE) {
 
     if (is.null(select)) select <- sampleNames(object)
 
@@ -66,7 +66,7 @@ setMethod("marray", c(object = "PLMset"),
     values <- values[S4Vectors::elementNROWS(values) != 0]
     probes <- ifelse(length(values) == 1, names(values), "all")
 
-    index  <- mindex(object, probes = probes)
+    index  <- mindex(object, type = probes)
     values <- do.call("rbind", values)
 
     to_array(values, object@nrow, object@ncol, index[c("x", "y")], transpose)
@@ -77,12 +77,12 @@ setMethod("marray", c(object = "PLMset"),
 #' @export
 setMethod("marray", c(object = "FeatureSet"),
   function(object,
-           probes = NULL,
+           type = "pm",
            select = NULL,
-           transpose = NULL) {
+           transpose = FALSE) {
 
-    probes <- check_probe(object, probes)
-    index  <- mindex(object, probes)
+    type <- check_type(object, type)
+    index  <- mindex(object, type)
     dims   <- oligo::geometry(object)
 
     # much more efficient to return all values simultaneously with exprs() than
@@ -98,15 +98,14 @@ setMethod("marray", c(object = "FeatureSet"),
 #' @export
 setMethod("marray", c(object = "oligoPLM"),
   function(object,
-           probes = NULL,
+           type = "residuals",
            select = NULL,
-           transpose = FALSE,
-           type = "residuals") {
+           transpose = FALSE) {
 
     if (is.null(select)) select <- sampleNames(object)
 
-    type  <- match.arg(type, c("residuals", "weights"))
-    index <- mindex(object, probes = "all")
+    type  <- check_type(object, type)
+    index <- mindex(object, type = "all")
     dims  <- oligo::geometry(object)
 
     values <- switch(type,
@@ -117,7 +116,7 @@ setMethod("marray", c(object = "oligoPLM"),
     # only include indexed probes
     # (this seems like a dangerous approach but oligo::fitProbeLevelModel
     #  *always* returns matrices with dimensions equal to the input)
-    values <- values[index$index, ]
+    values <- values[index$index, , drop = FALSE]
     dimnames(values) <- list(index$index, sampleNames(object))
 
     values <- values[, select, drop = FALSE]
