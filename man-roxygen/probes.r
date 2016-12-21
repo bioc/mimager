@@ -1,8 +1,8 @@
-#' @section Probes:
+#' @section Probe types:
 #'
-#' The \code{probes} argument determines the \emph{type} of probe that should be
-#' included. The following table provides a list of valid values for each
-#' supported microarray data structure:
+#' For microarray data structures the \code{type} argument determines the
+#' \emph{type} of probe that should be included. The following table provides a
+#' list of valid values for each supported microarray class:
 #'
 #' \tabular{rcccc}{
 #' \code{AffyBatch}

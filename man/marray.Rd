@@ -9,24 +9,27 @@
 \alias{marray,oligoPLM-method}
 \title{Microarray array}
 \usage{
-marray(object, probes = NULL, select = NULL, transpose = FALSE, ...)
+marray(object, type = NULL, select = NULL, transpose = NULL)
 
-\S4method{marray}{AffyBatch}(object, probes = NULL, select = NULL,
+\S4method{marray}{AffyBatch}(object, type = "pm", select = NULL,
   transpose = FALSE)
 
-\S4method{marray}{PLMset}(object, probes = NULL, select = NULL,
-  transpose = FALSE, type = "resid")
-
-\S4method{marray}{FeatureSet}(object, probes = NULL, select = NULL,
+\S4method{marray}{PLMset}(object, type = "residuals", select = NULL,
   transpose = FALSE)
 
-\S4method{marray}{oligoPLM}(object, probes = NULL, select = NULL,
-  transpose = FALSE, type = "residuals")
+\S4method{marray}{FeatureSet}(object, type = "pm", select = NULL,
+  transpose = FALSE)
+
+\S4method{marray}{oligoPLM}(object, type = "residuals", select = NULL,
+  transpose = FALSE)
 }
 \arguments{
-\item{object}{\code{AffyBatch} or \code{PLMset} object}
+\item{object}{a valid Bioconductor microarray data structure}
 
-\item{probes}{probe type see section for more information}
+\item{type}{for microarray objects \code{type} refers to \emph{probe type};
+for objects containing probe-level models (e.g., \code{PLMsets})
+\code{type} refers to the \emph{value type} (i.e, \code{"residuals"} or
+\code{"weights"}). See probe type section for more information.}
 
 \item{select}{a numeric, character or logical vector indicating samples to
 include}
@@ -37,14 +40,38 @@ microarrays are vertically oriented, as is typically expected. Set to
 the platform coordinates}
 
 \item{...}{additional arguments}
-
-\item{type}{for objects containing probe-level models (e.g., \code{PLMsets}),
-specify either \code{"residuals"} (the default) or \code{"weights"}}
 }
 \description{
 Convert S4 microarray data structures into a three-dimensional array of
 matrices, where each matrix corresponds to an individual sample's microarray
 with values arranged to reflect the physical position of the corresponding
 feature (i.e., probe) on the microarray surface.
+}
+\section{Probe types}{
+
+
+For microarray data structures the \code{type} argument determines the
+\emph{type} of probe that should be included. The following table provides a
+list of valid values for each supported microarray class:
+
+\tabular{rcccc}{
+\code{AffyBatch}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+\code{ExpressionFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+\code{GeneFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab - \tab \code{"bg"}\cr
+\code{ExonFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab \code{"bg"} \cr
+\code{SnpFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+}
+}
+\examples{
+if (require(affydata, quietly = TRUE)) {
+  data("Dilution", package = "affydata")
+  dilution.array <- marray(Dilution, select = c("20A", "10A"))
+}
+
 }
 

@@ -10,38 +10,48 @@
 \alias{mimage,oligoPLM-method}
 \title{Microarray image}
 \usage{
-mimage(object, colors, select = NULL, legend.label, nrow = NULL,
-  ncol = NULL, fixed = FALSE, range = NULL, empty.rows = "fill",
-  empty.thresh = 0.6, transform, ...)
+mimage(object, type = NULL, select = NULL, colors = NULL,
+  legend.label = NULL, nrow = NULL, ncol = NULL, fixed = FALSE,
+  empty.rows = "fill", empty.thresh = 0.6, transform = NULL,
+  trim = 0.01, fontsize = 12)
 
-\S4method{mimage}{AffyBatch}(object, colors, select = NULL, legend.label,
-  nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL,
-  empty.rows = "fill", empty.thresh = 0.6, transform, probes)
+\S4method{mimage}{AffyBatch}(object, type = "pm", select = NULL,
+  colors = NULL, legend.label = "Intensity", nrow = NULL, ncol = NULL,
+  fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
+  transform = log2, trim = 0.01, fontsize = 12)
 
-\S4method{mimage}{PLMset}(object, colors, select = NULL, legend.label,
-  nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL,
-  empty.rows = "fill", empty.thresh = 0.6, transform = identity, probes,
-  type)
+\S4method{mimage}{PLMset}(object, type = "residuals", select = NULL,
+  colors = NULL, legend.label = "Residuals", nrow = NULL, ncol = NULL,
+  fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
+  transform = identity, trim = 0.01, fontsize = 12)
 
-\S4method{mimage}{FeatureSet}(object, colors, select = NULL, legend.label,
-  nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL,
-  empty.rows = "fill", empty.thresh = 0.6, transform, probes)
+\S4method{mimage}{FeatureSet}(object, type = "pm", select = NULL,
+  colors = NULL, legend.label = "Intensity", nrow = NULL, ncol = NULL,
+  fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
+  transform = log2, trim = 0.01, fontsize = 12)
 
-\S4method{mimage}{oligoPLM}(object, colors, select = NULL, legend.label,
-  nrow = NULL, ncol = NULL, fixed = FALSE, range = NULL,
-  empty.rows = "fill", empty.thresh = 0.6, transform, probes, type)
+\S4method{mimage}{oligoPLM}(object, type = "residuals", select = NULL,
+  colors = NULL, legend.label = "Residuals", nrow = NULL, ncol = NULL,
+  fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
+  transform = identity, trim = 0.01, fontsize = 12)
 
-\S4method{mimage}{array}(object, colors, select = NULL,
-  legend.label = "Values", nrow = NULL, ncol = NULL, fixed = FALSE,
-  range = NULL, transform)
+\S4method{mimage}{array}(object, type = NULL, select = NULL,
+  colors = NULL, legend.label = "Values", nrow = NULL, ncol = NULL,
+  fixed = FALSE, empty.rows = "ignore", empty.thresh = 1,
+  transform = identity, trim = 0, fontsize = 12)
 }
 \arguments{
-\item{object}{\code{AffyBatch} or \code{PLMset} object}
+\item{object}{a valid Bioconductor microarray data structure}
 
-\item{colors}{a vector of colors used to represent probe values}
+\item{type}{for microarray objects \code{type} refers to \emph{probe type};
+for objects containing probe-level models (e.g., \code{PLMsets})
+\code{type} refers to the \emph{value type} (i.e, \code{"residuals"} or
+\code{"weights"}). See probe type section for more information.}
 
 \item{select}{a numeric, character or logical vector indicating samples to
 include}
+
+\item{colors}{a vector of colors used to represent probe values}
 
 \item{legend.label}{Legend label}
 
@@ -49,32 +59,79 @@ include}
 
 \item{ncol}{optional, number of columns in grid layout}
 
-\item{fixed}{Force images to assume a fixed aspect ratio corresponding to their physical dimensions}
-
-\item{range}{optional, if defined, values will be limited to the defined range}
+\item{fixed}{Force images to assume a fixed aspect ratio corresponding to
+their physical dimensions}
 
 \item{empty.rows}{Should empty rows be filled with values from neighboring
-rows (the default, \code{"fill"}), or should they be dropped
-(\code{"drop"}), or should they be left alone (\code{"nothing"})}
+rows (the default, \code{"fill"}), should they be dropped
+(\code{"drop"}) entirely, or should they be left alone (\code{"ignore"})}
 
 \item{empty.thresh}{what proportion of features must be missing from a row to
 consider that row empty}
 
 \item{transform}{a function to be applied to the values prior to visualizatio}
 
-\item{...}{additional arguments}
+\item{trim}{a percentile (default = \code{0.02}) or range or 2 values see
+\bold{trimming} section for details}
 
-\item{probes}{probe type see section for more information}
-
-\item{type}{for objects containing probe-level models (e.g., \code{PLMsets}),
-specify either \code{"residuals"} (the default) or \code{"weights"}}
+\item{fontsize}{font size for labels and legend}
 }
 \description{
-Display a grid of color images representing microarray chips.
-}
-\details{
 Visualize microarray probe intensities arranged by their physical location on
-the array. A false color image is produced for each sample in the
-microarray object and arranged in a grid.
+the array. A false color image is produced for each sample in the microarray
+object and arranged in a grid.
+}
+\section{Trimming}{
+
+
+By default, a 98\% winsorization is performed prior to visualization, pulling
+in values outside of the 1st and 99th percentiles to their respective
+endpoints. This can modified using the \code{trim} argument to provide either
+a new percentile, or a range of 2 values defining the min/max of the trimmed
+endpoints. Set \code{trim = 0} to avoid trimming altogether.
+}
+
+\section{Empty Rows}{
+
+
+By virtue of platform design, unindexed probes or The presence of rows that
+are comprised entirely (or mostly) of missing values can create undesirable
+rasterization artifacts in the array images. To avoid this, empty rows are,
+by default, filled with values from a neighboring row. The threshold for what
+constitutes an empty row can be tweaked with the \code{empty.thresh}
+argument. Such empty rows are the result of either platform design, unindexed
+probes or probe selection (e.g., including only \code{PM} probes).
+}
+
+\section{Probe types}{
+
+
+For microarray data structures the \code{type} argument determines the
+\emph{type} of probe that should be included. The following table provides a
+list of valid values for each supported microarray class:
+
+\tabular{rcccc}{
+\code{AffyBatch}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+\code{ExpressionFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+\code{GeneFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab - \tab \code{"bg"}\cr
+\code{ExonFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab \code{"bg"} \cr
+\code{SnpFeatureSet}
+  \tab \code{"all"} \tab \code{"pm"} \tab \code{"mm"} \tab - \cr
+}
+}
+\examples{
+# standard array visualization
+mimage(iris3)
+
+# microarray visualization
+if (require(affydata, quietly = TRUE)) {
+  data("Dilution", package = "affydata")
+  mimage(Dilution, select = c("20A", "10A"))
+}
+
 }
 
