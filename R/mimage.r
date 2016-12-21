@@ -75,7 +75,15 @@ setMethod("mimage", c(object = "AffyBatch"),
     object <- marray(object, type, transpose = TRUE, select)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
+    .mimage(object,
+            colors,
+            legend.label,
+            nrow,
+            ncol,
+            fixed,
+            transform,
+            trim,
+            fontsize)
 })
 
 
@@ -96,12 +104,20 @@ setMethod("mimage", c(object = "PLMset"),
            trim = 0.01,
            fontsize = 12) {
 
-    if (is.null(colors))       colors <- scales::brewer_pal(palette = "RdBu")(9)
+    if (is.null(colors)) colors <- scales::brewer_pal(palette = "RdBu")(9)
 
     object <- marray(object, type, transpose = TRUE, select, type)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
+    .mimage(object,
+            colors,
+            legend.label,
+            nrow,
+            ncol,
+            fixed,
+            transform,
+            trim,
+            fontsize)
 })
 
 
@@ -127,7 +143,15 @@ setMethod("mimage", c(object = "FeatureSet"),
     object <- marray(object, type, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
+    .mimage(object,
+            colors,
+            legend.label,
+            nrow,
+            ncol,
+            fixed,
+            transform,
+            trim,
+            fontsize)
 })
 
 
@@ -153,7 +177,15 @@ setMethod("mimage", c(object = "oligoPLM"),
     object <- marray(object, type, select, transpose = TRUE)
     if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-    .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
+    .mimage(object,
+            colors,
+            legend.label,
+            nrow,
+            ncol,
+            fixed,
+            transform,
+            trim,
+            fontsize)
 })
 
 
@@ -178,7 +210,15 @@ setMethod("mimage", c(object = "array"),
   if (is.null(colors)) colors <- scales::brewer_pal(palette = "YlGnBu")(9)
   if (empty.rows == "fill") object <- fill_rows(object, empty.thresh)
 
-  .mimage(object, colors, legend.label, nrow, ncol, fixed, transform, trim, fontsize)
+  .mimage(object,
+          colors,
+          legend.label,
+          nrow,
+          ncol,
+          fixed,
+          transform,
+          trim,
+          fontsize)
 })
 
 
@@ -253,16 +293,21 @@ setMethod("mimage", c(object = "array"),
   heights <- rep(grid::unit.c(lbl.unit, img.unit), dims[1])
   widths  <- rep(unit(1, "null"), dims[2])
 
-  final.table <- gtable_matrix("image.table",
-              grobs = rbind(obj.labels, obj.raster)[row.order,, drop = FALSE],
-            heights = heights, widths = widths, respect = fixed)
+  final.table <- gtable_matrix(
+    name = "image.table",
+    grobs = rbind(obj.labels, obj.raster)[row.order, , drop = FALSE],
+    heights = heights,
+    widths = widths,
+    respect = fixed
+  )
 
-  # legend
-  legend.table <-
-    build_legend(legend$breaks, legend$fill, legend$labels, legend.label, fontsize)
+  legend.table <- build_legend(legend$breaks,
+                               legend$fill,
+                               legend$labels,
+                               legend.label,
+                               fontsize)
 
   final.table <- gtable_add_cols(final.table, gtable_width(legend.table))
-
   final.table <- gtable_add_grob(final.table, legend.table,
                   t = 2,
                   b = nrow(final.table),
