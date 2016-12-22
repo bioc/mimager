@@ -21,7 +21,7 @@ mimage(object, type = NULL, select = NULL, colors = NULL,
   transform = log2, trim = 0.01, fontsize = 12)
 
 \S4method{mimage}{PLMset}(object, type = "residuals", select = NULL,
-  colors = NULL, legend.label = "Residuals", nrow = NULL, ncol = NULL,
+  colors = NULL, legend.label = type, nrow = NULL, ncol = NULL,
   fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
   transform = identity, trim = 0.01, fontsize = 12)
 
@@ -31,7 +31,7 @@ mimage(object, type = NULL, select = NULL, colors = NULL,
   transform = log2, trim = 0.01, fontsize = 12)
 
 \S4method{mimage}{oligoPLM}(object, type = "residuals", select = NULL,
-  colors = NULL, legend.label = "Residuals", nrow = NULL, ncol = NULL,
+  colors = NULL, legend.label = type, nrow = NULL, ncol = NULL,
   fixed = FALSE, empty.rows = "fill", empty.thresh = 0.6,
   transform = identity, trim = 0.01, fontsize = 12)
 
@@ -75,6 +75,9 @@ consider that row empty}
 \bold{trimming} section for details}
 
 \item{fontsize}{font size for labels and legend}
+}
+\value{
+invisibly a \code{\link[gtable]{gtable}} matrix of grobs
 }
 \description{
 Visualize microarray probe intensities arranged by their physical location on

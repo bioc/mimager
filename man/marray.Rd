@@ -41,6 +41,9 @@ the platform coordinates}
 
 \item{...}{additional arguments}
 }
+\value{
+three-dimensional \code{\link{array}}
+}
 \description{
 Convert S4 microarray data structures into a three-dimensional array of
 matrices, where each matrix corresponds to an individual sample's microarray

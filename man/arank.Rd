@@ -7,7 +7,7 @@
 arank(x, na.last = TRUE, ties.method = "first")
 }
 \arguments{
-\item{x}{a three-dimensional array of values}
+\item{x}{a three-dimensional \code{\link{array}} of matrices}
 
 \item{na.last}{for controlling the treatment of \code{\link{NA}}s.
     If \code{TRUE}, missing values in the data are put last; if
@@ -16,6 +16,9 @@ arank(x, na.last = TRUE, ties.method = "first")
 
 \item{ties.method}{a character string specifying how ties are treated,
     see \sQuote{Details}; can be abbreviated.}
+}
+\value{
+an \code{\link{array}} with the same dimensions as \code{x}
 }
 \description{
 Determines the rank of values within each matrix of a three-dimensional

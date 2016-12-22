@@ -7,12 +7,14 @@
 arle(x, log2 = TRUE, normalize = TRUE)
 }
 \arguments{
-\item{x}{an array of two-dimensional matrices, each of which represents an
-individual sample}
+\item{x}{a three-dimensional \code{\link{array}} of matrices}
 
-\item{log2}{do the values need to be $log_2$ transformed (\code{TRUE}, the default)}
+\item{log2}{should values be $log_2$ transformed}
 
-\item{normalize}{should the values be quantile normalized prior to calculating the RLE}
+\item{normalize}{should values be quantile normalized}
+}
+\value{
+an \code{\link{array}} with the same dimensions as \code{x}
 }
 \description{
 The relative log expression (RLE) quantifies the extent to which each sample
