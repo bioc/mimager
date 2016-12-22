@@ -1,8 +1,9 @@
 ---
 title: "mimager overview"
 author: "Aaron Wolen"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: "`r doc_date()`"
+package: "`r pkg_ver('mimager')`"
+output: BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{mimager overview}
   %\VignetteEngine{knitr::rmarkdown}

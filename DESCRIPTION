@@ -37,6 +37,7 @@ Collate:
 Suggests:
     knitr,
     rmarkdown,
+    BiocStyle,
     testthat,
     lintr,
     Matrix,
