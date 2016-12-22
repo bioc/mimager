@@ -49,3 +49,4 @@ VignetteBuilder: knitr
 URL: https://github.com/aaronwolen/mimager
 BugReports: https://github.com/aaronwolen/mimager/issues
 RoxygenNote: 5.0.1
+biocViews: Infrastructure, Visualization, Microarray
