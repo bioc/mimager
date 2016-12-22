@@ -3,7 +3,7 @@ build_legend <- function(breaks, colors, labels, title, fontsize) {
 
   nbreaks <- length(breaks)
 
-  # provide title *after* sizing keys in cases it contains line breaks
+  # provide title *after* sizing keys in case it contains line breaks
   legend.title <- grid::textGrob("",
             x = unit(0, "npc"),
             y = unit(1, "npc"),
