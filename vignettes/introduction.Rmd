@@ -24,7 +24,7 @@ The aim of *mimager* is to simplify the process of imaging microarrays and inspe
 
 # Basic visualization
 
-In this vignette we'll work with the `Dilution` data provided by the `r Biocpkg("affydata")` package, which includes...
+In this vignette we'll work with the `Dilution` data provided by the `r Biocpkg("affydata")` package.
 
 ```{r setup, warning=FALSE}
 library(mimager)
