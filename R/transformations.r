@@ -40,8 +40,8 @@ arank <- function(x, na.last = TRUE, ties.method = "first") {
 #' median value across all samples.
 #'
 #' @inheritParams arank
-#' @param log2 do the values need to be $log_2$ transformed (\code{TRUE}, the default)
-#' @param normalize should the values be quantile normalized prior to calculating the RLE
+#' @param log2 should values be $log_2$ transformed
+#' @param normalize should values be quantile normalized
 #'
 #' @examples
 #' # microarray visualization
