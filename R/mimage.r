@@ -50,6 +50,7 @@
 #'   mimage(Dilution, select = c("20A", "10A"))
 #' }
 #'
+#' @return invisibly a \code{\link[gtable]{gtable}} matrix of grobs
 #' @name mimage
 NULL
 

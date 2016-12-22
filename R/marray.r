@@ -25,6 +25,7 @@
 #'   dilution.array <- marray(Dilution, select = c("20A", "10A"))
 #' }
 #'
+#' @return three-dimensional \code{\link{array}}
 #' @name marray
 NULL
 

@@ -3,7 +3,7 @@
 #' Determines the rank of values within each matrix of a three-dimensional
 #' array.
 #'
-#' @param x a three-dimensional array of values
+#' @param x a three-dimensional \code{\link{array}} of matrices
 #' @inheritParams base::rank
 #'
 #' @examples
@@ -13,6 +13,7 @@
 #'   x <- arank(marray(Dilution, transpose = TRUE))
 #' }
 #'
+#' @return an \code{\link{array}} with the same dimensions as \code{x}
 #' @family array transformations
 #' @seealso \code{\link[base]{rank}}
 #' @export
@@ -38,8 +39,7 @@ arank <- function(x, na.last = TRUE, ties.method = "first") {
 #' in a dataset differs from a "reference" sample, which represents each probe's
 #' median value across all samples.
 #'
-#' @param x an array of two-dimensional matrices, each of which represents an
-#'   individual sample
+#' @inheritParams arank
 #' @param log2 do the values need to be $log_2$ transformed (\code{TRUE}, the default)
 #' @param normalize should the values be quantile normalized prior to calculating the RLE
 #'
@@ -50,6 +50,7 @@ arank <- function(x, na.last = TRUE, ties.method = "first") {
 #'   x <- arle(marray(Dilution, transpose = TRUE))
 #' }
 #'
+#' @return an \code{\link{array}} with the same dimensions as \code{x}
 #' @family array transformations
 #' @seealso \code{\link[affyPLM]{RLE}}
 #' @export
