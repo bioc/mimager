@@ -31,4 +31,5 @@
 #' @importFrom Biobase featureNames sampleNames
 #' @importFrom grid unit gpar
 #' @import gtable
+#' @import S4Vectors
 NULL

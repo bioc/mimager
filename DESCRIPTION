@@ -6,9 +6,9 @@ Description: Easily visualize and inspect microarrays for spatial artifacts.
 Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre", "cph"))
 License: MIT + file LICENSE
 LazyData: TRUE
-Depends:
-    Biobase
+Depends: Biobase
 Imports:
+    S4Vectors,
     BiocGenerics,
     S4Vectors,
     preprocessCore,
