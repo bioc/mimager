@@ -49,7 +49,7 @@ setMethod("mindex", c(object = "oligoPLM"),
   annot  <- check_annotation(oligo::annotation(object))
   status <- require(annot, character.only = TRUE, quietly = TRUE)
   if (!status)
-    stop("Please install the ", annot, " package from BioConductor.",
+    stop("Please install the ", annot, " package from Bioconductor.",
          call. = FALSE)
   dbcon <- oligo::db(get(annot))
   tbls  <- DBI::dbListTables(dbcon)
