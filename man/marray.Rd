@@ -38,8 +38,6 @@ include}
 microarrays are vertically oriented, as is typically expected. Set to
 \code{FALSE} to return an array in the orientation strictly specified by
 the platform coordinates}
-
-\item{...}{additional arguments}
 }
 \value{
 three-dimensional \code{\link{array}}

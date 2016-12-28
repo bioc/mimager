@@ -89,21 +89,22 @@ object and arranged in a grid.
 
 By default, a 98\% winsorization is performed prior to visualization, pulling
 in values outside of the 1st and 99th percentiles to their respective
-endpoints. This can modified using the \code{trim} argument to provide either
-a new percentile, or a range of 2 values defining the min/max of the trimmed
-endpoints. Set \code{trim = 0} to avoid trimming altogether.
+endpoints. This can be modified using the \code{trim} argument to provide
+either a new percentile, or a range of 2 values defining the min/max of the
+trimmed endpoints. Set \code{trim = 0} to avoid trimming entirely.
 }
 
 \section{Empty Rows}{
 
 
-By virtue of platform design, unindexed probes or The presence of rows that
-are comprised entirely (or mostly) of missing values can create undesirable
-rasterization artifacts in the array images. To avoid this, empty rows are,
-by default, filled with values from a neighboring row. The threshold for what
-constitutes an empty row can be tweaked with the \code{empty.thresh}
-argument. Such empty rows are the result of either platform design, unindexed
-probes or probe selection (e.g., including only \code{PM} probes).
+As a result of platform design, the presence unindexed probes or probe
+selection by the user (e.g., including only \code{"pm"} probes), the
+\code{matrix}-representation of a microarray can contain numerous rows
+comprised entirely (or mostly) of missing values, which may produce
+undesirable rasterization artifacts in the microarray image. To avoid this,
+empty rows are filled with values from a neighboring row. The threshold for
+what constitutes an empty row can be tweaked with the \code{empty.thresh}
+argument.
 }
 
 \section{Probe types}{
