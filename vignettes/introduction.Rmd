@@ -36,7 +36,8 @@ In this vignette we'll work with the `Dilution` data provided by the `r Biocpkg(
 
 ```{r setup, warning=FALSE}
 library(mimager)
-data("Dilution", package = "affydata")
+library(affydata)
+data("Dilution")
 ```
 
 The most basic functionality of the `mimage()` function is to produce a visualization of the probe-level intensities arranged by their physical location on the chip:
