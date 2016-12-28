@@ -19,7 +19,7 @@ opts_chunk$set(fig.dev = "png", fig.width = 5, fig.height = 4)
 
 # Background
 
-The aim of *mimager* is to simplify the process of imaging microarrays and inspecting them for spatial artifacts by providing a single visualization function (`mimage()`) that works consistently with many of the microarray object classes provided by BioConductor. Currently, *mimager* supports `AffyBatch` objects from the `r Biocpkg("affy")` package, `PLMset` objects from the `r Biocpkg("affyPLM")` package, `ExpressionFeatureSet`, `ExonFeatureSet`, `GeneFeatureSet` and `SnpFeatureSet` classes from the `r Biocpkg("oligoClasses")` package, and the `oligoPLM` class from the `r Biocpkg("oligo")` package.
+The aim of *mimager* is to simplify the process of imaging microarrays and inspecting them for spatial artifacts by providing a single visualization function (`mimage()`) that works consistently with many of Bioconductor's microarray object classes. Currently, *mimager* supports `AffyBatch` objects from the `r Biocpkg("affy")` package, `PLMset` objects from the `r Biocpkg("affyPLM")` package, `ExpressionFeatureSet`, `ExonFeatureSet`, `GeneFeatureSet` and `SnpFeatureSet` classes from the `r Biocpkg("oligoClasses")` package, and the `oligoPLM` class from the `r Biocpkg("oligo")` package.
 
 # Installation
 
@@ -40,7 +40,7 @@ library(affydata)
 data("Dilution")
 ```
 
-The most basic functionality of the `mimage()` function is to produce a visualization of the probe-level intensities arranged by their physical location on the chip:
+The most basic functionality of `mimage()` is to produce a visualization of the probe-level intensities arranged by their physical location on the chip:
 
 ```{r default-image-n1}
 mimage(Dilution, select = 1)
@@ -51,18 +51,18 @@ mimage(Dilution, select = 1)
 * `mimage()` always produces a legend automatically; the title can be changed with the `legend.label` argument
 * Empty blocks in the image correspond to probes not indexed in the platform's annotation data
 
-For microarray platforms with perfect-match (PM) and mismatch (MM) probes, such as the Affymetrix Human Genome U95v2 chip used here, only PM probes are included by default. However, the `type` argument can be used to select only MM probes (`probes="mm"`) or both (`probes="all"`). The abundant missing values that result from excluding a particular probe type can lead to rasterization artifacts in the microarray images that diminish their usefulness. To compensate for this, `mimage()` fills in empty rows with values from neighboring rows. By default, a row is considered empty if more than 60% of its values are missing. This threshold can be changed by setting `empty.thresh` or row filling can be disabled altogether by changing `empty.rows = "fill"` to `empty.rows = "ignore"`.
+For microarray platforms with perfect-match (PM) and mismatch (MM) probes, such as the Affymetrix Human Genome U95v2 chip used here, only PM probes are included by default. However, the `type` argument can be used to select only MM probes (`probes="mm"`) or both (`probes="all"`). The abundant missing values that result from excluding a particular probe type can produce rasterization artifacts in the microarray images that diminish their informativeness. To compensate for this, `mimage()` fills in empty rows with values from neighboring rows. By default, a row is considered empty if more than 60% of its values are missing. This threshold can be changed by setting `empty.thresh` or row filling can be disabled altogether by changing `empty.rows = "fill"` to `empty.rows = "ignore"`.
 
 
 # Visualizing multiple arrays
 
-One of *mimager*'s nicest features is the ability to visualize multiple microarrays simultaneously. Simply passing the `dilution` object to `mimage()` will produce a grid of images that each represent one chip in the sample.
+One of *mimager*'s nicest features is the ability to visualize multiple microarrays simultaneously. Simply passing the `Dilution` object to `mimage()` will produce a grid of images that each represent one chip in the sample.
 
 ```{r default-image-n4}
 mimage(Dilution)
 ```
 
-The order of images is determined by the order of samples in the microarray data object. You can override this order or choose a subset of samples to include using the `select` argument, which accepts either a numeric vector corresponding to each sample's index *or* or a character vector of sample names.
+The order of images is determined by the order of samples in the microarray data object. You can override this order or specify a subset of samples to include using the `select` argument, which accepts either a numeric vector corresponding to each sample's index *or* or a character vector of sample names.
 
 *mimage()* will compute a sensible layout for the image grid based on the dimensions of the current graphics device, or you can specify it manually by setting `nrow`, `ncol` or both.
 
@@ -73,7 +73,7 @@ mimage(Dilution, select = c("10A", "20A", "10B", "20B"), nrow = 1)
 
 # Probe-level linear models
 
-The `fitPLM()` function from the `r Biocpkg("affyPLM")` package and the `fitProbeLevelModel()` function from the `r Biocpkg("oligo")` package can be used to fit probe-level linear models (PLMs). As demonstrated by Ben Bolstad [-@bolstad:2004], replacing the raw probe intensities with the residuals or weights from these models can reveal spatial artifacts that might otherwise go undetected. *mimager* supports PLM objects generated by either package. One notable difference when working with PLM objects is the `type` argument now refers to *model value type* (i.e., residuals or weights) rather than *probe type*.
+The `fitPLM()` function from the `r Biocpkg("affyPLM")` package and the `fitProbeLevelModel()` function from the `r Biocpkg("oligo")` package can both be used to fit probe-level linear models (PLMs). As demonstrated by Ben Bolstad [-@bolstad:2004], replacing raw probe intensities with the residuals or weights from PLMs can reveal spatial artifacts that might otherwise go undetected. *mimager* supports visualizing PLM objects generated by either package. One notable difference when working with PLM objects (as opposed to microarray objects) is the `type` argument refers to *model value type* (i.e., residuals or weights) rather than *probe type*.
 
 ```{r dilution-plm}
 library(affyPLM)
@@ -96,7 +96,7 @@ div.colors <- scales::brewer_pal(palette = "RdBu")(9)
 mimage(Dilution, transform = arle, legend.label = "RLE", colors = div.colors)
 ```
 
-Any function can be passed to `transform` provided that it expects and returns a three-dimensional array. The `arank()` function is necessary because `base::rank()` violates this assumption and returns a numeric vector. You can experiment with custom transformation functions using `marray()` to convert a BioConductor microarray object to a three-dimensional array of matrices.
+Any function can be passed to `transform` provided that it expects and returns a three-dimensional array. The `arank()` function is necessary because `base::rank()` violates this assumption and returns a numeric vector. You can experiment with custom transformation functions using `marray()` to convert a Bioconductor microarray object to a three-dimensional array of matrices.
 
 ```{r dilution-array}
 DilutionArray <- marray(Dilution)
