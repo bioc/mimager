@@ -21,6 +21,14 @@ opts_chunk$set(fig.dev = "png", fig.width = 5, fig.height = 4)
 
 The aim of *mimager* is to simplify the process of imaging microarrays and inspecting them for spatial artifacts by providing a single visualization function (`mimage()`) that works consistently with many of the microarray object classes provided by BioConductor. Currently, *mimager* supports `AffyBatch` objects from the `r Biocpkg("affy")` package, `PLMset` objects from the `r Biocpkg("affyPLM")` package, `ExpressionFeatureSet`, `ExonFeatureSet`, `GeneFeatureSet` and `SnpFeatureSet` classes from the `r Biocpkg("oligoClasses")` package, and the `oligoPLM` class from the `r Biocpkg("oligo")` package.
 
+# Installation
+
+You can install the latest release of mimager from Bioconductor:
+
+```r
+source("http://www.bioconductor.org/biocLite.R")
+biocLite("mimager")
+```
 
 # Basic visualization
 

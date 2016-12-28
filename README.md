@@ -1,9 +1,30 @@
 # mimager: The Microarray Imager
 
-*mimager* simplifies the process of imaging microarrays and inspecting them for spatial artifacts by providing a single visualization function (`mimage()`) that works consistently with many of the microarray object classes provided by BioConductor.
+*mimager* simplifies the process of imaging microarrays and inspecting them for spatial artifacts by providing a consistent visualization interface that supports many of Bioconductor's microarray object classes.
+
+## Installation
+
+You can install the latest release from Bioconductor:
 
 ```r
-data("Dilution", package = "affydata")
+source("http://www.bioconductor.org/biocLite.R")
+biocLite("mimager")
+```
+
+or the current development version using `devtools`:
+
+```r
+# library(devtools)
+install_github("aaronwolen/mimager", build_vignettes = TRUE)
+```
+
+## Example
+
+```r
+library(mimager)
+library(affydata)
+data("Dilution")
+
 mimage(Dilution, transform = arle, nrows = 1, legend.label = "RLE")
 ```
 
