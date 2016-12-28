@@ -17,7 +17,6 @@
 #'   microarrays are vertically oriented, as is typically expected. Set to
 #'   \code{FALSE} to return an array in the orientation strictly specified by
 #'   the platform coordinates
-#' @param ... additional arguments
 #'
 #' @examples
 #' if (require(affydata, quietly = TRUE)) {
