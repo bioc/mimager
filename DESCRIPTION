@@ -2,49 +2,20 @@ Package: mimager
 Version: 0.99.2
 Type: Package
 Title: mimager: The Microarray Imager
-Description: Easily visualize and inspect microarrays for spatial artifacts.
-Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut", "cre", "cph"))
+Description: Easily visualize and inspect microarrays for spatial
+        artifacts.
+Authors@R: person("Aaron", "Wolen", , "aaron@wolen.com", c("aut",
+        "cre", "cph"))
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends: Biobase
-Imports:
-    BiocGenerics,
-    S4Vectors,
-    preprocessCore,
-    grDevices,
-    methods,
-    grid,
-    gtable,
-    scales,
-    DBI,
-    affy,
-    affyPLM,
-    oligo,
-    oligoClasses
-Collate:
-    'mimager-package.r'
-    'all-generics.r'
-    'mimage.r'
-    'marray.r'
-    'mindex.r'
-    'build-legend.r'
-    'checks.r'
-    'transformations.r'
-    'utils-affy.r'
-    'utils-arrays.r'
-    'utils-plot.r'
-Suggests:
-    knitr,
-    rmarkdown,
-    BiocStyle,
-    testthat,
-    lintr,
-    Matrix,
-    abind,
-    affydata,
-    hgu95av2cdf,
-    oligoData,
-    pd.hugene.1.0.st.v1
+Imports: BiocGenerics, S4Vectors, preprocessCore, grDevices, methods,
+        grid, gtable, scales, DBI, affy, affyPLM, oligo, oligoClasses
+Collate: 'mimager-package.r' 'all-generics.r' 'mimage.r' 'marray.r'
+        'mindex.r' 'build-legend.r' 'checks.r' 'transformations.r'
+        'utils-affy.r' 'utils-arrays.r' 'utils-plot.r'
+Suggests: knitr, rmarkdown, BiocStyle, testthat, lintr, Matrix, abind,
+        affydata, hgu95av2cdf, oligoData, pd.hugene.1.0.st.v1
 VignetteBuilder: knitr
 URL: https://github.com/aaronwolen/mimager
 BugReports: https://github.com/aaronwolen/mimager/issues
