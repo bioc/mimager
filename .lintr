@@ -1,1 +1,0 @@
-linters: with_defaults(commas_linter=NULL, camel_case_linter=NULL)
