@@ -42,7 +42,7 @@ data("Dilution")
 
 The most basic functionality of `mimage()` is to produce a visualization of the probe-level intensities arranged by their physical location on the chip:
 
-```{r default-image-n1, warning=FALSE}
+```{r default-image-n1, warning=FALSE, message=FALSE}
 mimage(Dilution, select = 1)
 ```
 
