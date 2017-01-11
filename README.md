@@ -1,5 +1,7 @@
 # mimager: The Microarray Imager
 
+[![Travis-CI Build Status](https://travis-ci.org/aaronwolen/mimager.svg?branch=master)](https://travis-ci.org/aaronwolen/mimager)
+
 *mimager* simplifies the process of imaging microarrays and inspecting them for spatial artifacts by providing a consistent visualization interface that supports many of Bioconductor's microarray object classes.
 
 ## Installation
