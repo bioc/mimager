@@ -16,5 +16,4 @@ after_script:
   - Rscript -e "library(BiocCheck); BiocCheck(\"${FILE}\")"
 
 after_success:
-  - Rscript -e 'library(covr);package_coverage()'
-  - Rscript -e 'library(covr);codecov()'
+  - Rscript -e "covr::codecov()"
