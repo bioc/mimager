@@ -5,6 +5,8 @@ r:
 sudo: false
 cache: packages
 
+r_packages:
+  - covr
 bioc_packages:
   - BiocCheck
 
@@ -12,3 +14,7 @@ after_script:
   - ls -lah
   - FILE=$(ls -1t *.tar.gz | head -n 1)
   - Rscript -e "library(BiocCheck); BiocCheck(\"${FILE}\")"
+
+after_success:
+  - Rscript -e 'library(covr);package_coverage()'
+  - Rscript -e 'library(covr);codecov()'
