@@ -1,5 +1,5 @@
 Package: mimager
-Version: 0.99.4
+Version: 0.99.5
 Type: Package
 Title: mimager: The Microarray Imager
 Description: Easily visualize and inspect microarrays for spatial
