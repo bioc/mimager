@@ -2,6 +2,7 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/aaronwolen/mimager.svg?branch=master)](https://travis-ci.org/aaronwolen/mimager)
 [![codecov](https://codecov.io/gh/aaronwolen/mimager/branch/master/graph/badge.svg)](https://codecov.io/gh/aaronwolen/mimager)
+[![Bioc](http://www.bioconductor.org/shields/years-in-bioc/mimager.svg)](https://www.bioconductor.org/packages/devel/bioc/html/mimager.html#since)
 
 *mimager* simplifies the process of imaging microarrays and inspecting them for spatial artifacts by providing a consistent visualization interface that supports many of Bioconductor's microarray object classes.
 
