@@ -13,7 +13,7 @@ vignette: >
 
 ```{r config, include=FALSE}
 library(knitr)
-opts_chunk$set(fig.dev = "png", fig.width = 5, fig.height = 4)
+opts_chunk$set(dev = "jpeg", fig.height = 7.25, dpi = 72, fig.retina = 1)
 ```
 
 
@@ -42,7 +42,7 @@ data("Dilution")
 
 The most basic functionality of `mimage()` is to produce a visualization of the probe-level intensities arranged by their physical location on the chip:
 
-```{r default-image-n1, warning=FALSE, message=FALSE}
+```{r default-image-n1, warning=FALSE, message=FALSE, fig.small=TRUE, fig.height=4}
 mimage(Dilution, select = 1)
 ```
 
@@ -66,7 +66,7 @@ The order of images is determined by the order of samples in the microarray data
 
 *mimage()* will compute a sensible layout for the image grid based on the dimensions of the current graphics device, or you can specify it manually by setting `nrow`, `ncol` or both.
 
-```{r default-image-1row, fig.width=8, fig.height=2}
+```{r default-image-1row, fig.wide=TRUE, fig.height=2.5}
 mimage(Dilution, select = c("10A", "20A", "10B", "20B"), nrow = 1)
 ```
 
