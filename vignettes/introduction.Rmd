@@ -26,8 +26,9 @@ The aim of *mimager* is to simplify the process of imaging microarrays and inspe
 You can install the latest release of mimager from Bioconductor:
 
 ```r
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("mimager")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("mimager")
 ```
 
 # Basic visualization

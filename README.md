@@ -11,8 +11,9 @@
 You can install the latest release from Bioconductor:
 
 ```r
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("mimager")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("mimager")
 ```
 
 or the current development version using `devtools`:
