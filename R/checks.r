@@ -37,7 +37,6 @@ check_annotation <- function(x) {
   if (status) return(x)
   stop(
     x, "Please install ", x, " from Biocounductor.\n",
-    "source(\"https://bioconductor.org/biocLite.R\")\n",
     "BiocManager::install(", x, ")\n",
     call. = FALSE
   )
